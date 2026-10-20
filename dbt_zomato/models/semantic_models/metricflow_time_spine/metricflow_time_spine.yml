@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: metricflow_time_spine
-    description: Continuous daily dates from 2020-01-01 through 2030-12-31 for MetricFlow.
+    description: '{{ doc("metricflow_time_spine") }}'
     time_spine:
       standard_granularity_column: date_day
     columns:

@@ -12,7 +12,11 @@ Project 1 compares how access to successive data layers affects AI answer correc
 
 The original scripts in `snowflake/01_setup.sql` through `05_copy_into.sql` are retained as the Project 0 baseline. [`snowflake/project1/01_initialize.sql`](snowflake/project1/01_initialize.sql) creates `ZOMATO_DLR`, clones six `ZOMATO.SOURCES` tables, and copies `USERS` without its `PASSWORD` column. It also creates the dbt schemas and `DBT_LAYER_REFACTOR_ROLE`, then grants that role to the Snowflake user executing the script. Re-running it preserves the first snapshot; it does not refresh existing tables.
 
-**Initialized on 20 October 2026:** the six project schemas and seven source tables exist in `ZOMATO_DLR`. Row counts matched their Project 0 sources at initialization, `SOURCES.USERS` has no `PASSWORD` column, and `dbt debug` passed using `DBT_LAYER_REFACTOR_ROLE`. The dbt models have not been built in the new database yet.
+**Initialized on 20 October 2026:** the six project schemas and seven source tables exist in `ZOMATO_DLR`. Row counts matched their Project 0 sources at initialization, `SOURCES.USERS` has no `PASSWORD` column, and `dbt debug` passed using `DBT_LAYER_REFACTOR_ROLE`.
+
+**Current refactor checkpoint:** seven staging and six intermediate views have been built in `ZOMATO_DLR`. The source audit, layer contracts, validation results, and example output are in [the staging and intermediate review](docs/staging_intermediate_review.md). Core, marts, and semantic models have not been rebuilt as part of this checkpoint.
+
+Each SQL-based dbt model lives in its own folder with matching `.sql`, `.md`, and `.yml` files. The SQL defines the transformation, Markdown explains its grain and purpose, and YAML holds its dbt description and tests. Source and semantic declarations that have no SQL model remain YAML configuration files.
 
 Set `DBT_SNOWFLAKE_ACCOUNT`, `DBT_SNOWFLAKE_USER`, and `DBT_ENV_SECRET_SNOWFLAKE_PASSWORD` in your shell. Copy [`dbt_zomato/profiles.yml.example`](dbt_zomato/profiles.yml.example) to a private profiles directory such as `.local/dbt/profiles.yml`, then run dbt with `--profiles-dir .local/dbt --project-dir dbt_zomato`. The Project 1 profile and run guard require `ZOMATO_DLR`, so the existing Project 0 profile cannot accidentally direct this project to `ZOMATO`.
 
