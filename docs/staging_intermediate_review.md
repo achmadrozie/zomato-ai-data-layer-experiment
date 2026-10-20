@@ -22,6 +22,17 @@ The source does not identify the timezone of `ORDERS.ORDER_TIMESTAMP`. Staging p
 - `INTERMEDIATE`: six views. `int_date_spine` and `int_date_features` provide calendar attributes. `int_order_base`, `int_order_financials`, and `int_order_fulfillment` each have one row per order. `int_order_item_rollup` groups items to one row per order.
 - Financial and item rollups expose reconciliation deltas instead of silently changing source values. Downstream core and marts are outside this checkpoint.
 
+The four order intermediate models divide the order data by purpose:
+
+| Model | Input grain | Output grain | Purpose |
+| --- | --- | --- | --- |
+| `int_order_base` | One row per order | One row per order | Order IDs, location, source time, and source item counts. |
+| `int_order_financials` | One row per order | One row per order | Financial components, recalculated sales, delta, and delivered sales. |
+| `int_order_fulfillment` | One row per order | One row per order | Status flags, delivery time, and customer rating. |
+| `int_order_item_rollup` | One row per order item | One row per order | Counts item lines and foods, sums quantity and amounts, and exposes item amount delta. |
+
+The last model is the grain change: 22,998,179 source item rows become 10,000,000 order rows. For order `163847`, four item rows with total quantity five become one rollup row (`item_line_count = 4`, `item_quantity = 5`). All four models can then join on `order_id` without multiplying order rows.
+
 ## Validation
 
 - Seven staging views and six intermediate views were created successfully.
