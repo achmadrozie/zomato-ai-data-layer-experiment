@@ -14,7 +14,7 @@ The original scripts in `snowflake/01_setup.sql` through `05_copy_into.sql` are 
 
 **Initialized on 20 October 2026:** the six project schemas and seven source tables exist in `ZOMATO_DLR`. Row counts matched their Project 0 sources at initialization, `SOURCES.USERS` has no `PASSWORD` column, and `dbt debug` passed using `DBT_LAYER_REFACTOR_ROLE`.
 
-**Current refactor checkpoint:** seven staging and six intermediate views have been built in `ZOMATO_DLR`. The source audit, layer contracts, validation results, and example output are in [the staging and intermediate review](docs/staging_intermediate_review.md). Core, marts, and semantic models have not been rebuilt as part of this checkpoint.
+**Current refactor checkpoint:** seven staging and six intermediate views plus six core tables have been built in `ZOMATO_DLR`. The source audit and intermediate examples are in [the staging and intermediate review](docs/staging_intermediate_review.md). Core grains, relationships, validation, and examples are in [the core review](docs/core_review.md). Marts and semantic models have not been rebuilt as part of this checkpoint.
 
 Each SQL-based dbt model lives in its own folder with matching `.sql`, `.md`, and `.yml` files. The SQL defines the transformation, Markdown explains its grain and purpose, and YAML holds its dbt description and tests. Source and semantic declarations that have no SQL model remain YAML configuration files.
 
