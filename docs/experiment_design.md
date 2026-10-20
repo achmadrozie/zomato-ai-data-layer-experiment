@@ -22,7 +22,7 @@ B is the curated base. Marts and semantic metrics are parallel additions to B.
 | D — semantic | B | Metric discovery, supported dimensions, and MetricFlow queries for the 19 metrics | D vs B: semantic-interface effect |
 | E — semantic + context | Same as D | Same semantic tools plus the exact glossary payload | E vs D: consolidated-context effect |
 
-All allowlists use explicit objects. The disabled AI review mart, Project 0 database, snapshots schema, and unlisted objects are excluded. The MetricFlow time spine is backend support, not a new business dataset exposed through the SQL discovery tool.
+All allowlists use explicit objects. The archived AI review mart, Project 0 database, snapshots schema, and unlisted objects are excluded. The MetricFlow time spine is backend support, not a new business dataset exposed through the SQL discovery tool.
 
 This five-arm design measures staging, intermediate, and core together in B. It cannot attribute their individual effects. If that is required, additional arms must be defined before the benchmark is frozen. A separate B + marts + semantic arm could later measure the combination; the first five arms do not establish that effect.
 
@@ -72,20 +72,19 @@ Question-level results and sample size accompany averages. With 25 questions, co
 
 | Finding in the current implementation | Consequence | Proposed resolution |
 | --- | --- | --- |
-| Delivery mart stores `AVG(delivery_time_min)`; restaurant mart stores rating/duration averages | Arbitrary larger-group averages cannot be reconstructed correctly from averages alone | Replace or supplement them with nonnull observation sums/counts, reconcile those components, then refresh the context version/hash |
 | `order_date` and timestamp are parsed from separate source fields | Date filtering and hourly bucketing may use different source values | Audit equality and nulls; state the chosen date field for each benchmark item without inventing a timezone |
-| Item fact has no currency column | Item monetary metrics can mix parent-order currencies unless currency is constrained through the order relationship | Audit source currencies and require currency-specific gold/query scopes for monetary items |
+| Item fact has no currency column; the corrected item mart obtains parent-order currency | Item semantic monetary metrics still need an explicit currency scope through the order relationship | Audit source currencies and require currency-specific gold/query scopes for monetary items |
 | Cross-fact ratios have an all-order denominator | A food filter does not automatically define the intended order population | Specify shared dimensions and eligible population per item; use explicit distinct-order definitions where the question requires them |
 | Core/model docs and semantic metadata already contain some business definitions | Uncontrolled exposure could confound the E context treatment | Freeze and inspect the exact metadata returned by each tool before the pilot |
 | Snapshot identity is presently described by initialization date and counts | Counts alone do not detect all changes before a rerun | Record source object identities/schema metadata and a suitable content-verification strategy with the run manifest |
 
-The additive-mart correction is a separate significant change. It must be resolved before claiming C is an additive-mart treatment. The present glossary describes the current averages honestly rather than advertising components that do not yet exist.
+The additive-mart prerequisite is resolved in the [mart contract correction](mart_contract_review.md): every active mart has explicit dimensions and a day/hour bucket, duration/rating averages have sum/count components, and item amounts are grouped by parent-order currency. All four replacement tables built in Snowflake and all 25 selected data tests passed. The glossary and payload hash have been refreshed accordingly. The restaurant daily grain has 9,243,921 rows versus 10 million orders, so it provides limited compression; performance benefit remains an experimental question.
 
 ## Delivery sequence and review points
 
 1. Context candidate: glossary, payload manifest, and source-definition review. This change implements that step.
 2. Design review: settle whether the bundled B arm is sufficient, select the model/settings and budgets, and approve the treatment/metadata boundaries. This document is the review artifact.
-3. Prerequisites and harness: correct additive components, audit date/currency assumptions, provision access, implement controlled SQL/MetricFlow tools, and establish provenance logging.
+3. Prerequisites and harness: audit date/currency assumptions, provision access, implement controlled SQL/MetricFlow tools, and establish provenance logging. The additive-mart correction is complete.
 4. Pilot, then benchmark authoring: verify the interfaces with excluded pilot items; write/review the 25 main items and gold results, then freeze all artifacts.
 5. Execute and report the 375 main runs with the frozen configuration.
 
