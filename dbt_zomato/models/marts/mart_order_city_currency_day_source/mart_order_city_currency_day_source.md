@@ -3,7 +3,7 @@ One row per source order date, city, and currency. Counts all orders and statuse
 {% enddocs %}
 
 {% docs mart_order_city_currency_day_source_order_date_source %}
-Date parsed from the source order timestamp; its timezone is unverified.
+Separately supplied source order date, parsed without timezone conversion.
 {% enddocs %}
 
 {% docs mart_order_city_currency_day_source_city %}

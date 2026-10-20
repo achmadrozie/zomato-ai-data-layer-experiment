@@ -48,6 +48,3 @@ models:
     marts:
       +materialized: 'table'
       +schema: 'marts'
-      # AI enrichment belongs to Project 0 and is outside this baseline.
-      mart_review_insights:
-        +enabled: false
