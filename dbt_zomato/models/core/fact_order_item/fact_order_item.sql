@@ -1,23 +1,16 @@
-{{
-    config(
-        materialized='incremental',
-        unique_key='order_item_id',
-        incremental_strategy='merge',
-        on_schema_change='append_new_columns'
-    )
-}}
-
 SELECT
     oi.order_item_id
     , oi.order_id
     , oi.restaurant_id
     , oi.f_id AS food_id
-    , o.order_timestamp AS order_ts
-    , TRY_TO_DATE(o.order_date) AS order_date
-    , o.city
+    , b.order_timestamp_source AS order_ts
+    , b.order_date
+    , b.city
     , oi.price
     , oi.quantity
     , oi.line_amount
+    , (oi.price * oi.quantity)::NUMBER(18, 2) AS calculated_line_amount
+    , (oi.line_amount - oi.price * oi.quantity)::NUMBER(18, 2) AS line_amount_delta
 FROM {{ ref('stg_zomato__order_item') }} AS oi
-INNER JOIN {{ ref('stg_zomato__order') }} AS o
-    ON oi.order_id = o.order_id
+LEFT JOIN {{ ref('int_order_base') }} AS b
+    ON oi.order_id = b.order_id

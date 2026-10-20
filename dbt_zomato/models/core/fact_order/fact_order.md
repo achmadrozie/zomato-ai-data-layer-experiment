@@ -1,13 +1,13 @@
 {% docs fact_order %}
-Order fact with one row per `order_id`. Selects staged order attributes and prepares typed values and reusable order-level measures. The model is incremental and merges selected rows by `order_id`; on incremental runs it selects only rows whose `order_timestamp` exceeds the maximum already in the fact.
+Order fact with one row per `order_id`. Combines the four order intermediate models on their tested unique key. The item rollup is left joined so an order remains visible if it has no item rows. Source financial and item amounts remain visible alongside calculated values and reconciliation deltas. Rebuilt as a table from the Project 1 source snapshot; source timestamps do not provide a reliable change marker for incremental loading.
 {% enddocs %}
 
 {% docs fact_order_order_id %}
-Identifier of the order and unique key used for incremental merges.
+Identifier and unique key of the order.
 {% enddocs %}
 
 {% docs fact_order_order_timestamp %}
-Order timestamp from the source; also used as the incremental selection cutoff.
+Source wall-clock order timestamp. Its timezone has not been verified.
 {% enddocs %}
 
 {% docs fact_order_order_date %}
@@ -23,11 +23,15 @@ Restaurant identifier, renamed from source `r_id` in staging.
 {% enddocs %}
 
 {% docs fact_order_city %}
-City parsed from the last comma-separated segment of the source `restaurant_city` value; staging uses the original value if no segment is found.
+City prepared in `int_order_base` from the source restaurant city.
 {% enddocs %}
 
 {% docs fact_order_cuisine %}
 Cuisine value recorded on the order.
+{% enddocs %}
+
+{% docs fact_order_currency %}
+Currency code recorded on the order and normalized in staging.
 {% enddocs %}
 
 {% docs fact_order_payment_method %}
@@ -46,6 +50,10 @@ True when `order_status` equals `Delivered`; derived in staging.
 True when `order_status` equals `Cancelled`.
 {% enddocs %}
 
+{% docs fact_order_is_refunded %}
+True when `order_status` equals `Refunded`.
+{% enddocs %}
+
 {% docs fact_order_order_hour %}
 Hour of day extracted from `order_timestamp`.
 {% enddocs %}
@@ -56,6 +64,18 @@ Item count recorded on the order.
 
 {% docs fact_order_sales_qty %}
 Sales quantity recorded on the order.
+{% enddocs %}
+
+{% docs fact_order_rollup_item_line_count %}
+Number of order-item rows for the order, aggregated in `int_order_item_rollup`.
+{% enddocs %}
+
+{% docs fact_order_rollup_item_quantity %}
+Sum of item quantities for the order, aggregated from item-grain rows.
+{% enddocs %}
+
+{% docs fact_order_rollup_distinct_food_count %}
+Number of distinct food IDs within the order.
 {% enddocs %}
 
 {% docs fact_order_subtotal %}
@@ -75,11 +95,31 @@ GST amount recorded on the order.
 {% enddocs %}
 
 {% docs fact_order_sales_amount %}
-Sales amount recorded on the order, parsed as a decimal. Unparseable values become null.
+Sales amount recorded on the order and parsed in staging.
+{% enddocs %}
+
+{% docs fact_order_calculated_sales_amount %}
+Subtotal minus discount plus delivery fee and GST, calculated in intermediate.
+{% enddocs %}
+
+{% docs fact_order_sales_amount_delta %}
+Source sales amount minus calculated sales amount. Zero means the order financial components reconcile.
 {% enddocs %}
 
 {% docs fact_order_delivered_sales_amount %}
-Sales amount for a delivered order and zero otherwise. A delivered order with an unparseable sales amount remains null.
+Source sales amount for a delivered order and zero otherwise.
+{% enddocs %}
+
+{% docs fact_order_rollup_item_line_amount %}
+Sum of source line amounts for the order, aggregated from item-grain rows.
+{% enddocs %}
+
+{% docs fact_order_rollup_calculated_item_amount %}
+Sum of item price times quantity for the order.
+{% enddocs %}
+
+{% docs fact_order_rollup_item_amount_delta %}
+Source item line amount minus calculated item amount, summed per order. Nonzero values are retained for data quality review.
 {% enddocs %}
 
 {% docs fact_order_customer_rating %}

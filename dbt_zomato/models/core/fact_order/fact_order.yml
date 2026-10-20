@@ -11,21 +11,38 @@ models:
           - not_null
       - name: order_timestamp
         description: '{{ doc("fact_order_order_timestamp") }}'
+        data_tests:
+          - not_null
       - name: order_date
         description: '{{ doc("fact_order_order_date") }}'
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_day
       - name: customer_id
         description: '{{ doc("fact_order_customer_id") }}'
         data_tests:
+          - not_null
           - relationships:
               arguments:
                 to: ref('dim_customer')
                 field: customer_id
       - name: restaurant_id
         description: '{{ doc("fact_order_restaurant_id") }}'
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_restaurant')
+                field: restaurant_id
       - name: city
         description: '{{ doc("fact_order_city") }}'
       - name: cuisine
         description: '{{ doc("fact_order_cuisine") }}'
+      - name: currency
+        description: '{{ doc("fact_order_currency") }}'
       - name: payment_method
         description: '{{ doc("fact_order_payment_method") }}'
       - name: order_status
@@ -38,12 +55,20 @@ models:
         description: '{{ doc("fact_order_is_delivered") }}'
       - name: is_cancelled
         description: '{{ doc("fact_order_is_cancelled") }}'
+      - name: is_refunded
+        description: '{{ doc("fact_order_is_refunded") }}'
       - name: order_hour
         description: '{{ doc("fact_order_order_hour") }}'
       - name: items_count
         description: '{{ doc("fact_order_items_count") }}'
       - name: sales_qty
         description: '{{ doc("fact_order_sales_qty") }}'
+      - name: item_line_count
+        description: '{{ doc("fact_order_rollup_item_line_count") }}'
+      - name: item_quantity
+        description: '{{ doc("fact_order_rollup_item_quantity") }}'
+      - name: distinct_food_count
+        description: '{{ doc("fact_order_rollup_distinct_food_count") }}'
       - name: subtotal
         description: '{{ doc("fact_order_subtotal") }}'
       - name: discount
@@ -54,8 +79,18 @@ models:
         description: '{{ doc("fact_order_gst") }}'
       - name: sales_amount
         description: '{{ doc("fact_order_sales_amount") }}'
+      - name: calculated_sales_amount
+        description: '{{ doc("fact_order_calculated_sales_amount") }}'
+      - name: sales_amount_delta
+        description: '{{ doc("fact_order_sales_amount_delta") }}'
       - name: delivered_sales_amount
         description: '{{ doc("fact_order_delivered_sales_amount") }}'
+      - name: item_line_amount
+        description: '{{ doc("fact_order_rollup_item_line_amount") }}'
+      - name: calculated_item_amount
+        description: '{{ doc("fact_order_rollup_calculated_item_amount") }}'
+      - name: item_amount_delta
+        description: '{{ doc("fact_order_rollup_item_amount_delta") }}'
       - name: customer_rating
         description: '{{ doc("fact_order_customer_rating") }}'
       - name: delivery_time_min
