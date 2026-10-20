@@ -50,7 +50,7 @@ Currencies are not converted. A monetary total has a currency-specific meaning. 
 
 ## Time and geography
 
-Order timestamps have no verified source timezone and are parsed without a timezone offset. The `_source` suffix denotes source wall-clock time. UTC or another timezone cannot be inferred from that suffix. An hourly mart bucket includes both the calendar date and the hour, rather than pooling the same hour of day across dates.
+Order timestamps have no verified source timezone and are parsed without a timezone offset. Mart relation names and time columns use the requested `_utc` project naming convention. Their values remain the existing source date or wall-clock bucket without timezone conversion; verified UTC normalization cannot be inferred from this name. An hourly mart bucket includes both the calendar date and the hour, rather than pooling the same hour of day across dates.
 
 `order_date` is parsed from the separately supplied source order-date field. Timestamp-derived hour comes from the source order timestamp. Equality between the supplied date and the timestamp's date is a data-quality question, rather than an assumed transformation rule. A business-day boundary in a different timezone is unestablished.
 
