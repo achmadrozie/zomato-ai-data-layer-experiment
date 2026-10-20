@@ -21,3 +21,23 @@ models:
         description: '{{ doc("dim_restaurant_rating_count") }}'
       - name: cost_for_two
         description: '{{ doc("dim_restaurant_cost_for_two") }}'
+
+semantic_models:
+  - name: dim_restaurant
+    description: Restaurant attributes at one row per restaurant ID.
+    model: ref('dim_restaurant')
+    entities:
+      - name: restaurant_id
+        type: primary
+        expr: restaurant_id
+    dimensions:
+      - name: restaurant_name
+        type: categorical
+      - name: city
+        type: categorical
+      - name: cuisine
+        type: categorical
+      - name: rating
+        type: categorical
+      - name: cost_for_two
+        type: categorical
