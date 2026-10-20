@@ -1,4 +1,4 @@
-dbt_zomato_layer_refactor:
+zomato_dbt_layer_refactor:
   target: dev
   outputs:
     dev:
@@ -8,6 +8,6 @@ dbt_zomato_layer_refactor:
       password: "{{ env_var('DBT_ENV_SECRET_SNOWFLAKE_PASSWORD') }}"
       role: DBT_LAYER_REFACTOR_ROLE
       warehouse: ZOMATO_WH
-      database: ZOMATO_LAYER_REFACTOR
+      database: ZOMATO_DLR
       schema: STAGING
       threads: 8

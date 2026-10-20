@@ -2,11 +2,11 @@
 # Name your project! Project names should contain only lowercase characters
 # and underscores. A good package name should reflect your organization's
 # name or the intended use of these models
-name: 'dbt_zomato'
+name: 'zomato_dbt_layer_refactor'
 version: '1.0.0'
 
 # This setting configures which "profile" dbt uses for this project.
-profile: 'dbt_zomato_layer_refactor'
+profile: 'zomato_dbt_layer_refactor'
 
 on-run-start: "{{ assert_project1_target() }}"
 
@@ -32,7 +32,7 @@ clean-targets:         # directories to be removed by `dbt clean`
 # directory as views. These settings can be overridden in the individual model
 # files using the `{{ config(...) }}` macro.
 models:
-  dbt_zomato:
+  zomato_dbt_layer_refactor:
     staging:
       +materialized: view
       +schema: 'staging'

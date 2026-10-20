@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: ai
-    database: ZOMATO_LAYER_REFACTOR
+    database: ZOMATO_DLR
     schema: AI
     description: LLM-enriched table produced by ai/01_enrich_reviews.py (OpenAI).
     tables:
