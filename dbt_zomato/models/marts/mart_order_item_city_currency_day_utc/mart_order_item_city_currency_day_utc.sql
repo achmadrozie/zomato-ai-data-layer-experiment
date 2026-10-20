@@ -1,5 +1,5 @@
 SELECT
-    i.order_date AS order_date_source
+    i.order_date AS order_date_utc
     , i.city
     , o.currency
     , COUNT(*) AS order_item_count

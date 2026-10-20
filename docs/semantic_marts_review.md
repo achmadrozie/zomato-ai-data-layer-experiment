@@ -10,12 +10,12 @@ MetricFlow parses 19 metrics: the nine existing metrics plus ten added here. New
 
 | Mart | Grain | Main aggregates |
 | --- | --- | --- |
-| `mart_order_city_currency_day_source` | Source order date, city, currency | Order status counts and delivered sales |
-| `mart_delivery_city_hour_source` | Source wall-clock hour including date, city | Delivered order count, delivery-minute sum and nonnull observation count |
-| `mart_order_restaurant_currency_day_source` | Source order date, restaurant ID, currency | Status counts, delivered sales, rating and delivery sum/count components |
-| `mart_order_item_city_currency_day_source` | Source order date, city, parent-order currency | Item line count, quantity, source and calculated item amounts, delta |
+| `mart_order_city_currency_day_utc` | Source order date, city, currency | Order status counts and delivered sales |
+| `mart_delivery_city_hour_utc` | Source wall-clock hour including date, city | Delivered order count, delivery-minute sum and nonnull observation count |
+| `mart_order_restaurant_currency_day_utc` | Source order date, restaurant ID, currency | Status counts, delivered sales, rating and delivery sum/count components |
+| `mart_order_item_city_currency_day_utc` | Source order date, city, parent-order currency | Item line count, quantity, source and calculated item amounts, delta |
 
-The source does not establish a timezone for order timestamps. `_source` marks a parsed source date or timestamp bucket. No UTC conversion occurs. Monetary aggregates retain their source currency; marts containing sales group by `currency`. The review insights mart and AI source declaration are archived outside the dbt model paths because their enrichment belongs to Project 0.
+The source does not establish a timezone for order timestamps. `_utc` is the project naming convention for mart time columns and relation suffixes. It labels the existing parsed source dates and wall-clock buckets; no UTC conversion occurs and the suffix does not verify their timezone. Monetary aggregates retain their source currency; marts containing sales group by `currency`. The review insights mart and AI source declaration are archived outside the dbt model paths because their enrichment belongs to Project 0.
 
 ## Semantic checks
 
