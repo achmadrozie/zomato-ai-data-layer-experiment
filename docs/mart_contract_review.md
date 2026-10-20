@@ -28,7 +28,7 @@ SELECT
         / NULLIF(SUM(delivery_time_observation_count), 0) AS avg_delivery_time_min,
     SUM(customer_rating_sum)
         / NULLIF(SUM(customer_rating_observation_count), 0) AS avg_customer_rating
-FROM ZOMATO_DLR.MARTS.MART_ORDER_RESTAURANT_CURRENCY_DAY_SOURCE
+FROM ZOMATO_DLR.MARTS.MART_ORDER_RESTAURANT_CURRENCY_DAY_UTC
 GROUP BY order_month_utc, currency;
 ```
 

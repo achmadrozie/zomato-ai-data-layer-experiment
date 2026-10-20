@@ -16,6 +16,8 @@ The original scripts in `snowflake/01_setup.sql` through `05_copy_into.sql` are 
 
 **Current refactor checkpoint:** seven staging and six intermediate views plus six core tables have been built in `ZOMATO_DLR`. The source audit and intermediate examples are in [the staging and intermediate review](docs/staging_intermediate_review.md). Core grains, relationships, validation, and examples are in [the core review](docs/core_review.md). All six cores now have semantic definitions, with 19 metrics and four simple aggregate marts described in [the semantic and marts review](docs/semantic_marts_review.md).
 
+The next checkpoint is the [context-layer candidate](context/README.md) and [experiment-design review draft](docs/experiment_design.md). Context is implemented as a versioned Markdown glossary. Benchmark questions and gold answers follow the design review.
+
 Each SQL-based dbt model lives in its own folder with matching `.sql`, `.md`, and `.yml` files. The SQL defines the transformation, Markdown explains its grain and purpose, and YAML holds its dbt description and tests. Metric declarations have no SQL model and remain YAML plus Markdown configuration files. Semantic declarations for SQL-based core models live in the corresponding model YAML.
 
 Set `DBT_SNOWFLAKE_ACCOUNT`, `DBT_SNOWFLAKE_USER`, and `DBT_ENV_SECRET_SNOWFLAKE_PASSWORD` in your shell. Copy [`dbt_zomato/profiles.yml.example`](dbt_zomato/profiles.yml.example) to a private profiles directory such as `.local/dbt/profiles.yml`, then run dbt with `--profiles-dir .local/dbt --project-dir dbt_zomato`. The Project 1 profile and run guard require `ZOMATO_DLR`, so the existing Project 0 profile cannot accidentally direct this project to `ZOMATO`.
