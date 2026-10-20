@@ -1,0 +1,42 @@
+semantic_models:
+  - name: fact_order_item
+    description: table contained detail of both order and item id. Granularity is on order_item_id
+    model: ref('fact_order_item')
+    defaults:
+      agg_time_dimension: order_date
+    
+    entities:
+      - name: order_item_id
+        expr: order_item_id
+        type: primary
+      - name: order_id
+        expr: order_id
+        type: foreign
+      - name: food_id
+        expr: food_id
+        type: foreign
+      - name: restaurant_id
+        expr: restaurant_id
+        type: foreign
+
+    dimensions:
+      - name: order_date
+        type: time
+        type_params:
+          time_granularity: day
+      - name: city
+        type: categorical
+
+    measures:
+      - name: count_order_item
+        description: Total order item quantity
+        expr: order_item_id
+        agg: count
+      - name: total_ordered_quantity
+        description: Sum of item quantities.
+        expr: quantity
+        agg: sum
+      - name: total_ordered_amount
+        description: Sum of ordered quantity time with price (unit)
+        expr: line_amount
+        agg: sum
