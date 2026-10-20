@@ -17,7 +17,7 @@ order_actual AS (
         , SUM(cancelled_order_count) AS cancelled_order_count
         , SUM(refunded_order_count) AS refunded_order_count
         , SUM(delivered_sales_amount) AS delivered_sales_amount
-    FROM {{ ref('mart_order_city_currency_day_source') }}
+    FROM {{ ref('mart_order_city_currency_day_utc') }}
     GROUP BY currency
 ),
 order_diff AS (
@@ -27,7 +27,7 @@ order_diff AS (
 ),
 restaurant_expected AS (
     SELECT
-        order_date AS order_date_source
+        order_date AS order_date_utc
         , currency
         , COUNT(*) AS order_count
         , SUM(IFF(is_delivered, 1, 0)) AS delivered_order_count
@@ -43,7 +43,7 @@ restaurant_expected AS (
 ),
 restaurant_actual AS (
     SELECT
-        order_date_source
+        order_date_utc
         , currency
         , SUM(order_count) AS order_count
         , SUM(delivered_order_count) AS delivered_order_count
@@ -54,8 +54,8 @@ restaurant_actual AS (
         , SUM(customer_rating_observation_count) AS customer_rating_observation_count
         , SUM(delivery_time_sum_min) AS delivery_time_sum_min
         , SUM(delivery_time_observation_count) AS delivery_time_observation_count
-    FROM {{ ref('mart_order_restaurant_currency_day_source') }}
-    GROUP BY order_date_source, currency
+    FROM {{ ref('mart_order_restaurant_currency_day_utc') }}
+    GROUP BY order_date_utc, currency
 ),
 restaurant_diff AS (
     (SELECT * FROM restaurant_expected EXCEPT SELECT * FROM restaurant_actual)
@@ -64,7 +64,7 @@ restaurant_diff AS (
 ),
 delivery_expected AS (
     SELECT
-        order_timestamp::DATE AS timestamp_date_source
+        order_timestamp::DATE AS timestamp_date_utc
         , COUNT(*) AS delivered_order_count
         , COALESCE(SUM(delivery_time_min), 0) AS delivery_time_sum_min
         , COUNT(delivery_time_min) AS delivery_time_observation_count
@@ -74,12 +74,12 @@ delivery_expected AS (
 ),
 delivery_actual AS (
     SELECT
-        order_hour_source::DATE AS timestamp_date_source
+        order_hour_utc::DATE AS timestamp_date_utc
         , SUM(delivered_order_count) AS delivered_order_count
         , SUM(delivery_time_sum_min) AS delivery_time_sum_min
         , SUM(delivery_time_observation_count) AS delivery_time_observation_count
-    FROM {{ ref('mart_delivery_city_hour_source') }}
-    GROUP BY order_hour_source::DATE
+    FROM {{ ref('mart_delivery_city_hour_utc') }}
+    GROUP BY order_hour_utc::DATE
 ),
 delivery_diff AS (
     (SELECT * FROM delivery_expected EXCEPT SELECT * FROM delivery_actual)
@@ -102,7 +102,7 @@ item_actual AS (
         , SUM(source_line_amount) AS source_line_amount
         , SUM(calculated_line_amount) AS calculated_line_amount
         , SUM(line_amount_delta) AS line_amount_delta
-    FROM {{ ref('mart_order_item_city_currency_day_source') }}
+    FROM {{ ref('mart_order_item_city_currency_day_utc') }}
 ),
 item_diff AS (
     (SELECT * FROM item_expected EXCEPT SELECT * FROM item_actual)
@@ -117,7 +117,7 @@ item_currency_expected AS (
 ),
 item_currency_actual AS (
     SELECT currency, SUM(source_line_amount) AS source_line_amount
-    FROM {{ ref('mart_order_item_city_currency_day_source') }}
+    FROM {{ ref('mart_order_item_city_currency_day_utc') }}
     GROUP BY currency
 ),
 item_currency_diff AS (

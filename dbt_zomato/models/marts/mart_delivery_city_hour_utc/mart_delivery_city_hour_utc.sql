@@ -1,5 +1,5 @@
 SELECT
-    DATE_TRUNC('HOUR', order_timestamp) AS order_hour_source
+    DATE_TRUNC('HOUR', order_timestamp) AS order_hour_utc
     , city
     , COUNT(*) AS delivered_order_count
     , COALESCE(SUM(delivery_time_min), 0) AS delivery_time_sum_min
