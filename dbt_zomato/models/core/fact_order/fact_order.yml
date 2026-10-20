@@ -95,3 +95,66 @@ models:
         description: '{{ doc("fact_order_customer_rating") }}'
       - name: delivery_time_min
         description: '{{ doc("fact_order_delivery_time_min") }}'
+
+semantic_models:
+  - name: fact_order
+    description: Order measures and dimensions at one row per order.
+    model: ref('fact_order')
+    defaults:
+      agg_time_dimension: order_date
+    entities:
+      - name: order_id
+        type: primary
+        expr: order_id
+      - name: customer_id
+        type: foreign
+        expr: customer_id
+      - name: restaurant_id
+        type: foreign
+        expr: restaurant_id
+      - name: calendar_date
+        type: foreign
+        expr: order_date
+    dimensions:
+      - name: order_date
+        type: time
+        type_params:
+          time_granularity: day
+      - name: city
+        type: categorical
+      - name: cuisine
+        type: categorical
+      - name: currency
+        type: categorical
+      - name: order_status
+        type: categorical
+      - name: payment_method
+        type: categorical
+      - name: order_hour_source
+        type: categorical
+        expr: order_hour
+    measures:
+      - name: count_order_total
+        expr: order_id
+        agg: count
+      - name: count_order_delivered
+        expr: IFF(is_delivered, 1, 0)
+        agg: sum
+      - name: count_order_cancelled
+        expr: IFF(is_cancelled, 1, 0)
+        agg: sum
+      - name: count_order_refunded
+        expr: IFF(is_refunded, 1, 0)
+        agg: sum
+      - name: count_order_rated
+        expr: IFF(customer_rating IS NOT NULL, 1, 0)
+        agg: sum
+      - name: avg_delivery_time_min
+        expr: IFF(is_delivered, delivery_time_min, NULL)
+        agg: average
+      - name: avg_customer_rating
+        expr: customer_rating
+        agg: average
+      - name: gmv
+        expr: delivered_sales_amount
+        agg: sum

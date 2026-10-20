@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: mart_delivery_city_hour_source
+    description: '{{ doc("mart_delivery_city_hour_source") }}'
+    columns:
+      - name: order_hour_source
+        description: '{{ doc("mart_delivery_city_hour_source_order_hour_source") }}'
+        data_tests:
+          - not_null
+      - name: city
+        description: '{{ doc("mart_delivery_city_hour_source_city") }}'
+      - name: delivered_order_count
+        description: '{{ doc("mart_delivery_city_hour_source_delivered_order_count") }}'
+        data_tests:
+          - not_null
+      - name: avg_delivery_time_min
+        description: '{{ doc("mart_delivery_city_hour_source_avg_delivery_time_min") }}'
