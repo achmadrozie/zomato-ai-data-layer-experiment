@@ -12,14 +12,14 @@ HAVING COUNT(*) > 1
 
 UNION ALL
 
-SELECT 'mart_restaurant_currency_lifetime' AS model_name
-FROM {{ ref('mart_restaurant_currency_lifetime') }}
-GROUP BY restaurant_id, currency
+SELECT 'mart_order_restaurant_currency_day_source' AS model_name
+FROM {{ ref('mart_order_restaurant_currency_day_source') }}
+GROUP BY order_date_source, restaurant_id, currency
 HAVING COUNT(*) > 1
 
 UNION ALL
 
-SELECT 'mart_order_item_city_day_source' AS model_name
-FROM {{ ref('mart_order_item_city_day_source') }}
-GROUP BY order_date_source, city
+SELECT 'mart_order_item_city_currency_day_source' AS model_name
+FROM {{ ref('mart_order_item_city_currency_day_source') }}
+GROUP BY order_date_source, city, currency
 HAVING COUNT(*) > 1
