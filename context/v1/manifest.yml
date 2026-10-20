@@ -5,5 +5,5 @@ language: en
 reviewed_repository_revision: 9eb354412694a37ae152aef3931f6dca8b3af738
 payload_files:
   - path: business_glossary.md
-    sha256: 309c8b899f6b8b5d59e6cf5bd2427a855cccea916dea9ab176f94f8c07822181
-    bytes: 7639
+    sha256: 7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0
+    bytes: 1955

@@ -1,91 +1,79 @@
 # Project 1 experiment design — review draft
 
-Status: proposed design for review. The context candidate exists; benchmark questions, gold SQL/results, access roles, and agent runs are subsequent work.
+Status: context policies and run settings are under review. Benchmark authoring follows this review.
 
 ## Research question
 
-How does access to curated data layers, semantic metrics, and business context affect an AI agent's ability to produce correct, repeatable, verifiable answers from the same frozen data?
+How does access to curated data layers, semantic metrics, and business context affect AI answer correctness and consistency on the same frozen data?
 
-The experiment evaluates this repository and snapshot. It does not assume that a question answerable from a derived layer is impossible to answer from the source. Accuracy and repeatability are the primary outcomes; latency, tool use, and cost explain the practical tradeoffs.
+Correctness and repeatability are primary; latency, tool use, and cost are secondary. Results describe this dataset and configuration.
 
-This draft follows the [original shared brief review](https://chatgpt.com/s/cx_6ad72cc177c881919464ea99067cdf73) and the implemented checkpoint in this repository. It is a proposal, not a record of an executed experiment.
+The benchmark author can inspect all layers to create questions, reference SQL, and expected answers. Evaluated agents receive only their assigned arm's access. Gold SQL/results are kept outside agent access.
 
 ## Treatments
 
-B is the curated base. Marts and semantic metrics are parallel additions to B.
+B is the curated base; marts and semantics are parallel additions.
 
-| Arm | Agent SQL access in `ZOMATO_DLR` | Other available information/tools | Comparison |
+| Arm | SQL access in `ZOMATO_DLR` | Additional access | Comparison |
 | --- | --- | --- | --- |
-| A — source | Seven snapshotted tables in `SOURCES` | Relation discovery and column names/types | Baseline |
-| B — curated base | A plus the seven staging views, six intermediate views, and six core tables | Same SQL discovery interface | B vs A: combined curation effect |
-| C — marts | B plus the four active aggregate marts | Same SQL discovery interface | C vs B: aggregate-mart effect |
-| D — semantic | B | Metric discovery, supported dimensions, and MetricFlow queries for the 19 metrics | D vs B: semantic-interface effect |
-| E — semantic + context | Same as D | Same semantic tools plus the exact glossary payload | E vs D: consolidated-context effect |
+| A — source | Seven `SOURCES` tables | Schema discovery | Baseline |
+| B — curated base | A + staging, intermediate, core | Same discovery | B vs A |
+| C — marts | B + four additive marts | Same discovery | C vs B |
+| D — semantic | B | MetricFlow discovery/queries for 19 metrics | D vs B |
+| E — semantic + context | Same as D | Same semantic tools + business context | E vs D |
 
-All allowlists use explicit objects. The archived AI review mart, Project 0 database, snapshots schema, and unlisted objects are excluded. The MetricFlow time spine is backend support, not a new business dataset exposed through the SQL discovery tool.
+Semantic declarations share each core/dimension model's YAML file. They describe the core tables for MetricFlow; they do not create another SQL layer. A–C cannot read those files or call the semantic tools.
 
-This five-arm design measures staging, intermediate, and core together in B. It cannot attribute their individual effects. If that is required, additional arms must be defined before the benchmark is frozen. A separate B + marts + semantic arm could later measure the combination; the first five arms do not establish that effect.
+B currently tests staging/intermediate/core together. Separate effects would need more arms. A marts + semantics combination is also outside this five-arm design.
 
 ## Context contract
 
-The sole E payload is `context/v1/business_glossary.md`, identified by version and SHA-256 in its manifest. It supplies business definitions, units, grains, and limits. It contains no execution instructions, tool-selection policy, worked SQL, question-specific values, benchmark items, or gold answers.
-
-A through D do not receive that file or the repository review reports. Ordinary SQL discovery returns relation and column names/types using the same format in each arm. D and E receive the same semantic metric definitions and supported-dimension discovery. Since those definitions can overlap the glossary, E versus D measures the incremental value of the consolidated context rather than all business knowledge versus none.
-
-The agent receives its treatment through a controlled interface, not unrestricted repository access. The context file, model metadata, tool descriptions, and exposed object lists are frozen and hashed with each run configuration. Any discovered metadata leakage is corrected before the benchmark is frozen.
+- Only E receives [`business_glossary.md`](../context/v1/business_glossary.md), pinned by version/hash.
+- Context supplies reporting defaults, scope rules, and interpretation; metric formulas stay in semantic metadata.
+- The proposed CTX-01–03 policies need business review before they become benchmark requirements.
+- A–D cannot read the context or review reports. D/E receive identical semantic metadata.
+- Questions can draw on the approved policies. Questions and gold answers stay outside the context payload.
+- Policy-required questions are reported separately: A–D can correctly ask for a missing rule; E is expected to apply the supplied rule. This distinguishes added business information from data-querying ability.
 
 ## Access enforcement
 
-The existing `DBT_LAYER_REFACTOR_ROLE` is a build role and is unsuitable for agent runs. The next implementation stage needs dedicated read-only experiment identities and sessions with explicit object grants per arm. A prompt-only allowlist does not enforce access.
-
-The SQL service fixes the database, role, session settings, result limits, and timeout. It accepts read-only queries and rejects role changes, writes, multiple statements, and attempts to reach unlisted objects. Dedicated identities cannot inherit a broader build/admin role or switch to it. Permission-denial probes must cover forbidden schemas, Project 0, writes, and role switching before any agent run.
-
-The D/E metric service uses the same frozen semantic manifest and a backend identity limited to core models and the time spine. Its public methods are discovery and metric queries; they do not expose a shell, profile credentials, general filesystem access, or a way to invoke arbitrary dbt commands. The semantic and SQL tools log provenance in the same run record.
-
-No roles or agent credentials are provisioned by this documentation change.
+- Dedicated read-only identities enforce explicit object allowlists; agents do not use the dbt build role.
+- SQL tools reject writes, role changes, and unlisted objects. D/E metric tools expose discovery and queries only.
+- Project 0, archives, credentials, repository files, and gold answers are unavailable to evaluated agents. The time spine is semantic backend support.
 
 ## Shared run conditions
 
-- One exact model/version, one system prompt, one answer format, and the same inference settings across arms. A seed is recorded if supported; it does not guarantee deterministic output.
-- The same frozen snapshot, date interpretation, monetary policy, query timeout, row cap, agent tool-call budget, and retry policy across arms. The available data/tools differ only as specified by the treatment.
-- Each repetition has a fresh conversation and session. Prior runs, errors from other arms, gold answers, and evaluator feedback are unavailable to the agent.
-- Arm and question order are randomized with a recorded seed. The schedule balances arms across time to reduce connection and warehouse-state effects.
-- The primary latency measure is wall time from the agent request to the final answer, including discovery and retries. Query duration and connection time are also recorded separately.
-- Cache/warehouse settings are held constant where controllable and recorded. Uncontrolled cache state limits query-cost and latency conclusions.
-- Model input/output tokens and tool-call counts are recorded. Model cost uses the run's recorded pricing/version. Warehouse credits require a separately documented attribution method; estimated credits are labeled as estimates.
+- Same exact model/version, prompt, answer format, and inference settings.
+- Same frozen snapshot, session settings, budgets, and retry policy.
+- Fresh conversation/session for every repetition; no previous answers or evaluator feedback.
+- Randomized question/arm order with a recorded scheduling seed.
+- Record total latency, query time, retries, tool calls, tokens, and model cost.
+- Keep warehouse/cache settings consistent where possible; label estimated warehouse costs.
 
-Proposed pilot defaults for review are 20 tool calls per answer, a 60-second query timeout, and a 1,000-row result cap. At most one infrastructure retry per failed tool call is allowed within the same budget. Infrastructure failures are distinguished from invalid SQL and unsupported semantic requests. The exact model and inference settings remain unselected; they must be recorded before the pilot.
+Proposed defaults: 20 tool calls per answer, 60-second query timeout, 1,000-row cap, and one infrastructure retry per failed call within the budget. Model and inference settings still need selection.
 
-## Evaluation plan after design review
+## Evaluation plan
 
-A two-question pilot establishes tool behavior and logging. Pilot questions are excluded from the final benchmark. The proposed main run is 25 prespecified questions × 5 arms × 3 independent repetitions = 375 agent runs.
+- Pilot two questions to check tools/logging; exclude them from the main benchmark.
+- Main run: 25 fixed questions × 5 arms × 3 repetitions = **375 runs**.
+- Cover joins/aggregation, metric interpretation, order/item grain, approved context policies, and insufficient-data cases. Tag mart coverage and policy dependence.
+- Author and review gold SQL/results on the frozen snapshot. Each item specifies population, date/currency scope, expected output, numeric tolerance, and valid clarification/abstention behavior by arm.
+- Score correctness, correct in all three repetitions, appropriate clarification/abstention, and query errors. Compare paired results on the same questions; report latency/cost alongside them.
+- Keep failed attempts and infrastructure retries visible. Treat findings as an exploratory case study.
 
-Question strata cover source-answerable joins and aggregation, metric definitions and denominator choice, order/item grain, time and geography, and evidence-insufficient requests. Mart-covered and mart-uncovered questions are tagged before execution so aggregate-mart results can be interpreted by coverage. Multi-currency and food-specific population questions receive explicit reference semantics during gold authoring.
+## Before benchmark authoring
 
-Gold answers come from separately reviewed reference SQL on the frozen snapshot. Every benchmark item records its expected response type, population, grain, date field, currency treatment, expected columns, ordering/tie rules, numeric tolerances, and whether an evidence-based abstention is required. Gold SQL and values remain outside the context payload and agent workspace.
+1. **Agree on business context:** review CTX-01–03, then approve or replace them.
+2. **Check dates and currency:** inspect missing/inconsistent dates and available currencies so each question has a clear scope. The `_utc` rename does not establish timezone conversion.
+3. **Define populations:** distinguish all orders, Delivered orders, and orders containing a selected food when writing gold SQL.
+4. **Check exposed metadata:** confirm each arm receives its intended information; overlapping context/semantic descriptions are acceptable and documented.
+5. **Freeze the setup:** record snapshot identity/checks, context/semantic versions, model/settings, and tool limits.
 
-Primary reports are per-question correctness and the proportion of questions correct in all three repetitions, with paired arm differences on the same items. Secondary reports include abstention quality, SQL/semantic query errors, latency, tool calls, tokens, and cost. Numeric comparison uses the prespecified tolerances; narrative claims need support from tool evidence. Unsupported claims and failure to answer an answerable question are scored separately. A repeatable wrong answer is not correct.
+The [additive-mart correction](mart_contract_review.md) is complete. All four marts expose additive components, and 25 data tests passed. The fine-grained restaurant mart offers limited compression; its performance benefit is measured rather than assumed.
 
-Question-level results and sample size accompany averages. With 25 questions, conclusions are an exploratory case study for this dataset and configuration. Infrastructure retry/failure counts remain visible in reports; attempts are not silently rerun until correct.
+## Next steps
 
-## Prerequisites before freezing questions and gold answers
-
-| Finding in the current implementation | Consequence | Proposed resolution |
-| --- | --- | --- |
-| `order_date` and timestamp are parsed from separate source fields | Date filtering and hourly bucketing may use different source values | Audit equality and nulls; state the chosen date field for each benchmark item without inventing a timezone |
-| Item fact has no currency column; the corrected item mart obtains parent-order currency | Item semantic monetary metrics still need an explicit currency scope through the order relationship | Audit source currencies and require currency-specific gold/query scopes for monetary items |
-| Cross-fact ratios have an all-order denominator | A food filter does not automatically define the intended order population | Specify shared dimensions and eligible population per item; use explicit distinct-order definitions where the question requires them |
-| Core/model docs and semantic metadata already contain some business definitions | Uncontrolled exposure could confound the E context treatment | Freeze and inspect the exact metadata returned by each tool before the pilot |
-| Snapshot identity is presently described by initialization date and counts | Counts alone do not detect all changes before a rerun | Record source object identities/schema metadata and a suitable content-verification strategy with the run manifest |
-
-The additive-mart prerequisite is resolved in the [mart contract correction](mart_contract_review.md): every active mart has explicit dimensions and a day/hour bucket, duration/rating averages have sum/count components, and item amounts are grouped by parent-order currency. All four replacement tables built in Snowflake and all 25 selected data tests passed. The glossary and payload hash have been refreshed accordingly. Mart names/time columns use the requested `_utc` naming convention, with existing values preserved; no UTC conversion or verification has occurred. The restaurant daily grain has 9,243,921 rows versus 10 million orders, so it provides limited compression; performance benefit remains an experimental question.
-
-## Delivery sequence and review points
-
-1. Context candidate: glossary, payload manifest, and source-definition review. This change implements that step.
-2. Design review: settle whether the bundled B arm is sufficient, select the model/settings and budgets, and approve the treatment/metadata boundaries. This document is the review artifact.
-3. Prerequisites and harness: audit date/currency assumptions, provision access, implement controlled SQL/MetricFlow tools, and establish provenance logging. The additive-mart correction is complete.
-4. Pilot, then benchmark authoring: verify the interfaces with excluded pilot items; write/review the 25 main items and gold results, then freeze all artifacts.
-5. Execute and report the 375 main runs with the frozen configuration.
-
-The context candidate can be versioned independently. This design stays marked as a review draft until the decisions in step 2 are settled; no main benchmark is started by accepting the glossary.
+1. Review the context policies and design; decide whether B needs separate layer arms and select the model/settings.
+2. Check remaining data assumptions and implement the controlled tools/access/logging.
+3. Run the excluded pilot, then author/review and freeze the main questions and gold answers.
+4. Execute the 375 runs and report results.
