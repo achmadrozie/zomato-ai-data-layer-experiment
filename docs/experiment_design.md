@@ -53,23 +53,22 @@ For the first trial, record the model and settings used. Keep them fixed when co
 
 ## Evaluation plan
 
-- First trial: **5 questions × 1 arm (F) × 1 run = 5 answers**. F has all layers and the reviewed business context. This checks whether the full path works and produces inspectable answers; it cannot measure layer uplift.
-- For each trial question, write the expected answer and a SQL query used to check it before running the agent. Keep both out of the agent's view. Review the five answers, queries, and errors manually.
-- Next, complete the same five questions across all six arms: **5 × 6 × 1 = 30 answers**. The five F answers from the first trial count if the questions, snapshot, model, and settings remain fixed; otherwise rerun F. Compare each arm with its immediate predecessor. With five questions, one changed answer moves the accuracy score by 20 percentage points, so this is an illustrative ladder rather than a stable uplift estimate.
+- The first prototype compared **5 questions × A and E × 1 run = 10 plans**. It checked generated SQL/MetricFlow plans and their locally computed outputs; it did not test final agent answers. A vs E bundles several added layers, so the result is not a semantic-only uplift estimate.
+- For a full-answer trial, write the expected answer and checking SQL before running the agent. Keep both out of the agent's view. **Primary correctness is the final user-facing output**: requested values/tables, scope, units, and interpretation. Equivalent outputs pass even when SQL differs. Use SQL and tool traces as supporting evidence to diagnose errors, access violations, and unsupported claims.
+- Next, run the same five questions across all six arms with final answers: **5 × 6 × 1 = 30 answers**. Compare each arm with its immediate predecessor. With five questions, one changed answer moves the accuracy score by 20 percentage points, so this is an illustrative ladder rather than a stable uplift estimate.
 - More questions and repetitions can follow after reviewing those 30 answers. Keep the questions, model, settings, and snapshot fixed across arms.
 - Cover joins/aggregation, metric interpretation, order/item grain, approved context policies, and insufficient-data cases. Tag mart coverage and policy dependence.
 - Author and review gold SQL/results on the frozen snapshot. Each item specifies population, date/currency scope, expected output, numeric tolerance, and valid clarification/abstention behavior by arm.
-- In the first trial, report correctness, appropriate clarification/abstention, query errors, and latency for each question. For a later repeated comparison, also report consistency across runs and cost.
+- Score all requested parts of each final answer against the reference output and tolerance. Record appropriate clarification/abstention, query errors, and latency separately; later repeated comparisons can also report consistency and cost. Label the A/E prototype's locally evaluated query outputs separately from full-answer scores.
 - Keep failed attempts and infrastructure retries visible. Treat findings as an exploratory case study.
 
 ## First trial preparation
 
-1. Use the reviewed CTX-01–03 policies. Pick five questions with explicit date range, currency, and order population. The `_utc` labels do not establish timezone conversion.
-2. Record the snapshot, context version, model, and settings used for these five answers. Keep the expected answers separate from the agent.
+1. The initial A/E prototype used five questions, one run per arm, and the recorded `ZOMATO_DLR` snapshot. The `_utc` labels do not establish timezone conversion.
+2. Keep the model, settings, prompts, reference outputs, and checking SQL recorded separately from the evaluated agents. The 25-question author reference is local to the evaluator.
 
 ## Next steps
 
-1. Use the accepted context policies and arm F for the first trial; choose one model and record its settings.
-2. Prepare read-only access for F and save its queries and answers. Add the A–E access boundaries for the six-arm ladder.
-3. Write five questions with their expected answers and checking SQL, then run each once with F. Review the results together.
-4. Complete A–F on those five questions, compare adjacent arms, and inspect which layers the agent used. Decide whether to add questions and repetitions.
+1. Review the 25-question author reference, including output tolerances and valid clarification cases.
+2. Prepare read-only access for each arm and a full-answer path that keeps gold answers outside agent access.
+3. Run the same fixed questions across A–F, compare adjacent arms, and inspect final answers and their supporting traces. Add questions and repetitions after the small pilot.
