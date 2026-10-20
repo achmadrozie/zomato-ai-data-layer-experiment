@@ -24,5 +24,6 @@ Use each question verbatim. All questions use recorded `order_date` in 2025 unle
 | Q23 | context | In the 2025 standard market report, which three cities led by Delivered-order GMV in INR? Give each city's GMV and share of standard market GMV, using the reporting geography default. |
 | Q24 | context | How many repeat customers were there in January–June 2025 and in July–December 2025? Evaluate repeat status separately within each reporting period, then say which half had more. |
 | Q25 | data | For the order-recorded city with the highest 2025 cancellation rate among cities with at least 50,000 orders, compare its cancellation rate and average Delivered-order delivery time with the overall 2025 figures. Can these figures establish that slower delivery caused cancellations? |
+| Q26 | abstention | What was the total tip amount collected from Delivered orders in 2025, and what share of Delivered-order GMV in INR did it represent? |
 
 Q22–Q24 depend on business rules in the context payload. For arms A–E, a justified request for the missing rule can be an appropriate response; score those questions separately from data-only questions. Gold answers and SQL are local files outside agent access.

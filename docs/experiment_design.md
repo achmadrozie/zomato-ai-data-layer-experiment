@@ -29,7 +29,7 @@ Semantic declarations share each core/dimension model's YAML file. They describe
 
 - Only F receives [`business_glossary.md`](../context/v1/business_glossary.md), pinned by version/hash.
 - Context supplies reporting defaults, scope rules, and interpretation; metric formulas stay in semantic metadata.
-- CTX-01–03 were accepted for the first trial; review any later policy changes before using them in a comparison.
+- CTX-01–03 were accepted for the first trial; review any later policy changes before using them in a comparison.§
 - A–E cannot read the context or review reports. E/F receive identical semantic metadata.
 - Questions can draw on the approved policies. Questions and gold answers stay outside the context payload.
 - Policy-required questions are reported separately: A–E can correctly ask for a missing rule; F is expected to apply the supplied rule. This distinguishes added business information from data-querying ability.

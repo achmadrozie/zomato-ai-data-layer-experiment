@@ -18,5 +18,6 @@
   {"id":"Q22","stratum":"context","question":"For the standard market report covering 2025, what were Delivered-order GMV in INR, Delivered order count, and AOV? Apply the standard market eligibility rule consistently to all three."},
   {"id":"Q23","stratum":"context","question":"In the 2025 standard market report, which three cities led by Delivered-order GMV in INR? Give each city's GMV and share of standard market GMV, using the reporting geography default."},
   {"id":"Q24","stratum":"context","question":"How many repeat customers were there in January–June 2025 and in July–December 2025? Evaluate repeat status separately within each reporting period, then say which half had more."},
-  {"id":"Q25","stratum":"data","question":"For the order-recorded city with the highest 2025 cancellation rate among cities with at least 50,000 orders, compare its cancellation rate and average Delivered-order delivery time with the overall 2025 figures. Can these figures establish that slower delivery caused cancellations?"}
+  {"id":"Q25","stratum":"data","question":"For the order-recorded city with the highest 2025 cancellation rate among cities with at least 50,000 orders, compare its cancellation rate and average Delivered-order delivery time with the overall 2025 figures. Can these figures establish that slower delivery caused cancellations?"},
+  {"id":"Q26","stratum":"abstention","question":"What was the total tip amount collected from Delivered orders in 2025, and what share of Delivered-order GMV in INR did it represent?"}
 ]
