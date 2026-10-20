@@ -22,6 +22,6 @@ Each SQL-based dbt model lives in its own folder with matching `.sql`, `.md`, an
 
 Set `DBT_SNOWFLAKE_ACCOUNT`, `DBT_SNOWFLAKE_USER`, and `DBT_ENV_SECRET_SNOWFLAKE_PASSWORD` in your shell. Copy [`dbt_zomato/profiles.yml.example`](dbt_zomato/profiles.yml.example) to a private profiles directory such as `.local/dbt/profiles.yml`, then run dbt with `--profiles-dir .local/dbt --project-dir dbt_zomato`. The Project 1 profile and run guard require `ZOMATO_DLR`, so the existing Project 0 profile cannot accidentally direct this project to `ZOMATO`.
 
-The copied AI enrichment mart is disabled because its source table belongs to Project 0. No Snowflake objects are created by committing this setup code.
+The copied AI enrichment mart and its source declaration are archived in [`archive/project0/`](archive/project0/README.md). Current mart grains and additive components are documented in [the mart contract review](docs/mart_contract_review.md). `snowflake/project1/02_retire_legacy_marts.sql` preserves superseded Project 1 mart tables in `SNAPSHOTS` after their replacements pass validation.
 
 Local credentials, ignored policy files, dbt logs, generated targets, and installed packages are not part of this repository.

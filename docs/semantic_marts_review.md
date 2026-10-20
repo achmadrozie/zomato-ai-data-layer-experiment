@@ -11,11 +11,11 @@ MetricFlow parses 19 metrics: the nine existing metrics plus ten added here. New
 | Mart | Grain | Main aggregates |
 | --- | --- | --- |
 | `mart_order_city_currency_day_source` | Source order date, city, currency | Order status counts and delivered sales |
-| `mart_delivery_city_hour_source` | Source wall-clock hour including date, city | Delivered order count and average delivery minutes |
-| `mart_restaurant_currency_lifetime` | Restaurant, source currency across this snapshot | Order counts, delivered sales, average ratings and delivery minutes |
-| `mart_order_item_city_day_source` | Source order date, city | Item line count, quantity, source and calculated item amounts, delta |
+| `mart_delivery_city_hour_source` | Source wall-clock hour including date, city | Delivered order count, delivery-minute sum and nonnull observation count |
+| `mart_order_restaurant_currency_day_source` | Source order date, restaurant ID, currency | Status counts, delivered sales, rating and delivery sum/count components |
+| `mart_order_item_city_currency_day_source` | Source order date, city, parent-order currency | Item line count, quantity, source and calculated item amounts, delta |
 
-The source does not establish a timezone for order timestamps. `_source` marks a parsed source date or timestamp bucket. No UTC conversion occurs. Monetary aggregates retain their source currency; marts containing sales group by `currency`. The review insights mart remains disabled because its AI enrichment source belongs to Project 0.
+The source does not establish a timezone for order timestamps. `_source` marks a parsed source date or timestamp bucket. No UTC conversion occurs. Monetary aggregates retain their source currency; marts containing sales group by `currency`. The review insights mart and AI source declaration are archived outside the dbt model paths because their enrichment belongs to Project 0.
 
 ## Semantic checks
 
@@ -25,7 +25,7 @@ The source does not establish a timezone for order timestamps. `_source` marks a
 - `mf list dimensions --metrics total_ordered_amount` exposes food attributes as well as order, customer, restaurant, and calendar paths.
 - `mf list dimensions --metrics item_lines_per_order` finds common dimensions for the cross-fact ratio.
 - A live MetricFlow query for `gmv`, `count_order_total`, and `aov` grouped by restaurant city returned values for all three metrics. A second query for `item_lines_per_order` and `ordered_quantity_per_order` grouped by `metric_time` returned daily values, verifying a cross-fact order/item query.
-- The mart build created 2,210,132 delivery city-hour rows, 427,221 order city-currency-date rows, 427,221 order-item city-date rows, 148,541 restaurant-currency rows, and 4,018 time-spine dates. All 17 selected generic and singular data tests passed.
+- The initial mart build (before the additive correction) created the old lifetime and item-without-currency summaries. The current mart contracts and validation are recorded in [the mart contract review](mart_contract_review.md). The 4,018-row time spine is unchanged.
 
 Example MetricFlow queries used against the live target warehouse:
 
