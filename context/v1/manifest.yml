@@ -1,0 +1,9 @@
+context_id: zomato_dlr_business_glossary
+version: 1.0.0
+status: candidate
+language: en
+reviewed_repository_revision: 6a288911a7fbc36beefe70670c5392d434dbe119
+payload_files:
+  - path: business_glossary.md
+    sha256: 0cd531be21449eeb20a48976cf273dee36be71fc577f46e76c438ff8bba21927
+    bytes: 7406
