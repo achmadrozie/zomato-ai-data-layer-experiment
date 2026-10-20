@@ -12,6 +12,7 @@
 # Local datasets
 raw-csv/
 data/
+.local/
 
 # Environment-specific AWS/Snowflake values
 aws/iam/snowflake-role-trust-policy-final.json

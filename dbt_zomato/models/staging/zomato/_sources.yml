@@ -1,7 +1,7 @@
 # models/staging/_sources.yml
 sources:
   - name: zomato
-    database: ZOMATO
+    database: ZOMATO_LAYER_REFACTOR
     schema: SOURCES
     tables:
       - name: restaurants
