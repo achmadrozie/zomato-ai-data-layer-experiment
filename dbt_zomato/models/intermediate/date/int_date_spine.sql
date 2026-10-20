@@ -1,6 +1,6 @@
 WITH generated_dates AS (
     SELECT
-        DATEADD(DAY, SEQ4(), '2024-01-01'::DATE) AS date_day
+        DATEADD(DAY, ROW_NUMBER() OVER (ORDER BY SEQ4()) - 1, '2024-01-01'::DATE) AS date_day
     FROM TABLE(GENERATOR(ROWCOUNT => 1200))
 )
 

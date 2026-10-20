@@ -1,17 +1,13 @@
 WITH source AS (
-    SELECT *
-    FROM {{ source('zomato', 'order_items') }}
-)
-, transformed AS (
-    SELECT
-        order_item_id
-        , order_id
-        , r_id                             AS restaurant_id
-        , f_id
-        , price::DECIMAL(10, 2)            AS price
-        , quantity::NUMBER                 AS quantity
-        , line_amount::DECIMAL(10, 2)      AS line_amount
-    FROM source
+    SELECT * FROM {{ source('zomato', 'order_items') }}
 )
 
-SELECT * FROM transformed
+SELECT
+    TRY_TO_NUMBER(order_item_id) AS order_item_id
+    , TRY_TO_NUMBER(order_id) AS order_id
+    , TRY_TO_NUMBER(r_id) AS restaurant_id
+    , TRIM(f_id) AS f_id
+    , TRY_TO_DECIMAL(price, 18, 2) AS price
+    , TRY_TO_NUMBER(quantity) AS quantity
+    , TRY_TO_DECIMAL(line_amount, 18, 2) AS line_amount
+FROM source
