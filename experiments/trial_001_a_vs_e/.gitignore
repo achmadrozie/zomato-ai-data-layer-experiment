@@ -3,4 +3,7 @@ gold.local.sql
 results.local.json
 report.local.md
 reference.local.md
+gold_q06_q25.local.sql
+answers_q06_q25.local.json
+reference_q06_q25.local.md
 __pycache__/
