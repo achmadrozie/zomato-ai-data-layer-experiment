@@ -16,6 +16,7 @@ Project 1 repository: `zomato-dbt-layer-refactor`; Snowflake database: `ZOMATO_D
 - `generate_plans.py` and `evaluate_plans.py` implement only that five-question A/E plan pilot. `run_gold_additional.py` verifies reference queries for Q06–Q25; it is not an agent experiment runner. Do not present a 25-question or six-arm result until those runs exist.
 - The full-answer path needs a reviewed way to expose Snowflake results to the evaluated model. Automatic approval review previously rejected a runner that sent private Snowflake-derived results to an external model. Do not bypass that decision; obtain appropriate authorization or use an approved local route.
 - Primary future score: final answer values/tables, scope, units, and interpretation. Different valid SQL may pass. Keep query traces for diagnosis and access checks. Freeze model/settings, snapshot, prompt, and evaluator before arm comparisons.
+- For the planned three-attempt phase, run three fresh independent sessions per question per arm. Use mean correctness across all question-attempt answers as the primary arm score; also show each question's 0/3–3/3 result and each run-level score. Do not take the best attempt after checking the reference answer.
 
 ## Suggested prompt for a fresh chat
 
