@@ -2,4 +2,5 @@ plans.json
 gold.local.sql
 results.local.json
 report.local.md
+reference.local.md
 __pycache__/
