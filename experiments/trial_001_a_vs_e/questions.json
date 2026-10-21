@@ -1,7 +1,0 @@
-[
-  {"id": "Q1", "question": "How many orders were placed during 2025? Use the recorded order date and report a count.", "metric": "count_order_total", "unit": "orders"},
-  {"id": "Q2", "question": "What was GMV in INR during 2025, by recorded order date?", "metric": "gmv", "unit": "INR"},
-  {"id": "Q3", "question": "What was AOV in INR during 2025, by recorded order date?", "metric": "aov", "unit": "INR per delivered order"},
-  {"id": "Q4", "question": "What was the cancellation rate, as a percentage, during 2025, by recorded order date?", "metric": "cancellation_rate", "unit": "percent"},
-  {"id": "Q5", "question": "What was ordered quantity per order during 2025, by recorded order date? Report units per order.", "metric": "ordered_quantity_per_order", "unit": "units per order"}
-]

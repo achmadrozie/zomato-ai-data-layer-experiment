@@ -5,10 +5,10 @@ These are the exact prompts for every A–F treatment. `stratum` is evaluator me
 | ID | Stratum | Question |
 | --- | --- | --- |
 | Q01 | data | How many orders were placed during 2025? Use the recorded order date and report a count. |
-| Q02 | data | What was total Delivered-order GMV in INR for the full year 2025? Use the recorded order date for the 2025 scope and report a single annual total in INR. |
-| Q03 | data | What was AOV in INR for Delivered orders in the full year 2025? Use the recorded order date for the 2025 scope. Report a single value: total Delivered-order GMV divided by total Delivered order count. |
-| Q04 | data | What was the cancellation rate as a percentage for the full year 2025? Use the recorded order date for the 2025 scope. Report a single annual percentage: cancelled orders divided by all orders times 100. |
-| Q05 | data | What was ordered quantity per order for the full year 2025? Use the recorded order date for the 2025 scope. Report a single annual average: total ordered units divided by total orders, in units per order. |
+| Q02 | data | What was total Delivered-order GMV in INR for the full year 2025? Use the recorded order date for the 2025 scope. |
+| Q03 | data | What was AOV in INR for Delivered orders in the full year 2025? Use the recorded order date for the 2025 scope. |
+| Q04 | data | What was the cancellation rate as a percentage for the full year 2025? Use the recorded order date for the 2025 scope. |
+| Q05 | data | What was ordered quantity per order for the full year 2025? Use the recorded order date for the 2025 scope. |
 | Q06 | data | In 2025, which month had the highest Delivered-order GMV in INR? Give that month's GMV, the runner-up month's GMV, and the gap between them. |
 | Q07 | data | Compare January and December 2025: Delivered order count, GMV in INR, and AOV in INR for each month. For both Delivered order count and AOV, calculate the percentage change from January to December as (December value minus January value) divided by January value times 100. Show both percentage changes and state which grew faster. |
 | Q08 | data | For 2025, list the top three order-recorded cities by Delivered-order GMV in INR. For each city, also show Delivered order count and AOV. Treat each exact city label as one city. |

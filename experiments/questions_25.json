@@ -7,22 +7,22 @@
   {
     "id": "Q02",
     "stratum": "data",
-    "question": "What was total Delivered-order GMV in INR for the full year 2025? Use the recorded order date for the 2025 scope and report a single annual total in INR."
+    "question": "What was total Delivered-order GMV in INR for the full year 2025? Use the recorded order date for the 2025 scope."
   },
   {
     "id": "Q03",
     "stratum": "data",
-    "question": "What was AOV in INR for Delivered orders in the full year 2025? Use the recorded order date for the 2025 scope. Report a single value: total Delivered-order GMV divided by total Delivered order count."
+    "question": "What was AOV in INR for Delivered orders in the full year 2025? Use the recorded order date for the 2025 scope."
   },
   {
     "id": "Q04",
     "stratum": "data",
-    "question": "What was the cancellation rate as a percentage for the full year 2025? Use the recorded order date for the 2025 scope. Report a single annual percentage: cancelled orders divided by all orders times 100."
+    "question": "What was the cancellation rate as a percentage for the full year 2025? Use the recorded order date for the 2025 scope."
   },
   {
     "id": "Q05",
     "stratum": "data",
-    "question": "What was ordered quantity per order for the full year 2025? Use the recorded order date for the 2025 scope. Report a single annual average: total ordered units divided by total orders, in units per order."
+    "question": "What was ordered quantity per order for the full year 2025? Use the recorded order date for the 2025 scope."
   },
   {
     "id": "Q06",

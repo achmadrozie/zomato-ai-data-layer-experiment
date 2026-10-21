@@ -1,75 +1,41 @@
-# Project 1 experiment design — review draft
+# 25-question data-layer experiment
 
-Status: CTX-01–03 accepted for the first trial; experiment design remains a review draft.
+## Question and scope
 
-## Research question
+How does adding curated SQL layers, semantic metrics, and business context change AI answer correctness on the same `ZOMATO_DLR` snapshot? This is an exploratory case study on one dataset and one model. The exact [25 questions](../experiments/questions_25.md) and their [machine-readable form](../experiments/questions_25.json) are frozen before the A–F run. Q26 from the former trial is excluded.
 
-How does access to curated data layers, semantic metrics, and business context affect AI answer correctness and consistency on the same frozen data?
-
-Correctness and repeatability are primary; latency, tool use, and cost are secondary. Results describe this dataset and configuration.
-
-The benchmark author can inspect all layers to create questions, reference SQL, and expected answers. Evaluated agents receive only their assigned arm's access. Gold SQL/results are kept outside agent access.
+The author reference is [answers_25.md](../experiments/answers_25.md), supported by an ignored local SQL check file, `experiments/gold_25.local.sql`. The evaluated model receives neither the reference nor the SQL check file; the runner has no file-read tool. The answers use recorded `order_date` and the Project 1 snapshot initialized on 20 October 2026.
 
 ## Treatments
 
-Each arm keeps the access of the previous arm and adds one layer. Run the same questions with the same model and settings in every arm. A includes source and staging as the starting point; their separate effects are outside this ladder.
+Every arm retains the previous arm's SQL access. The same question, model, tool budget, result limit, and answer rubric apply to all arms.
 
-| Arm | SQL access in `ZOMATO_DLR` | Additional access | Adjacent comparison |
-| --- | --- | --- | --- |
-| A — source + staging | Seven `SOURCES` tables and seven staging views | Schema discovery | Baseline |
-| B — intermediate | A + intermediate views | Same discovery | B − A: intermediate |
-| C — core | B + core facts and dimensions | Same discovery | C − B: core |
-| D — marts | C + four additive marts | Same discovery | D − C: marts |
-| E — semantic | Same SQL access as D | MetricFlow discovery/queries for 19 metrics | E − D: semantic metrics |
-| F — context | Same SQL and semantic access as E | Business context document | F − E: context |
+| Arm | Accessible SQL objects | Additional grounding |
+| --- | --- | --- |
+| A | Seven source tables and seven staging views | None |
+| B | A plus six intermediate views | None |
+| C | B plus six core facts and dimensions | None |
+| D | C plus four aggregate marts | None |
+| E | Same SQL access as D | 19 MetricFlow metrics and their dbt descriptions; metric queries |
+| F | Same SQL and metric access as E | Pinned `context/v1/business_glossary.md` |
 
-Semantic declarations share each core/dimension model's YAML file. They describe the core tables for MetricFlow; they do not create another SQL layer. A–D cannot read those files or call the semantic tools. E and F can still query marts through SQL; MetricFlow metrics use the defined core models. Record which objects and tools each answer actually used.
+The MetricFlow time spine is backend support, not an agent-visible staging object. Mart names ending `_utc` do not establish a timezone conversion. The context policies CTX-01–03 are experiment rules for this snapshot, not claims about Zomato's real policies. Only F receives them.
 
-## Context contract
+## Run protocol
 
-- Only F receives [`business_glossary.md`](../context/v1/business_glossary.md), pinned by version/hash.
-- Context supplies reporting defaults, scope rules, and interpretation; metric formulas stay in semantic metadata.
-- CTX-01–03 were accepted for the first trial; review any later policy changes before using them in a comparison.§
-- A–E cannot read the context or review reports. E/F receive identical semantic metadata.
-- Questions can draw on the approved policies. Questions and gold answers stay outside the context payload.
-- Policy-required questions are reported separately: A–E can correctly ask for a missing rule; F is expected to apply the supplied rule. This distinguishes added business information from data-querying ability.
+- One fixed model: `gpt-4.1`, temperature 0. One fresh attempt for each of 25 questions in each of six arms: **150 final-answer opportunities**. Job order is shuffled with seed `20261021`.
+- Each attempt can make up to three read-only queries. The agent may use SQL in its arm's allowlist; E/F may also use MetricFlow. It can answer or request a missing rule. No question, gold answer, report, or prior attempt is fed into another attempt.
+- The runner stores every action, tool result or error, final answer, model usage, and timing in ignored `experiments/run.local/af_25/`. A completed attempt is not rerun on resume.
+- The model has no direct database credentials or filesystem tools. The runner validates a single SELECT and an explicit table allowlist before SQL execution, blocks sensitive columns and row-level identifiers in outputs, and limits result rows. The warehouse connection currently uses the Project 1 dbt role behind this runner; dedicated read-only warehouse identities are not yet provisioned.
+- MetricFlow queries use the same frozen dbt semantic project. SQL access remains available in E/F, so the comparison measures **optional semantic access**, including whether the model chooses to use it.
+- E/F receive the available metric definitions plus example MetricFlow group-by names. A tool error returns its actual query-resolution message, so the model can revise an invalid group-by name within the same three-query budget.
 
-## Access enforcement
+## Scoring
 
-- Dedicated read-only identities enforce explicit object allowlists; agents do not use the dbt build role.
-- SQL tools reject writes, role changes, and unlisted objects. E/F metric tools expose discovery and queries only.
-- Project 0, archives, credentials, repository files, and gold answers are unavailable to evaluated agents. The time spine is semantic backend support.
+The primary unit is the **final user-facing answer**. For each data-answerable Q01–Q21 and Q25, all requested values, ranking, scope, units, and interpretation must match the frozen author reference within its stated tolerance. Equivalent SQL is acceptable. An execution error, unsupported claim, or unrequested change in population is incorrect; record the reason separately. Report per-question outcomes and arm totals with denominators, plus query/metric use and failures.
 
-## Shared run conditions for later arm comparisons
+After the first run, the evaluator widened numeric tolerances without changing questions, prompts, tools, or saved attempts: ±0.01 percentage point for percentages, ±0.01 in stated units for averages/correlation, exact integer counts and identities, and the original money/decomposition tolerances. The [reference answers](../experiments/answers_25.md) and [report](experiment_report.md) record the revised score; the original strict grades remain in an ignored local audit file.
 
-- Same exact model/version, prompt, answer format, and inference settings.
-- Same frozen snapshot, session settings, budgets, and retry policy.
-- Fresh conversation/session for every repetition; no previous answers or evaluator feedback.
-- Randomized question/arm order with a recorded scheduling seed.
-- Record total latency, query time, retries, tool calls, tokens, and model cost.
-- Keep warehouse/cache settings consistent where possible; label estimated warehouse costs.
+Q22–Q24 require policies supplied only to F. Score these separately: a justified request for the missing rule is an appropriate A–E outcome, while F is expected to apply the policy and answer. Do not count A–E clarification as a numeric success or silently remove it from the denominator. Distinguish appropriate clarification, wrong numeric answer, and tool failure.
 
-For the first trial, record the model and settings used. Keep them fixed when comparing arms later.
-
-## Evaluation plan
-
-- The first prototype compared **5 questions × A and E × 1 run = 10 plans**. It checked generated SQL/MetricFlow plans and their locally computed outputs; it did not test final agent answers. A vs E bundles several added layers, so the result is not a semantic-only uplift estimate.
-- For a full-answer trial, write the expected answer and checking SQL before running the agent. Keep both out of the agent's view. **Primary correctness is the final user-facing output**: requested values/tables, scope, units, and interpretation. Equivalent outputs pass even when SQL differs. Use SQL and tool traces as supporting evidence to diagnose errors, access violations, and unsupported claims.
-- Next, run the same five questions across all six arms with final answers: **5 × 6 × 1 = 30 answers**. Compare each arm with its immediate predecessor. With five questions, one changed answer moves the accuracy score by 20 percentage points, so this is an illustrative ladder rather than a stable uplift estimate.
-- In the repeated phase, use **three independent attempts per question per arm**. Score every final answer against the frozen reference; an arm's primary accuracy is the mean of all its question-attempt correctness scores. Report each question's 0/3–3/3 correct count and the three run-level scores as a consistency check. Compare adjacent arms on the same question set. Never select the best attempt after seeing gold answers: that uses an oracle unavailable in normal use.
-- More questions and repetitions can follow after reviewing those 30 answers. Keep the questions, model, settings, and snapshot fixed across arms.
-- Cover joins/aggregation, metric interpretation, order/item grain, approved context policies, and insufficient-data cases. Tag mart coverage and policy dependence.
-- Author and review gold SQL/results on the frozen snapshot. Each item specifies population, date/currency scope, expected output, numeric tolerance, and valid clarification/abstention behavior by arm.
-- Score all requested parts of each final answer against the reference output and tolerance. Record appropriate clarification/abstention, query errors, and latency separately; later repeated comparisons can also report consistency and cost. Label the A/E prototype's locally evaluated query outputs separately from full-answer scores.
-- Keep failed attempts and infrastructure retries visible. Treat findings as an exploratory case study.
-
-## First trial preparation
-
-1. The initial A/E prototype used five questions, one run per arm, and the recorded `ZOMATO_DLR` snapshot. The `_utc` labels do not establish timezone conversion.
-2. Keep the model, settings, prompts, reference outputs, and checking SQL recorded separately from the evaluated agents. The 25-question author reference is local to the evaluator.
-
-## Next steps
-
-1. Review the 25-question author reference, including output tolerances and valid clarification cases.
-2. Prepare read-only access for each arm and a full-answer path that keeps gold answers outside agent access.
-3. Run the same fixed questions across A–F, compare adjacent arms, and inspect final answers and their supporting traces. Add questions and repetitions after the small pilot.
+With one run per question, adjacent-arm differences are descriptive. They do not estimate repeatability or statistical uncertainty. The initial five-question pilots and their old scripts are excluded from this run and its score.
