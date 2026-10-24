@@ -8,17 +8,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1] / "experiments" / "run.local"
 GROUPS = {
-    "baseline": (["af_25"], "af_25/grades.local.json"),
-    "v2": ([f"af_25_v2_rep{i}" for i in range(1, 4)], "af_25_v2_grades.json"),
-    "luna": ([f"af_25_luna_rep{i}" for i in range(1, 4)], "af_25_luna_grades.json"),
+    "gpt-4.1": ([f"af_25_v2_rep{i}" for i in range(1, 4)], "af_25_v2_grades.json"),
+    "gpt-6-luna": ([f"af_25_luna_rep{i}" for i in range(1, 4)], "af_25_luna_grades.json"),
 }
 
 
 def score(grades, group, key, rep):
     entry = grades[key]
-    if group == "baseline":
-        return entry[0]
-    if group == "luna":
+    if group == "gpt-6-luna":
         return entry[f"luna_rep{rep}"]
     return entry[f"rep{rep}"]
 
@@ -39,8 +36,13 @@ def main():
         grades = json.loads((ROOT / grade_path).read_text())
         records = []
         for rep, run in enumerate(runs, 1):
-            for path in sorted((ROOT / run / "attempts").glob("*.json")):
+            paths = sorted((ROOT / run / "attempts").glob("*.json"))
+            if len(paths) != 150:
+                raise ValueError(f"expected 150 attempts in {run}, found {len(paths)}")
+            for path in paths:
                 attempt = json.loads(path.read_text())
+                if attempt["model"] != group:
+                    raise ValueError(f"unexpected model in {path}: {attempt['model']}")
                 key = f"{attempt['arm']}-{attempt['question_id']}"
                 stats = [step.get("model_stats") or {} for step in attempt["steps"]]
                 records.append({
@@ -49,8 +51,6 @@ def main():
                     "prompt": sum(s.get("prompt_tokens") or 0 for s in stats),
                     "completion": sum(s.get("completion_tokens") or 0 for s in stats),
                 })
-        if not records:
-            raise ValueError(f"no attempts found for {group}")
         print(f"{group}: {len(records)} attempts")
         for label, field in (("correctness", "score"), ("latency_seconds", "seconds"),
                              ("completion_tokens", "completion")):
