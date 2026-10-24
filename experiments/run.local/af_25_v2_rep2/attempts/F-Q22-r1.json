@@ -1,0 +1,89 @@
+{
+  "id": "F-Q22-r1",
+  "arm": "F",
+  "question_id": "Q22",
+  "stratum": "context",
+  "question": "For the standard market report covering 2025, what were Delivered-order GMV in INR, Delivered order count, and AOV? Apply the standard market eligibility rule consistently to all three.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "0b4050774275381d90e71ce6a53187fa1bc3bc3555976a96ef9d759f720db807",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T01:50:04.825377+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "gmv,count_order_delivered,aov",
+        "group_by": "order_id__currency",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "The standard market report requires filtering to eligible restaurants (rating_count >= 100) and reporting by currency. The metricflow tool can provide GMV, delivered order count, and AOV by currency for 2025, but eligibility filtering must be handled in SQL if not supported directly. This first step retrieves the metrics by currency; if eligibility is not enforced, a second SQL step will filter accordingly."
+      },
+      "model_stats": {
+        "seconds": 1.61,
+        "prompt_tokens": 3461,
+        "completion_tokens": 132
+      },
+      "tool_error": "RuntimeError: MetricFlow query failed: ERROR: Database Error\n  250003: Hit non-retryable SSL error, HTTPSConnectionPool(host='clyqnlt-ew90521.snowflakecomputing.com', port=443): Max retries exceeded with url: /session/v1/login-request?request_id=0da88bcf-e975-492c-b1fa-70e9ab03857b&databaseName=ZOMATO_DLR&schemaName=STAGING&warehouse=ZOMATO_WH&roleName=DBT_LAYER_REFACTOR_ROLE&request_guid=561cb9d9-9d08-4661-9f44-938802dbe10e (Caused by SSLError(SSLError(\"bad handshake: SysCallError(32, 'EPIPE')\"))).\n  Verify that the hostnames and port numbers in SYSTEM$ALLOWLIST are added to your firewall's allowed list.\n  To further troubleshoot your connection you may reference the following article: https://docs.snowflake.com/en/user-guide/client-connectivity-troubleshooting/overview.\n\nLog File:: /Users/achmadrozie/Workstation/zomato-dbt-layer-refactor/dbt_zomato/logs/metricflow.log\nArtifact Path: /Users/achmadrozie/Workstation/zomato-dbt-layer-refactor/dbt_zomato/target/semantic_manifest.json\nArtifact Modified Time: 2026-10-20T17:28:57.630760\n\nIf you think you found a bug, please report it here:\n    https://github.com/dbt-labs/metricflow/issues"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT \n    SUM(mor.DELIVERED_SALES_AMOUNT) AS DELIVERED_GMV_INR,\n    SUM(mor.DELIVERED_ORDER_COUNT) AS DELIVERED_ORDER_COUNT,\n    CASE WHEN SUM(mor.DELIVERED_ORDER_COUNT) > 0 THEN SUM(mor.DELIVERED_SALES_AMOUNT) / SUM(mor.DELIVERED_ORDER_COUNT) ELSE NULL END AS AOV_INR\nFROM ZOMATO_DLR.MARTS.MART_ORDER_RESTAURANT_CURRENCY_DAY_UTC mor\nJOIN ZOMATO_DLR.CORE.DIM_RESTAURANT dr ON mor.RESTAURANT_ID = dr.RESTAURANT_ID\nWHERE mor.ORDER_DATE_UTC >= '2025-01-01' AND mor.ORDER_DATE_UTC < '2026-01-01'\n  AND mor.CURRENCY = 'INR'\n  AND dr.RATING_COUNT >= 100",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "Metricflow failed, so this SQL query calculates delivered GMV, delivered order count, and AOV in INR for 2025, applying the standard market eligibility rule (restaurant rating_count >= 100) to all metrics."
+      },
+      "model_stats": {
+        "seconds": 1.88,
+        "prompt_tokens": 3982,
+        "completion_tokens": 265
+      },
+      "result": {
+        "columns": [
+          "DELIVERED_GMV_INR",
+          "DELIVERED_ORDER_COUNT",
+          "AOV_INR"
+        ],
+        "rows": [
+          [
+            "927955016.00",
+            "1848107",
+            "502.11108772"
+          ]
+        ],
+        "query_id": "01c7de4e-0001-b38b-0000-d295000462d2",
+        "seconds": 0.68
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "gmv,count_order_delivered,aov",
+        "group_by": "order_id__currency (INR only)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "For the standard market report in 2025 (applying the eligibility rule of restaurant rating_count >= 100), the following metrics were observed for Delivered orders in INR:\n- Delivered-order GMV: 927,955,016.00 INR\n- Delivered order count: 1,848,107 orders\n- AOV (Average Order Value): 502.11108772 INR per delivered order\n\nAll three metrics are consistently filtered to eligible restaurants and INR currency. The population is all delivered orders from eligible restaurants in 2025. Units are INR for GMV and AOV, and count for delivered orders. Interpretation: The average delivered order from eligible restaurants in 2025 was worth about 502.11 INR.",
+        "reason": "All requested values are provided, with eligibility and currency filters applied as required by the standard market report policy."
+      },
+      "model_stats": {
+        "seconds": 1.97,
+        "prompt_tokens": 4371,
+        "completion_tokens": 226
+      }
+    }
+  ],
+  "final_answer": "For the standard market report in 2025 (applying the eligibility rule of restaurant rating_count >= 100), the following metrics were observed for Delivered orders in INR:\n- Delivered-order GMV: 927,955,016.00 INR\n- Delivered order count: 1,848,107 orders\n- AOV (Average Order Value): 502.11108772 INR per delivered order\n\nAll three metrics are consistently filtered to eligible restaurants and INR currency. The population is all delivered orders from eligible restaurants in 2025. Units are INR for GMV and AOV, and count for delivered orders. Interpretation: The average delivered order from eligible restaurants in 2025 was worth about 502.11 INR.",
+  "outcome": "answer",
+  "total_seconds": 9.29,
+  "finished_utc": "2026-10-21T01:50:14.112727+00:00"
+}

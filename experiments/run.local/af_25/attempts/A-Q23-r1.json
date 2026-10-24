@@ -1,0 +1,106 @@
+{
+  "id": "A-Q23-r1",
+  "arm": "A",
+  "question_id": "Q23",
+  "stratum": "context",
+  "question": "In the 2025 standard market report, which three cities led by Delivered-order GMV in INR? Give each city's GMV and share of standard market GMV, using the reporting geography default.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "8e9d0cfb7f28a61c23e09bf8b8fb7f4025382414d411dc6f612c4c213a65cd6e",
+  "context_sha256": null,
+  "started_utc": "2026-10-20T23:49:08.696089+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT RESTAURANT_CITY AS CITY, SUM(SALES_AMOUNT) AS GMV_INR\nFROM ZOMATO_DLR.SOURCES.ORDERS\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n  AND ORDER_STATUS = 'Delivered'\n  AND CURRENCY = 'INR'\nGROUP BY RESTAURANT_CITY\nORDER BY GMV_INR DESC\nLIMIT 3;",
+        "metrics": "SUM(SALES_AMOUNT) as GMV_INR",
+        "group_by": "RESTAURANT_CITY",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31T23:59:59.999Z",
+        "answer": "",
+        "reason": "First, identify the top three cities by delivered-order GMV in INR for 2025. The share calculation will require the total GMV for all cities, which will be queried next."
+      },
+      "model_stats": {
+        "seconds": 1.8,
+        "prompt_tokens": 1318,
+        "completion_tokens": 198
+      },
+      "result": {
+        "columns": [
+          "CITY",
+          "GMV_INR"
+        ],
+        "rows": [
+          [
+            "Bikaner",
+            "29030997.0"
+          ],
+          [
+            "Indiranagar,Bangalore",
+            "22092650.0"
+          ],
+          [
+            "Koramangala,Bangalore",
+            "18686823.0"
+          ]
+        ],
+        "query_id": "01c7ddd5-0001-b442-0000-d295000405f2",
+        "seconds": 0.26
+      }
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT SUM(SALES_AMOUNT) AS TOTAL_GMV_INR\nFROM ZOMATO_DLR.SOURCES.ORDERS\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n  AND ORDER_STATUS = 'Delivered'\n  AND CURRENCY = 'INR';",
+        "metrics": "SUM(SALES_AMOUNT) as TOTAL_GMV_INR",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31T23:59:59.999Z",
+        "answer": "",
+        "reason": "To calculate each top city's share of the standard market GMV, I need the total delivered-order GMV in INR for all cities in 2025."
+      },
+      "model_stats": {
+        "seconds": 1.46,
+        "prompt_tokens": 1646,
+        "completion_tokens": 158
+      },
+      "result": {
+        "columns": [
+          "TOTAL_GMV_INR"
+        ],
+        "rows": [
+          [
+            "1926466048.0"
+          ]
+        ],
+        "query_id": "01c7ddd5-0001-b38b-0000-d29500044c7e",
+        "seconds": 0.11
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "GMV (INR), Share of standard market GMV (%)",
+        "group_by": "City",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31T23:59:59.999Z",
+        "answer": "In the 2025 standard market report, the three cities leading by Delivered-order GMV in INR were:\n\n1. Bikaner: GMV = 29,030,997 INR, Share = 0.015070 (1.5070%)\n2. Indiranagar,Bangalore: GMV = 22,092,650 INR, Share = 0.011470 (1.1470%)\n3. Koramangala,Bangalore: GMV = 18,686,823 INR, Share = 0.009698 (0.9698%)\n\nPopulation: Delivered orders in INR currency, 2025, by city (reporting geography default).\nUnit: INR (GMV), proportion of total delivered-order GMV (share).\nInterpretation: These three cities together contributed about 3.62% of the delivered-order GMV in INR for the standard market in 2025.",
+        "reason": "Both the top three city GMVs and the total market GMV are available, allowing calculation of each city's share."
+      },
+      "model_stats": {
+        "seconds": 2.17,
+        "prompt_tokens": 1902,
+        "completion_tokens": 280
+      }
+    }
+  ],
+  "final_answer": "In the 2025 standard market report, the three cities leading by Delivered-order GMV in INR were:\n\n1. Bikaner: GMV = 29,030,997 INR, Share = 0.015070 (1.5070%)\n2. Indiranagar,Bangalore: GMV = 22,092,650 INR, Share = 0.011470 (1.1470%)\n3. Koramangala,Bangalore: GMV = 18,686,823 INR, Share = 0.009698 (0.9698%)\n\nPopulation: Delivered orders in INR currency, 2025, by city (reporting geography default).\nUnit: INR (GMV), proportion of total delivered-order GMV (share).\nInterpretation: These three cities together contributed about 3.62% of the delivered-order GMV in INR for the standard market in 2025.",
+  "outcome": "answer",
+  "total_seconds": 5.8,
+  "finished_utc": "2026-10-20T23:49:14.494217+00:00"
+}

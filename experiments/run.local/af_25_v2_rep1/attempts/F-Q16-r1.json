@@ -1,0 +1,89 @@
+{
+  "id": "F-Q16-r1",
+  "arm": "F",
+  "question_id": "Q16",
+  "stratum": "data",
+  "question": "Among item lines belonging to 2025 orders, how many have a non-zero difference between recorded line amount and price times quantity? Give the signed sum and absolute sum of those differences in INR. Do positive and negative differences offset in this snapshot?",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "d4310ebc93888372b312428966d5cfa8110633e1b0bfb33194130115e28af54c",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T01:08:29.584936+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT \n  COUNT(*) AS item_line_count,\n  SUM(line_amount - (price * quantity)) AS signed_sum_inr,\n  SUM(ABS(line_amount - (price * quantity))) AS absolute_sum_inr\nFROM ZOMATO_DLR.CORE.FACT_ORDER_ITEM\nWHERE order_date >= '2025-01-01' AND order_date < '2026-01-01'\n  AND currency = 'INR'\n  AND (line_amount - (price * quantity)) != 0;",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.32,
+        "prompt_tokens": 3472,
+        "completion_tokens": 138
+      },
+      "tool_error": "ProgrammingError: 000904 (42000): SQL compilation error: error line 7 at position 6\ninvalid identifier 'CURRENCY' (request_id=d69d21a4-45a8-4aba-a741-7a3e3fbee4a0, sfqid=01c7de24-0001-b442-0000-d2950004094e)"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT \n  COUNT(*) AS item_line_count,\n  SUM(line_amount - (price * quantity)) AS signed_sum_inr,\n  SUM(ABS(line_amount - (price * quantity))) AS absolute_sum_inr\nFROM ZOMATO_DLR.CORE.FACT_ORDER_ITEM\nWHERE order_date >= '2025-01-01' AND order_date < '2026-01-01'\n  AND (line_amount - (price * quantity)) != 0;",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "Removed the currency filter, as FACT_ORDER_ITEM does not have a currency column. All item lines are included regardless of currency."
+      },
+      "model_stats": {
+        "seconds": 1.53,
+        "prompt_tokens": 3731,
+        "completion_tokens": 149
+      },
+      "result": {
+        "columns": [
+          "ITEM_LINE_COUNT",
+          "SIGNED_SUM_INR",
+          "ABSOLUTE_SUM_INR"
+        ],
+        "rows": [
+          [
+            "21466",
+            "23791.00",
+            "23791.00"
+          ]
+        ],
+        "query_id": "01c7de24-0001-b38b-0000-d29500044f6a",
+        "seconds": 0.07
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "21466 item lines with non-zero difference; signed sum: 23791.00 INR; absolute sum: 23791.00 INR",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "Among item lines belonging to 2025 orders, there are 21,466 item lines where the recorded line amount differs from price times quantity. The signed sum of these differences is 23,791.00 INR, and the absolute sum is also 23,791.00 INR. This means all differences are positive in this snapshot—there is no offset between positive and negative differences.",
+        "reason": "The signed and absolute sums are equal, indicating that all non-zero differences are in the same direction (positive)."
+      },
+      "model_stats": {
+        "seconds": 2.35,
+        "prompt_tokens": 3998,
+        "completion_tokens": 152
+      }
+    }
+  ],
+  "final_answer": "Among item lines belonging to 2025 orders, there are 21,466 item lines where the recorded line amount differs from price times quantity. The signed sum of these differences is 23,791.00 INR, and the absolute sum is also 23,791.00 INR. This means all differences are positive in this snapshot—there is no offset between positive and negative differences.",
+  "outcome": "answer",
+  "total_seconds": 5.34,
+  "finished_utc": "2026-10-21T01:08:34.929577+00:00"
+}

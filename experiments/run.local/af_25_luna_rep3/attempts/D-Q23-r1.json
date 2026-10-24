@@ -1,0 +1,39 @@
+{
+  "id": "D-Q23-r1",
+  "arm": "D",
+  "question_id": "Q23",
+  "stratum": "context",
+  "question": "In the 2025 standard market report, which three cities led by Delivered-order GMV in INR? Give each city's GMV and share of standard market GMV, using the reporting geography default.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "b1f6e14c773bd842d58a660b709e48a10852a27a37faa316466d6e5582ae5f7b",
+  "question_sha256": "8e9d0cfb7f28a61c23e09bf8b8fb7f4025382414d411dc6f612c4c213a65cd6e",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T07:27:45.646421+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "clarify",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "Please define the “standard market” scope and the reporting-geography default (for example, whether to group by the order’s CITY and include all cities with INR orders)."
+      },
+      "model_stats": {
+        "seconds": 2.61,
+        "prompt_tokens": 2532,
+        "completion_tokens": 181
+      }
+    }
+  ],
+  "final_answer": "Please define the “standard market” scope and the reporting-geography default (for example, whether to group by the order’s CITY and include all cities with INR orders).",
+  "outcome": "clarification",
+  "total_seconds": 2.61,
+  "finished_utc": "2026-10-21T07:27:48.253917+00:00"
+}

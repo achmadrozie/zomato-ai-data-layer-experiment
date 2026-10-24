@@ -1,0 +1,76 @@
+{
+  "id": "A-Q06-r1",
+  "arm": "A",
+  "question_id": "Q06",
+  "stratum": "data",
+  "question": "In 2025, which month had the highest Delivered-order GMV in INR? Give that month's GMV, the runner-up month's GMV, and the gap between them.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "4acf2281f3c70a54cd1b5548e8bf681e9cb90b7906d0b054d53e1083d674c16e",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T03:57:29.050661+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH monthly AS (\n  SELECT DATE_TRUNC('MONTH', ORDER_DATE) AS MONTH_START,\n         SUM(SALES_AMOUNT) AS GMV_INR\n  FROM ZOMATO_DLR.STAGING.STG_ZOMATO__ORDER\n  WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n    AND IS_DELIVERED = TRUE\n    AND CURRENCY = 'INR'\n  GROUP BY DATE_TRUNC('MONTH', ORDER_DATE)\n), ranked AS (\n  SELECT MONTH_START, GMV_INR,\n         ROW_NUMBER() OVER (ORDER BY GMV_INR DESC, MONTH_START ASC) AS RN\n  FROM monthly\n)\nSELECT MAX(IFF(RN = 1, TO_CHAR(MONTH_START, 'YYYY-MM'), NULL)) AS HIGHEST_MONTH,\n       MAX(IFF(RN = 1, GMV_INR, NULL)) AS HIGHEST_MONTH_GMV_INR,\n       MAX(IFF(RN = 2, TO_CHAR(MONTH_START, 'YYYY-MM'), NULL)) AS RUNNER_UP_MONTH,\n       MAX(IFF(RN = 2, GMV_INR, NULL)) AS RUNNER_UP_GMV_INR,\n       MAX(IFF(RN = 1, GMV_INR, NULL)) - MAX(IFF(RN = 2, GMV_INR, NULL)) AS GAP_INR\nFROM ranked\nWHERE RN <= 2",
+        "metrics": "Monthly sum of recorded SALES_AMOUNT for delivered INR orders; highest month, runner-up, and their difference",
+        "group_by": "2025 recorded order month",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 12.29,
+        "prompt_tokens": 1312,
+        "completion_tokens": 1233
+      },
+      "result": {
+        "columns": [
+          "HIGHEST_MONTH",
+          "HIGHEST_MONTH_GMV_INR",
+          "RUNNER_UP_MONTH",
+          "RUNNER_UP_GMV_INR",
+          "GAP_INR"
+        ],
+        "rows": [
+          [
+            "2025-12",
+            "185263071.00",
+            "2025-11",
+            "180239871.00",
+            "5023200.00"
+          ]
+        ],
+        "query_id": "01c7decd-0001-b442-0000-d29500048202",
+        "seconds": 0.47
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "Among delivered orders recorded in 2025 with currency INR, December (2025-12) had the highest monthly GMV: INR 185,263,071.00. The runner-up was November (2025-11), with INR 180,239,871.00. The gap was INR 5,023,200.00.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.81,
+        "prompt_tokens": 1829,
+        "completion_tokens": 164
+      }
+    }
+  ],
+  "final_answer": "Among delivered orders recorded in 2025 with currency INR, December (2025-12) had the highest monthly GMV: INR 185,263,071.00. The runner-up was November (2025-11), with INR 180,239,871.00. The gap was INR 5,023,200.00.",
+  "outcome": "answer",
+  "total_seconds": 15.58,
+  "finished_utc": "2026-10-21T03:57:44.628285+00:00"
+}

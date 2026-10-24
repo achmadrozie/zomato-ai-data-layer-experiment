@@ -1,0 +1,72 @@
+{
+  "id": "D-Q05-r1",
+  "arm": "D",
+  "question_id": "Q05",
+  "stratum": "data",
+  "question": "What was ordered quantity per order for the full year 2025? Use the recorded order date for the 2025 scope.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "b1f6e14c773bd842d58a660b709e48a10852a27a37faa316466d6e5582ae5f7b",
+  "question_sha256": "ea883bbd9440eaafaff5343a59ff8dcbd1aa4f1afa8c0d1e08ce4956a43b2a3e",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T03:53:59.670572+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT SUM(ITEM_QUANTITY) / NULLIF(COUNT(*), 0) AS ORDERED_QUANTITY_PER_ORDER, SUM(ITEM_QUANTITY) AS TOTAL_ORDERED_QUANTITY, COUNT(*) AS ORDER_COUNT FROM ZOMATO_DLR.CORE.FACT_ORDER WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'",
+        "metrics": "Average ordered quantity per order = total item quantity divided by number of orders; includes all recorded orders in 2025, regardless of status.",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01 (exclusive)",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.76,
+        "prompt_tokens": 2518,
+        "completion_tokens": 310
+      },
+      "result": {
+        "columns": [
+          "ORDERED_QUANTITY_PER_ORDER",
+          "TOTAL_ORDERED_QUANTITY",
+          "ORDER_COUNT"
+        ],
+        "rows": [
+          [
+            "2.805393",
+            "12230877",
+            "4359773"
+          ]
+        ],
+        "query_id": "01c7deca-0001-b442-0000-d295000481ee",
+        "seconds": 0.21
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "Ordered quantity per order: 2.805393 items per order (12,230,877 total ordered quantity ÷ 4,359,773 orders).",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01 (exclusive)",
+        "answer": "For orders with recorded order dates in 2025, the average ordered quantity was 2.805393 items per order. This includes all 4,359,773 orders, regardless of order status.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.96,
+        "prompt_tokens": 2783,
+        "completion_tokens": 193
+      }
+    }
+  ],
+  "final_answer": "For orders with recorded order dates in 2025, the average ordered quantity was 2.805393 items per order. This includes all 4,359,773 orders, regardless of order status.",
+  "outcome": "answer",
+  "total_seconds": 6.93,
+  "finished_utc": "2026-10-21T03:54:06.603098+00:00"
+}

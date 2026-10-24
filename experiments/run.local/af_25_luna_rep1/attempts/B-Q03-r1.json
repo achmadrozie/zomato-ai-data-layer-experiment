@@ -1,0 +1,72 @@
+{
+  "id": "B-Q03-r1",
+  "arm": "B",
+  "question_id": "Q03",
+  "stratum": "data",
+  "question": "What was AOV in INR for Delivered orders in the full year 2025? Use the recorded order date for the 2025 scope.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "968aad7d611f901a7d8dfa1d40ac00ed82254c5407f1175667aee50fc5949a8c",
+  "question_sha256": "57beaba4b4339db13b7043c2a2928cf39d5baa511836db3dbde6518945b0b963",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T04:13:41.803313+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT COUNT(*) AS DELIVERED_ORDER_COUNT, SUM(f.DELIVERED_SALES_AMOUNT) AS DELIVERED_SALES_INR, SUM(f.DELIVERED_SALES_AMOUNT) / NULLIF(COUNT(*), 0) AS AOV_INR FROM ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE b JOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FINANCIALS f ON b.ORDER_ID = f.ORDER_ID JOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FULFILLMENT u ON b.ORDER_ID = u.ORDER_ID WHERE b.ORDER_DATE >= '2025-01-01' AND b.ORDER_DATE < '2026-01-01' AND b.CURRENCY = 'INR' AND u.IS_DELIVERED = TRUE",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 9.77,
+        "prompt_tokens": 1676,
+        "completion_tokens": 307
+      },
+      "result": {
+        "columns": [
+          "DELIVERED_ORDER_COUNT",
+          "DELIVERED_SALES_INR",
+          "AOV_INR"
+        ],
+        "rows": [
+          [
+            "3989077",
+            "1926466048.00",
+            "482.93528754"
+          ]
+        ],
+        "query_id": "01c7dedd-0001-b38b-0000-d295000468b2",
+        "seconds": 1.26
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "AOV was INR 482.935288 per delivered order for orders recorded from 2025-01-01 through 2025-12-31. This is delivered sales of INR 1,926,466,048.00 divided by 3,989,077 delivered orders, filtered to INR.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.92,
+        "prompt_tokens": 1983,
+        "completion_tokens": 181
+      }
+    }
+  ],
+  "final_answer": "AOV was INR 482.935288 per delivered order for orders recorded from 2025-01-01 through 2025-12-31. This is delivered sales of INR 1,926,466,048.00 divided by 3,989,077 delivered orders, filtered to INR.",
+  "outcome": "answer",
+  "total_seconds": 13.96,
+  "finished_utc": "2026-10-21T04:13:55.764851+00:00"
+}

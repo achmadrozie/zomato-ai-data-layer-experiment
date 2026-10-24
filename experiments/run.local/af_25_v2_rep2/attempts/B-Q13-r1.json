@@ -1,0 +1,103 @@
+{
+  "id": "B-Q13-r1",
+  "arm": "B",
+  "question_id": "Q13",
+  "stratum": "data",
+  "question": "Which three exact cuisine labels had the highest 2025 Delivered-order GMV in INR? For each label, also give total order count and cancellation rate. Do not split comma-separated cuisine labels.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "968aad7d611f901a7d8dfa1d40ac00ed82254c5407f1175667aee50fc5949a8c",
+  "question_sha256": "5a3ce21426ab9c55f11a602608b374b91fb0a9a7a62404be1ef55a222df3ccea",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:43:30.485619+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT CUISINE, \n       SUM(DELIVERED_SALES_AMOUNT) AS GMV_INR, \n       COUNT(ORDER_ID) AS TOTAL_ORDERS, \n       SUM(CASE WHEN IS_CANCELLED THEN 1 ELSE 0 END) * 1.0 / COUNT(ORDER_ID) AS CANCELLATION_RATE\nFROM ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE ob\nJOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FINANCIALS ofi ON ob.ORDER_ID = ofi.ORDER_ID\nJOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FULFILLMENT ofu ON ob.ORDER_ID = ofu.ORDER_ID\nWHERE ob.ORDER_DATE >= '2025-01-01' AND ob.ORDER_DATE < '2026-01-01'\n  AND ofu.IS_DELIVERED = TRUE\n  AND ob.CURRENCY = 'INR'\nGROUP BY CUISINE\nORDER BY GMV_INR DESC\nLIMIT 3;",
+        "metrics": "GMV (INR), order count, cancellation rate",
+        "group_by": "CUISINE",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.8,
+        "prompt_tokens": 1688,
+        "completion_tokens": 261
+      },
+      "tool_error": "ProgrammingError: 002028 (42601): SQL compilation error:\nambiguous column name 'ORDER_ID' (request_id=8a4ff13d-60a0-416d-b0ed-18ada912db84, sfqid=01c7de47-0001-b442-0000-d29500040bce)"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT ob.CUISINE, \n       SUM(ofi.DELIVERED_SALES_AMOUNT) AS GMV_INR, \n       COUNT(ob.ORDER_ID) AS TOTAL_ORDERS, \n       SUM(CASE WHEN ofu.IS_CANCELLED THEN 1 ELSE 0 END) * 1.0 / COUNT(ob.ORDER_ID) AS CANCELLATION_RATE\nFROM ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE ob\nJOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FINANCIALS ofi ON ob.ORDER_ID = ofi.ORDER_ID\nJOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FULFILLMENT ofu ON ob.ORDER_ID = ofu.ORDER_ID\nWHERE ob.ORDER_DATE >= '2025-01-01' AND ob.ORDER_DATE < '2026-01-01'\n  AND ofu.IS_DELIVERED = TRUE\n  AND ob.CURRENCY = 'INR'\nGROUP BY ob.CUISINE\nORDER BY GMV_INR DESC\nLIMIT 3;",
+        "metrics": "GMV (INR), order count, cancellation rate",
+        "group_by": "CUISINE",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "Disambiguated ORDER_ID by prefixing with table aliases."
+      },
+      "model_stats": {
+        "seconds": 1.89,
+        "prompt_tokens": 2065,
+        "completion_tokens": 278
+      },
+      "result": {
+        "columns": [
+          "CUISINE",
+          "GMV_INR",
+          "TOTAL_ORDERS",
+          "CANCELLATION_RATE"
+        ],
+        "rows": [
+          [
+            "North Indian,Chinese",
+            "97195380.00",
+            "185649",
+            "0.000000"
+          ],
+          [
+            "Indian,Chinese",
+            "60447386.00",
+            "116036",
+            "0.000000"
+          ],
+          [
+            "Indian",
+            "58362786.00",
+            "136184",
+            "0.000000"
+          ]
+        ],
+        "query_id": "01c7de47-0001-b38b-0000-d295000461fe",
+        "seconds": 2.08
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "GMV (INR), order count, cancellation rate",
+        "group_by": "CUISINE",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "The three exact cuisine labels with the highest 2025 Delivered-order GMV in INR are:\n\n1. \"North Indian,Chinese\":\n   - GMV: 97,195,380.00 INR\n   - Total delivered orders: 185,649\n   - Cancellation rate: 0.000000 (0%)\n\n2. \"Indian,Chinese\":\n   - GMV: 60,447,386.00 INR\n   - Total delivered orders: 116,036\n   - Cancellation rate: 0.000000 (0%)\n\n3. \"Indian\":\n   - GMV: 58,362,786.00 INR\n   - Total delivered orders: 136,184\n   - Cancellation rate: 0.000000 (0%)\n\nPopulation: All delivered orders in 2025 with currency INR, grouped by exact cuisine label (no splitting of comma-separated values). Units: INR for GMV, count for orders, rate for cancellation. All three top cuisines had a 0% cancellation rate among delivered orders, indicating no cancellations in this subset.",
+        "reason": "Query directly calculated GMV, order count, and cancellation rate for each cuisine label among delivered INR orders in 2025, returning the top three by GMV."
+      },
+      "model_stats": {
+        "seconds": 2.36,
+        "prompt_tokens": 2513,
+        "completion_tokens": 322
+      }
+    }
+  ],
+  "final_answer": "The three exact cuisine labels with the highest 2025 Delivered-order GMV in INR are:\n\n1. \"North Indian,Chinese\":\n   - GMV: 97,195,380.00 INR\n   - Total delivered orders: 185,649\n   - Cancellation rate: 0.000000 (0%)\n\n2. \"Indian,Chinese\":\n   - GMV: 60,447,386.00 INR\n   - Total delivered orders: 116,036\n   - Cancellation rate: 0.000000 (0%)\n\n3. \"Indian\":\n   - GMV: 58,362,786.00 INR\n   - Total delivered orders: 136,184\n   - Cancellation rate: 0.000000 (0%)\n\nPopulation: All delivered orders in 2025 with currency INR, grouped by exact cuisine label (no splitting of comma-separated values). Units: INR for GMV, count for orders, rate for cancellation. All three top cuisines had a 0% cancellation rate among delivered orders, indicating no cancellations in this subset.",
+  "outcome": "answer",
+  "total_seconds": 8.32,
+  "finished_utc": "2026-10-21T01:43:38.806872+00:00"
+}

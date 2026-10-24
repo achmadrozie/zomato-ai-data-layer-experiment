@@ -1,0 +1,71 @@
+{
+  "id": "D-Q16-r1",
+  "arm": "D",
+  "question_id": "Q16",
+  "stratum": "data",
+  "question": "Among item lines belonging to 2025 orders, how many have a non-zero difference between recorded line amount and price times quantity? Give the signed sum and absolute sum of those differences in INR. Do positive and negative differences offset in this snapshot?",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "b1f6e14c773bd842d58a660b709e48a10852a27a37faa316466d6e5582ae5f7b",
+  "question_sha256": "d4310ebc93888372b312428966d5cfa8110633e1b0bfb33194130115e28af54c",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T02:45:55.376319+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT \n  COUNT(*) AS item_line_count,\n  SUM(LINE_AMOUNT - (PRICE * QUANTITY)) AS signed_sum_inr,\n  SUM(ABS(LINE_AMOUNT - (PRICE * QUANTITY))) AS absolute_sum_inr\nFROM ZOMATO_DLR.CORE.FACT_ORDER_ITEM\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n  AND (LINE_AMOUNT - (PRICE * QUANTITY)) != 0",
+        "metrics": "item_line_count, signed_sum_inr, absolute_sum_inr",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.28,
+        "prompt_tokens": 2543,
+        "completion_tokens": 157
+      },
+      "result": {
+        "columns": [
+          "ITEM_LINE_COUNT",
+          "SIGNED_SUM_INR",
+          "ABSOLUTE_SUM_INR"
+        ],
+        "rows": [
+          [
+            "21466",
+            "23791.00",
+            "23791.00"
+          ]
+        ],
+        "query_id": "01c7de85-0001-b442-0000-d295000480d6",
+        "seconds": 0.11
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "item_line_count, signed_sum_inr, absolute_sum_inr",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "Among item lines belonging to 2025 orders, there are 21,466 item lines where the recorded line amount differs from price times quantity (non-zero difference). The signed sum of those differences is 23,791.00 INR, and the absolute sum is also 23,791.00 INR. Since the signed sum and absolute sum are equal, all differences are positive in this snapshot—there is no offset between positive and negative differences.",
+        "reason": "The signed and absolute sums being equal means all differences are in the same direction (positive), so there is no offset between positive and negative differences in this data."
+      },
+      "model_stats": {
+        "seconds": 1.41,
+        "prompt_tokens": 2816,
+        "completion_tokens": 173
+      }
+    }
+  ],
+  "final_answer": "Among item lines belonging to 2025 orders, there are 21,466 item lines where the recorded line amount differs from price times quantity (non-zero difference). The signed sum of those differences is 23,791.00 INR, and the absolute sum is also 23,791.00 INR. Since the signed sum and absolute sum are equal, all differences are positive in this snapshot—there is no offset between positive and negative differences.",
+  "outcome": "answer",
+  "total_seconds": 2.81,
+  "finished_utc": "2026-10-21T02:45:58.183598+00:00"
+}

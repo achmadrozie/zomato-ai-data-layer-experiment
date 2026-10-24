@@ -1,0 +1,74 @@
+{
+  "id": "F-Q06-r1",
+  "arm": "F",
+  "question_id": "Q06",
+  "stratum": "data",
+  "question": "In 2025, which month had the highest Delivered-order GMV in INR? Give that month's GMV, the runner-up month's GMV, and the gap between them.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "4acf2281f3c70a54cd1b5548e8bf681e9cb90b7906d0b054d53e1083d674c16e",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T06:03:39.510399+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT DATE_TRUNC('MONTH', ORDER_DATE)::DATE AS ORDER_MONTH, SUM(SALES_AMOUNT) AS DELIVERED_GMV_INR FROM ZOMATO_DLR.CORE.FACT_ORDER WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01' AND CURRENCY = 'INR' AND ORDER_STATUS = 'Delivered' GROUP BY 1 ORDER BY DELIVERED_GMV_INR DESC LIMIT 2",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.99,
+        "prompt_tokens": 3457,
+        "completion_tokens": 176
+      },
+      "result": {
+        "columns": [
+          "ORDER_MONTH",
+          "DELIVERED_GMV_INR"
+        ],
+        "rows": [
+          [
+            "2025-12-01",
+            "185263071.00"
+          ],
+          [
+            "2025-11-01",
+            "180239871.00"
+          ]
+        ],
+        "query_id": "01c7df4b-0001-b442-0000-d295000484b2",
+        "seconds": 0.18
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "December 2025 had the highest Delivered-order GMV in INR: INR 185,263,071.00. The runner-up was November 2025 at INR 180,239,871.00. The gap was INR 5,023,200.00. These are sums of recorded sales amounts for orders recorded as Delivered in 2025, scoped to INR.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.23,
+        "prompt_tokens": 3704,
+        "completion_tokens": 175
+      }
+    }
+  ],
+  "final_answer": "December 2025 had the highest Delivered-order GMV in INR: INR 185,263,071.00. The runner-up was November 2025 at INR 180,239,871.00. The gap was INR 5,023,200.00. These are sums of recorded sales amounts for orders recorded as Delivered in 2025, scoped to INR.",
+  "outcome": "answer",
+  "total_seconds": 7.4,
+  "finished_utc": "2026-10-21T06:03:46.906426+00:00"
+}

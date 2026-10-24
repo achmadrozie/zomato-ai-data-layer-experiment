@@ -1,0 +1,156 @@
+{
+  "id": "E-Q07-r1",
+  "arm": "E",
+  "question_id": "Q07",
+  "stratum": "data",
+  "question": "Compare January and December 2025 in INR: Delivered order count, GMV, and AOV for each month. Which grew faster from January to December, Delivered order count or AOV, in percentage terms?",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "a99a688c8b74f2d1acf86ffb095d4085e198af8d169bb3f0b5cd089f5752e8ce",
+  "question_sha256": "638b84d1ee5f2ac5841f8bde06b4d0092d681674ff619e465c4f356cf263246d",
+  "context_sha256": null,
+  "started_utc": "2026-10-20T23:45:56.344287+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "count_order_delivered,gmv,aov",
+        "group_by": "metric_time__month,order_id__currency",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "We need delivered order count, GMV, and AOV by month for 2025, filtered to INR currency, to compare January and December and calculate growth rates."
+      },
+      "model_stats": {
+        "seconds": 1.21,
+        "prompt_tokens": 3081,
+        "completion_tokens": 92
+      },
+      "result": {
+        "columns": [
+          "METRIC_TIME__MONTH",
+          "ORDER_ID__CURRENCY",
+          "COUNT_ORDER_DELIVERED",
+          "GMV",
+          "AOV"
+        ],
+        "rows": [
+          [
+            "2025-06-01 00:00:00",
+            "INR",
+            "322898",
+            "156551606.0",
+            "484.8329998947036"
+          ],
+          [
+            "2025-02-01 00:00:00",
+            "INR",
+            "268570",
+            "129414085.0",
+            "481.8635178910526"
+          ],
+          [
+            "2025-03-01 00:00:00",
+            "INR",
+            "310046",
+            "149731681.0",
+            "482.93376144185055"
+          ],
+          [
+            "2025-11-01 00:00:00",
+            "INR",
+            "373651",
+            "180239871.0",
+            "482.37491937663754"
+          ],
+          [
+            "2025-05-01 00:00:00",
+            "INR",
+            "328311",
+            "158447281.0",
+            "482.61337877804885"
+          ],
+          [
+            "2025-12-01 00:00:00",
+            "INR",
+            "383530",
+            "185263071.0",
+            "483.0471436393502"
+          ],
+          [
+            "2025-01-01 00:00:00",
+            "INR",
+            "286712",
+            "138573283.0",
+            "483.3187414548397"
+          ],
+          [
+            "2025-08-01 00:00:00",
+            "INR",
+            "360436",
+            "173914937.0",
+            "482.51267076540637"
+          ],
+          [
+            "2025-04-01 00:00:00",
+            "INR",
+            "301706",
+            "145794592.0",
+            "483.2339827514202"
+          ],
+          [
+            "2025-09-01 00:00:00",
+            "INR",
+            "346662",
+            "167309430.0",
+            "482.6298527095557"
+          ],
+          [
+            "2025-07-01 00:00:00",
+            "INR",
+            "338254",
+            "163095157.0",
+            "482.167711246578"
+          ],
+          [
+            "2025-10-01 00:00:00",
+            "INR",
+            "368301",
+            "178131054.0",
+            "483.6561779631334"
+          ]
+        ],
+        "metric_definitions": {
+          "count_order_delivered": "Number of orders marked as delivered. Each order contributes one when `is_delivered` is true and zero otherwise.",
+          "gmv": "Sum of `sales_amount` for orders whose `order_status` is `Delivered`.",
+          "aov": "Average sales amount per delivered order, calculated as GMV divided by the number of delivered orders."
+        },
+        "seconds": 20.34
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "For INR orders in 2025:\n\n- January 2025:\n  - Delivered order count: 286,712\n  - GMV: 138,573,283 INR\n  - AOV: 483.318741 INR\n\n- December 2025:\n  - Delivered order count: 383,530\n  - GMV: 185,263,071 INR\n  - AOV: 483.047144 INR\n\nGrowth from January to December:\n- Delivered order count: ((383,530 - 286,712) / 286,712) × 100% = 33.754% increase\n- AOV: ((483.047144 - 483.318741) / 483.318741) × 100% = -0.056% decrease\n\nInterpretation:\nDelivered order count grew much faster (33.754% increase) than AOV (which slightly decreased by 0.056%) from January to December 2025 in INR. The growth in GMV is primarily driven by the increase in delivered order volume, not by higher average order values.",
+        "reason": "All requested metrics for January and December 2025 in INR were available. Percentage growth was calculated for both delivered order count and AOV, showing order count grew faster."
+      },
+      "model_stats": {
+        "seconds": 3.07,
+        "prompt_tokens": 3796,
+        "completion_tokens": 294
+      }
+    }
+  ],
+  "final_answer": "For INR orders in 2025:\n\n- January 2025:\n  - Delivered order count: 286,712\n  - GMV: 138,573,283 INR\n  - AOV: 483.318741 INR\n\n- December 2025:\n  - Delivered order count: 383,530\n  - GMV: 185,263,071 INR\n  - AOV: 483.047144 INR\n\nGrowth from January to December:\n- Delivered order count: ((383,530 - 286,712) / 286,712) × 100% = 33.754% increase\n- AOV: ((483.047144 - 483.318741) / 483.318741) × 100% = -0.056% decrease\n\nInterpretation:\nDelivered order count grew much faster (33.754% increase) than AOV (which slightly decreased by 0.056%) from January to December 2025 in INR. The growth in GMV is primarily driven by the increase in delivered order volume, not by higher average order values.",
+  "outcome": "answer",
+  "total_seconds": 24.63,
+  "finished_utc": "2026-10-20T23:46:20.975010+00:00"
+}

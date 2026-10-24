@@ -1,0 +1,86 @@
+{
+  "id": "B-Q11-r1",
+  "arm": "B",
+  "question_id": "Q11",
+  "stratum": "data",
+  "question": "For each recorded order status in 2025, report total orders, the share with a non-null customer rating, and average customer rating among rated orders. What population does each average describe?",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "968aad7d611f901a7d8dfa1d40ac00ed82254c5407f1175667aee50fc5949a8c",
+  "question_sha256": "5862dd0c5f141a397d30a274573ca261508f56f6b704cb4c138b381e3db1ebd5",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T04:08:15.588701+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT f.ORDER_STATUS, COUNT(*) AS TOTAL_ORDERS, COUNT_IF(f.CUSTOMER_RATING IS NOT NULL) / NULLIF(COUNT(*), 0)::FLOAT AS RATED_ORDER_SHARE, AVG(f.CUSTOMER_RATING) AS AVG_RATING_AMONG_RATED_ORDERS FROM ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE b JOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FULFILLMENT f ON b.ORDER_ID = f.ORDER_ID WHERE b.ORDER_DATE >= '2025-01-01' AND b.ORDER_DATE < '2026-01-01' GROUP BY f.ORDER_STATUS ORDER BY f.ORDER_STATUS",
+        "metrics": "Total recorded orders; share with non-null customer rating; average customer rating among rated orders",
+        "group_by": "Recorded order status",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 6.26,
+        "prompt_tokens": 1685,
+        "completion_tokens": 421
+      },
+      "result": {
+        "columns": [
+          "ORDER_STATUS",
+          "TOTAL_ORDERS",
+          "RATED_ORDER_SHARE",
+          "AVG_RATING_AMONG_RATED_ORDERS"
+        ],
+        "rows": [
+          [
+            "Cancelled",
+            "261456",
+            "0.0",
+            null
+          ],
+          [
+            "Delivered",
+            "3989077",
+            "0.7003046068050328",
+            "4.14547985"
+          ],
+          [
+            "Refunded",
+            "109240",
+            "0.0",
+            null
+          ]
+        ],
+        "query_id": "01c7ded8-0001-b442-0000-d29500048252",
+        "seconds": 0.92
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "For orders with recorded ORDER_DATE in 2025:\n\n- Cancelled: 261,456 orders; rated-order share 0.000000 (0.000000%); average customer rating: not available (no non-null ratings).\n- Delivered: 3,989,077 orders; rated-order share 0.700305 (70.030461%); average customer rating 4.145480.\n- Refunded: 109,240 orders; rated-order share 0.000000 (0.000000%); average customer rating: not available (no non-null ratings).\n\nThe rated-order share is the number of orders in that status with a non-null customer rating divided by all recorded 2025 orders in that status. Each average describes only the rated orders in that status—not all orders in the status. Thus, the delivered average describes delivered orders with a recorded customer rating; cancelled and refunded averages are undefined because none had a recorded rating. Ratings are in the source rating scale.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 6.12,
+        "prompt_tokens": 2042,
+        "completion_tokens": 440
+      }
+    }
+  ],
+  "final_answer": "For orders with recorded ORDER_DATE in 2025:\n\n- Cancelled: 261,456 orders; rated-order share 0.000000 (0.000000%); average customer rating: not available (no non-null ratings).\n- Delivered: 3,989,077 orders; rated-order share 0.700305 (70.030461%); average customer rating 4.145480.\n- Refunded: 109,240 orders; rated-order share 0.000000 (0.000000%); average customer rating: not available (no non-null ratings).\n\nThe rated-order share is the number of orders in that status with a non-null customer rating divided by all recorded 2025 orders in that status. Each average describes only the rated orders in that status—not all orders in the status. Thus, the delivered average describes delivered orders with a recorded customer rating; cancelled and refunded averages are undefined because none had a recorded rating. Ratings are in the source rating scale.",
+  "outcome": "answer",
+  "total_seconds": 13.31,
+  "finished_utc": "2026-10-21T04:08:28.897139+00:00"
+}

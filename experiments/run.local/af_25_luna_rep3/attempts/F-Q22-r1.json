@@ -1,0 +1,72 @@
+{
+  "id": "F-Q22-r1",
+  "arm": "F",
+  "question_id": "Q22",
+  "stratum": "context",
+  "question": "For the standard market report covering 2025, what were Delivered-order GMV in INR, Delivered order count, and AOV? Apply the standard market eligibility rule consistently to all three.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "0b4050774275381d90e71ce6a53187fa1bc3bc3555976a96ef9d759f720db807",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T07:14:40.505044+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH eligible_2025_orders AS (\n  SELECT o.ORDER_STATUS, o.IS_DELIVERED, o.SALES_AMOUNT\n  FROM ZOMATO_DLR.CORE.FACT_ORDER AS o\n  JOIN ZOMATO_DLR.CORE.DIM_RESTAURANT AS r\n    ON o.RESTAURANT_ID = r.RESTAURANT_ID\n  WHERE o.ORDER_DATE >= '2025-01-01'\n    AND o.ORDER_DATE < '2026-01-01'\n    AND o.CURRENCY = 'INR'\n    AND r.RATING_COUNT >= 100\n), totals AS (\n  SELECT\n    SUM(IFF(ORDER_STATUS = 'Delivered', SALES_AMOUNT, 0)) AS DELIVERED_ORDER_GMV_INR,\n    COUNT_IF(IS_DELIVERED) AS DELIVERED_ORDER_COUNT\n  FROM eligible_2025_orders\n)\nSELECT\n  DELIVERED_ORDER_GMV_INR,\n  DELIVERED_ORDER_COUNT,\n  DELIVERED_ORDER_GMV_INR / NULLIF(DELIVERED_ORDER_COUNT, 0) AS AOV_INR_PER_DELIVERED_ORDER\nFROM totals",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 10.91,
+        "prompt_tokens": 3459,
+        "completion_tokens": 1004
+      },
+      "result": {
+        "columns": [
+          "DELIVERED_ORDER_GMV_INR",
+          "DELIVERED_ORDER_COUNT",
+          "AOV_INR_PER_DELIVERED_ORDER"
+        ],
+        "rows": [
+          [
+            "927955016.00",
+            "1848107",
+            "502.11108772"
+          ]
+        ],
+        "query_id": "01c7df92-0001-b442-0000-d29500048606",
+        "seconds": 0.81
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "For 2025, applying the standard market eligibility rule (restaurants with at least 100 recorded ratings; missing rating counts excluded) consistently, the INR results are: Delivered-order GMV: ₹927,955,016.00; Delivered orders: 1,848,107; AOV: ₹502.111088 per Delivered order. AOV is GMV divided by Delivered order count.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 4.91,
+        "prompt_tokens": 3856,
+        "completion_tokens": 371
+      }
+    }
+  ],
+  "final_answer": "For 2025, applying the standard market eligibility rule (restaurants with at least 100 recorded ratings; missing rating counts excluded) consistently, the INR results are: Delivered-order GMV: ₹927,955,016.00; Delivered orders: 1,848,107; AOV: ₹502.111088 per Delivered order. AOV is GMV divided by Delivered order count.",
+  "outcome": "answer",
+  "total_seconds": 16.63,
+  "finished_utc": "2026-10-21T07:14:57.135146+00:00"
+}

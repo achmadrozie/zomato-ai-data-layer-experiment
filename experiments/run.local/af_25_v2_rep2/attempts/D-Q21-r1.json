@@ -1,0 +1,69 @@
+{
+  "id": "D-Q21-r1",
+  "arm": "D",
+  "question_id": "Q21",
+  "stratum": "data",
+  "question": "Across the twelve calendar months of 2025, compute the Pearson correlation between monthly cancellation rate and average Delivered-order delivery time using SQL's CORR() function. Monthly cancellation rate = cancelled orders divided by all orders. Average delivery time = mean of delivery_time_min for Delivered orders with a non-null delivery duration only. Report the correlation coefficient, the number of months used, and whether that correlation alone supports a causal claim.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "b1f6e14c773bd842d58a660b709e48a10852a27a37faa316466d6e5582ae5f7b",
+  "question_sha256": "43968c3cf736550a6edfb6bc71c34af46d6463670472144a22383f4bd85d921c",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:54:02.042405+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT \n  COUNT(*) AS months_used,\n  CORR(monthly_cancellation_rate, avg_delivery_time_min) AS pearson_corr\nFROM (\n  SELECT \n    d.YEAR,\n    d.MONTH,\n    d.MONTH_NAME,\n    SUM(m.ORDER_COUNT) AS total_orders,\n    SUM(m.CANCELLED_ORDER_COUNT) AS cancelled_orders,\n    CASE WHEN SUM(m.ORDER_COUNT) > 0 THEN SUM(m.CANCELLED_ORDER_COUNT) / SUM(m.ORDER_COUNT)::FLOAT ELSE NULL END AS monthly_cancellation_rate,\n    (\n      SELECT AVG(DELIVERY_TIME_MIN)\n      FROM ZOMATO_DLR.CORE.FACT_ORDER fo\n      WHERE fo.ORDER_DATE >= '2025-01-01' AND fo.ORDER_DATE < '2026-01-01'\n        AND fo.IS_DELIVERED = TRUE\n        AND fo.DELIVERY_TIME_MIN IS NOT NULL\n        AND EXTRACT(MONTH FROM fo.ORDER_DATE) = d.MONTH\n    ) AS avg_delivery_time_min\n  FROM ZOMATO_DLR.MARTS.MART_ORDER_CITY_CURRENCY_DAY_UTC m\n  JOIN ZOMATO_DLR.CORE.DIM_DATE d ON m.ORDER_DATE_UTC = d.DATE_DAY\n  WHERE d.YEAR = 2025\n  GROUP BY d.YEAR, d.MONTH, d.MONTH_NAME\n  ORDER BY d.MONTH\n) sub\nWHERE monthly_cancellation_rate IS NOT NULL AND avg_delivery_time_min IS NOT NULL;",
+        "metrics": "pearson_corr, months_used",
+        "group_by": "none",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.26,
+        "prompt_tokens": 2578,
+        "completion_tokens": 357
+      },
+      "result": {
+        "columns": [
+          "MONTHS_USED",
+          "PEARSON_CORR"
+        ],
+        "rows": [
+          [
+            "12",
+            "-0.020032840333790037"
+          ]
+        ],
+        "query_id": "01c7de52-0001-b442-0000-d29500040cea",
+        "seconds": 0.57
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "pearson_corr, months_used",
+        "group_by": "month (calendar)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "The Pearson correlation coefficient between monthly cancellation rate and average delivered-order delivery time across the twelve calendar months of 2025 is -0.020032840333790037. All 12 months were used in the calculation. This correlation is extremely close to zero, indicating almost no linear relationship between the two variables at the monthly level. Correlation alone does not support a causal claim; it only measures the strength and direction of a linear association, not causation.",
+        "reason": "All requested values are included: correlation coefficient (-0.020032840333790037), number of months (12), and an interpretation regarding causality."
+      },
+      "model_stats": {
+        "seconds": 1.68,
+        "prompt_tokens": 3040,
+        "completion_tokens": 172
+      }
+    }
+  ],
+  "final_answer": "The Pearson correlation coefficient between monthly cancellation rate and average delivered-order delivery time across the twelve calendar months of 2025 is -0.020032840333790037. All 12 months were used in the calculation. This correlation is extremely close to zero, indicating almost no linear relationship between the two variables at the monthly level. Correlation alone does not support a causal claim; it only measures the strength and direction of a linear association, not causation.",
+  "outcome": "answer",
+  "total_seconds": 4.52,
+  "finished_utc": "2026-10-21T01:54:06.561072+00:00"
+}

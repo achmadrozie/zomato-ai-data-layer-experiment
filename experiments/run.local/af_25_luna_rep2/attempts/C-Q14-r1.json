@@ -1,0 +1,90 @@
+{
+  "id": "C-Q14-r1",
+  "arm": "C",
+  "question_id": "Q14",
+  "stratum": "data",
+  "question": "For item lines belonging to 2025 orders, join to the food dimension and classify each line as Veg, Non-Veg, or Unknown (null or unmatched food ID). Report for each group: (1) item-line count, (2) total ordered units, (3) share of total ordered units computed as group ordered units divided by the sum of ordered units across all three groups times 100. State the total ordered units used as the denominator.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "e4342c8e394cb2e5c32f104cf0de0ea0a5cda10c912a5f524c3d47c8ecd76349",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T04:56:10.506207+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH groups AS (\n    SELECT column1::VARCHAR AS food_group\n    FROM VALUES ('Veg'), ('Non-Veg'), ('Unknown')\n), classified_lines AS (\n    SELECT\n        CASE\n            WHEN i.FOOD_ID IS NULL OR f.FOOD_ID IS NULL THEN 'Unknown'\n            WHEN UPPER(TRIM(f.VEG_OR_NON_VEG)) = 'VEG' THEN 'Veg'\n            WHEN UPPER(TRIM(f.VEG_OR_NON_VEG)) = 'NON-VEG' THEN 'Non-Veg'\n            ELSE 'Unknown'\n        END AS food_group,\n        i.QUANTITY\n    FROM ZOMATO_DLR.CORE.FACT_ORDER AS o\n    JOIN ZOMATO_DLR.CORE.FACT_ORDER_ITEM AS i\n      ON i.ORDER_ID = o.ORDER_ID\n    LEFT JOIN ZOMATO_DLR.CORE.DIM_FOOD AS f\n      ON f.FOOD_ID = i.FOOD_ID\n    WHERE o.ORDER_DATE >= '2025-01-01'\n      AND o.ORDER_DATE < '2026-01-01'\n), grouped AS (\n    SELECT food_group, COUNT(*) AS item_line_count, SUM(QUANTITY) AS ordered_units\n    FROM classified_lines\n    GROUP BY food_group\n), completed AS (\n    SELECT\n        g.food_group,\n        COALESCE(a.item_line_count, 0) AS item_line_count,\n        COALESCE(a.ordered_units, 0) AS ordered_units\n    FROM groups AS g\n    LEFT JOIN grouped AS a ON a.food_group = g.food_group\n)\nSELECT\n    food_group,\n    item_line_count,\n    ordered_units,\n    SUM(ordered_units) OVER () AS total_ordered_units_denominator,\n    100.0 * ordered_units / NULLIF(SUM(ordered_units) OVER (), 0) AS share_of_total_ordered_units_pct\nFROM completed\nORDER BY CASE food_group WHEN 'Veg' THEN 1 WHEN 'Non-Veg' THEN 2 ELSE 3 END",
+        "metrics": "2025 order item-line count and quantity summed by food classification; unit share is group units divided by total units across Veg, Non-Veg, and Unknown, times 100.",
+        "group_by": "food_group: Veg, Non-Veg, Unknown",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 9.28,
+        "prompt_tokens": 2242,
+        "completion_tokens": 1067
+      },
+      "result": {
+        "columns": [
+          "FOOD_GROUP",
+          "ITEM_LINE_COUNT",
+          "ORDERED_UNITS",
+          "TOTAL_ORDERED_UNITS_DENOMINATOR",
+          "SHARE_OF_TOTAL_ORDERED_UNITS_PCT"
+        ],
+        "rows": [
+          [
+            "Veg",
+            "7277939",
+            "8877759",
+            "12230877",
+            "72.584811"
+          ],
+          [
+            "Non-Veg",
+            "2749222",
+            "3353105",
+            "12230877",
+            "27.415082"
+          ],
+          [
+            "Unknown",
+            "12",
+            "13",
+            "12230877",
+            "0.000106"
+          ]
+        ],
+        "query_id": "01c7df08-0001-b442-0000-d295000482be",
+        "seconds": 1.45
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "For item lines belonging to orders with ORDER_DATE from 2025-01-01 through before 2026-01-01:\n\n| Group | Item-line count | Ordered units | Share of total ordered units |\n|---|---:|---:|---:|\n| Veg | 7,277,939 | 8,877,759 | 72.584811% |\n| Non-Veg | 2,749,222 | 3,353,105 | 27.415082% |\n| Unknown (null or unmatched food ID) | 12 | 13 | 0.000106% |\n\nThe denominator is 12,230,877 ordered units across all three groups. Shares are each group’s ordered units divided by that denominator, multiplied by 100.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 4.03,
+        "prompt_tokens": 2955,
+        "completion_tokens": 340
+      }
+    }
+  ],
+  "final_answer": "For item lines belonging to orders with ORDER_DATE from 2025-01-01 through before 2026-01-01:\n\n| Group | Item-line count | Ordered units | Share of total ordered units |\n|---|---:|---:|---:|\n| Veg | 7,277,939 | 8,877,759 | 72.584811% |\n| Non-Veg | 2,749,222 | 3,353,105 | 27.415082% |\n| Unknown (null or unmatched food ID) | 12 | 13 | 0.000106% |\n\nThe denominator is 12,230,877 ordered units across all three groups. Shares are each group’s ordered units divided by that denominator, multiplied by 100.",
+  "outcome": "answer",
+  "total_seconds": 14.76,
+  "finished_utc": "2026-10-21T04:56:25.268085+00:00"
+}

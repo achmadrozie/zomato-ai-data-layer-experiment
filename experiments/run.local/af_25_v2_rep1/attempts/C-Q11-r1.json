@@ -1,0 +1,89 @@
+{
+  "id": "C-Q11-r1",
+  "arm": "C",
+  "question_id": "Q11",
+  "stratum": "data",
+  "question": "For each recorded order status in 2025, report total orders, the share with a non-null customer rating, and average customer rating among rated orders. What population does each average describe?",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "5862dd0c5f141a397d30a274573ca261508f56f6b704cb4c138b381e3db1ebd5",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:08:21.420488+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT ORDER_STATUS, COUNT(*) AS TOTAL_ORDERS, \n       COUNT(CUSTOMER_RATING) AS RATED_ORDERS,\n       COUNT(CUSTOMER_RATING) * 1.0 / COUNT(*) AS SHARE_WITH_RATING,\n       AVG(CASE WHEN CUSTOMER_RATING IS NOT NULL THEN CUSTOMER_RATING END) AS AVG_CUSTOMER_RATING\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\nGROUP BY ORDER_STATUS\nORDER BY TOTAL_ORDERS DESC;",
+        "metrics": "total orders, share with a non-null customer rating, average customer rating among rated orders",
+        "group_by": "order status",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.77,
+        "prompt_tokens": 2190,
+        "completion_tokens": 187
+      },
+      "result": {
+        "columns": [
+          "ORDER_STATUS",
+          "TOTAL_ORDERS",
+          "RATED_ORDERS",
+          "SHARE_WITH_RATING",
+          "AVG_CUSTOMER_RATING"
+        ],
+        "rows": [
+          [
+            "Delivered",
+            "3989077",
+            "2793569",
+            "0.700305",
+            "4.14547985"
+          ],
+          [
+            "Cancelled",
+            "261456",
+            "0",
+            "0.000000",
+            null
+          ],
+          [
+            "Refunded",
+            "109240",
+            "0",
+            "0.000000",
+            null
+          ]
+        ],
+        "query_id": "01c7de24-0001-b38b-0000-d29500044f66",
+        "seconds": 0.08
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "total orders, share with a non-null customer rating, average customer rating among rated orders",
+        "group_by": "order status",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "For each recorded order status in 2025:\n\n- Delivered: 3,989,077 total orders; 70.0305% had a non-null customer rating; average customer rating among rated orders was 4.14547985. The average describes the 2,793,569 delivered orders in 2025 that received a customer rating.\n- Cancelled: 261,456 total orders; 0% had a customer rating; no average rating (none rated).\n- Refunded: 109,240 total orders; 0% had a customer rating; no average rating (none rated).\n\nPopulation for each average: Only those orders of the given status in 2025 that received a non-null customer rating (e.g., for 'Delivered', the 2,793,569 rated delivered orders).",
+        "reason": "All requested values are reported. Each average describes only the subset of orders with a non-null customer rating for that status in 2025."
+      },
+      "model_stats": {
+        "seconds": 2.28,
+        "prompt_tokens": 2552,
+        "completion_tokens": 258
+      }
+    }
+  ],
+  "final_answer": "For each recorded order status in 2025:\n\n- Delivered: 3,989,077 total orders; 70.0305% had a non-null customer rating; average customer rating among rated orders was 4.14547985. The average describes the 2,793,569 delivered orders in 2025 that received a customer rating.\n- Cancelled: 261,456 total orders; 0% had a customer rating; no average rating (none rated).\n- Refunded: 109,240 total orders; 0% had a customer rating; no average rating (none rated).\n\nPopulation for each average: Only those orders of the given status in 2025 that received a non-null customer rating (e.g., for 'Delivered', the 2,793,569 rated delivered orders).",
+  "outcome": "answer",
+  "total_seconds": 4.13,
+  "finished_utc": "2026-10-21T01:08:25.552446+00:00"
+}

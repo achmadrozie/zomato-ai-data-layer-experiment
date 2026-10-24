@@ -1,0 +1,114 @@
+{
+  "id": "A-Q25-r1",
+  "arm": "A",
+  "question_id": "Q25",
+  "stratum": "data",
+  "question": "For the order-recorded city with the highest 2025 cancellation rate among cities with at least 50,000 orders, compare its cancellation rate and average Delivered-order delivery time with the overall 2025 figures. Can these figures establish that slower delivery caused cancellations?",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "7f3d4471209d96eddd58ec2bda0c6b30940b6de7071cb012e065e181a79aba94",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:43:53.738823+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT RESTAURANT_CITY, COUNT(*) AS total_orders, SUM(CASE WHEN ORDER_STATUS = 'Cancelled' THEN 1 ELSE 0 END) AS cancelled_orders, SUM(CASE WHEN ORDER_STATUS = 'Delivered' THEN 1 ELSE 0 END) AS delivered_orders, AVG(CASE WHEN ORDER_STATUS = 'Delivered' THEN DELIVERY_TIME_MIN::FLOAT ELSE NULL END) AS avg_delivery_time_delivered, SUM(CASE WHEN ORDER_STATUS = 'Cancelled' THEN 1 ELSE 0 END) / COUNT(*)::FLOAT AS cancellation_rate\nFROM ZOMATO_DLR.SOURCES.ORDERS\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\nGROUP BY RESTAURANT_CITY\nHAVING COUNT(*) >= 50000\nORDER BY cancellation_rate DESC\nLIMIT 1;",
+        "metrics": "cancellation rate, average delivery time (delivered orders), total orders, delivered orders, cancelled orders",
+        "group_by": "RESTAURANT_CITY",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.71,
+        "prompt_tokens": 1331,
+        "completion_tokens": 241
+      },
+      "result": {
+        "columns": [
+          "RESTAURANT_CITY",
+          "TOTAL_ORDERS",
+          "CANCELLED_ORDERS",
+          "DELIVERED_ORDERS",
+          "AVG_DELIVERY_TIME_DELIVERED",
+          "CANCELLATION_RATE"
+        ],
+        "rows": [
+          [
+            "Bikaner",
+            "53571",
+            "3193",
+            "49057",
+            "31.045171942842",
+            "0.0596031434918146"
+          ]
+        ],
+        "query_id": "01c7de47-0001-b38b-0000-d29500046212",
+        "seconds": 0.1
+      }
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT COUNT(*) AS total_orders, SUM(CASE WHEN ORDER_STATUS = 'Cancelled' THEN 1 ELSE 0 END) AS cancelled_orders, SUM(CASE WHEN ORDER_STATUS = 'Delivered' THEN 1 ELSE 0 END) AS delivered_orders, AVG(CASE WHEN ORDER_STATUS = 'Delivered' THEN DELIVERY_TIME_MIN::FLOAT ELSE NULL END) AS avg_delivery_time_delivered, SUM(CASE WHEN ORDER_STATUS = 'Cancelled' THEN 1 ELSE 0 END) / COUNT(*)::FLOAT AS cancellation_rate\nFROM ZOMATO_DLR.SOURCES.ORDERS\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01';",
+        "metrics": "overall cancellation rate, overall average delivery time (delivered orders), total orders, delivered orders, cancelled orders",
+        "group_by": "none (overall)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "Need overall 2025 figures for comparison."
+      },
+      "model_stats": {
+        "seconds": 1.61,
+        "prompt_tokens": 1733,
+        "completion_tokens": 215
+      },
+      "result": {
+        "columns": [
+          "TOTAL_ORDERS",
+          "CANCELLED_ORDERS",
+          "DELIVERED_ORDERS",
+          "AVG_DELIVERY_TIME_DELIVERED",
+          "CANCELLATION_RATE"
+        ],
+        "rows": [
+          [
+            "4359773",
+            "261456",
+            "3989077",
+            "31.074379361441256",
+            "0.05997009477328292"
+          ]
+        ],
+        "query_id": "01c7de47-0001-b38b-0000-d29500046216",
+        "seconds": 0.1
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "cancellation rate, average delivery time (delivered orders), total orders, delivered orders, cancelled orders",
+        "group_by": "city and overall",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "For 2025, the city with the highest cancellation rate among those with at least 50,000 orders is Bikaner. Here are the requested comparisons:\n\n- Bikaner (2025):\n  - Cancellation rate: 0.059603 (5.9603%)\n  - Average delivery time (delivered orders): 31.045172 minutes\n  - Total orders: 53,571\n  - Delivered orders: 49,057\n  - Cancelled orders: 3,193\n\n- Overall (all cities, 2025):\n  - Cancellation rate: 0.059970 (5.9970%)\n  - Average delivery time (delivered orders): 31.074379 minutes\n  - Total orders: 4,359,773\n  - Delivered orders: 3,989,077\n  - Cancelled orders: 261,456\n\nInterpretation:\n- Bikaner's cancellation rate (5.9603%) is slightly lower than the overall rate (5.9970%).\n- Bikaner's average delivery time for delivered orders (31.045172 minutes) is also slightly lower than the overall average (31.074379 minutes).\n- These figures do not establish that slower delivery caused cancellations. In fact, Bikaner's cancellation rate and delivery time are both marginally better than the overall averages. Correlation or decomposition alone does not prove causation, and here, there is no evidence that slower delivery is associated with higher cancellations in Bikaner or overall.",
+        "reason": "Both Bikaner's cancellation rate and delivery time are slightly better than the overall average, so there is no evidence from these figures that slower delivery caused cancellations."
+      },
+      "model_stats": {
+        "seconds": 2.77,
+        "prompt_tokens": 2100,
+        "completion_tokens": 418
+      }
+    }
+  ],
+  "final_answer": "For 2025, the city with the highest cancellation rate among those with at least 50,000 orders is Bikaner. Here are the requested comparisons:\n\n- Bikaner (2025):\n  - Cancellation rate: 0.059603 (5.9603%)\n  - Average delivery time (delivered orders): 31.045172 minutes\n  - Total orders: 53,571\n  - Delivered orders: 49,057\n  - Cancelled orders: 3,193\n\n- Overall (all cities, 2025):\n  - Cancellation rate: 0.059970 (5.9970%)\n  - Average delivery time (delivered orders): 31.074379 minutes\n  - Total orders: 4,359,773\n  - Delivered orders: 3,989,077\n  - Cancelled orders: 261,456\n\nInterpretation:\n- Bikaner's cancellation rate (5.9603%) is slightly lower than the overall rate (5.9970%).\n- Bikaner's average delivery time for delivered orders (31.045172 minutes) is also slightly lower than the overall average (31.074379 minutes).\n- These figures do not establish that slower delivery caused cancellations. In fact, Bikaner's cancellation rate and delivery time are both marginally better than the overall averages. Correlation or decomposition alone does not prove causation, and here, there is no evidence that slower delivery is associated with higher cancellations in Bikaner or overall.",
+  "outcome": "answer",
+  "total_seconds": 6.3,
+  "finished_utc": "2026-10-21T01:44:00.041263+00:00"
+}

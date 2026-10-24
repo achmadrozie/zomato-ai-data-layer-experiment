@@ -1,0 +1,90 @@
+{
+  "id": "C-Q11-r1",
+  "arm": "C",
+  "question_id": "Q11",
+  "stratum": "data",
+  "question": "For each recorded order status in 2025, report total orders, the share with a non-null customer rating, and average customer rating among rated orders. What population does each average describe?",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "5862dd0c5f141a397d30a274573ca261508f56f6b704cb4c138b381e3db1ebd5",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T05:04:01.138530+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT ORDER_STATUS, COUNT(*) AS TOTAL_ORDERS, COUNT_IF(CUSTOMER_RATING IS NOT NULL) AS RATED_ORDERS, COUNT_IF(CUSTOMER_RATING IS NOT NULL) / NULLIF(COUNT(*), 0)::FLOAT AS SHARE_WITH_RATING, AVG(CUSTOMER_RATING) AS AVG_RATING_AMONG_RATED_ORDERS FROM ZOMATO_DLR.CORE.FACT_ORDER WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01' GROUP BY ORDER_STATUS ORDER BY ORDER_STATUS NULLS LAST",
+        "metrics": "Total orders; rated orders; share with non-null customer rating; average customer rating among rated orders, grouped by recorded status.",
+        "group_by": "ORDER_STATUS",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 9.52,
+        "prompt_tokens": 2188,
+        "completion_tokens": 362
+      },
+      "result": {
+        "columns": [
+          "ORDER_STATUS",
+          "TOTAL_ORDERS",
+          "RATED_ORDERS",
+          "SHARE_WITH_RATING",
+          "AVG_RATING_AMONG_RATED_ORDERS"
+        ],
+        "rows": [
+          [
+            "Cancelled",
+            "261456",
+            "0",
+            "0.0",
+            null
+          ],
+          [
+            "Delivered",
+            "3989077",
+            "2793569",
+            "0.7003046068050328",
+            "4.14547985"
+          ],
+          [
+            "Refunded",
+            "109240",
+            "0",
+            "0.0",
+            null
+          ]
+        ],
+        "query_id": "01c7df10-0001-b38b-0000-d2950004691a",
+        "seconds": 0.61
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "Recorded order statuses in 2025 (ORDER_DATE from 2025-01-01 through 2025-12-31):\n\n| Recorded status | Total orders | Share with non-null customer rating | Average customer rating among rated orders |\n|---|---:|---:|---:|\n| Cancelled | 261,456 | 0.000000 (0.000000%) | N/A — no rated orders |\n| Delivered | 3,989,077 | 0.700305 (70.030461%) | 4.145480 |\n| Refunded | 109,240 | 0.000000 (0.000000%) | N/A — no rated orders |\n\nEach average describes only orders of that recorded status in the 2025 population that have a non-null CUSTOMER_RATING. Thus, the delivered average is over 2,793,569 rated delivered orders; cancelled and refunded orders have no average because none had a rating. The share denominator is all recorded orders within the corresponding status.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 9.21,
+        "prompt_tokens": 2561,
+        "completion_tokens": 319
+      }
+    }
+  ],
+  "final_answer": "Recorded order statuses in 2025 (ORDER_DATE from 2025-01-01 through 2025-12-31):\n\n| Recorded status | Total orders | Share with non-null customer rating | Average customer rating among rated orders |\n|---|---:|---:|---:|\n| Cancelled | 261,456 | 0.000000 (0.000000%) | N/A — no rated orders |\n| Delivered | 3,989,077 | 0.700305 (70.030461%) | 4.145480 |\n| Refunded | 109,240 | 0.000000 (0.000000%) | N/A — no rated orders |\n\nEach average describes only orders of that recorded status in the 2025 population that have a non-null CUSTOMER_RATING. Thus, the delivered average is over 2,793,569 rated delivered orders; cancelled and refunded orders have no average because none had a rating. The share denominator is all recorded orders within the corresponding status.",
+  "outcome": "answer",
+  "total_seconds": 19.35,
+  "finished_utc": "2026-10-21T05:04:20.491325+00:00"
+}

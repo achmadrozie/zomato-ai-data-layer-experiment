@@ -1,0 +1,100 @@
+{
+  "id": "F-Q07-r1",
+  "arm": "F",
+  "question_id": "Q07",
+  "stratum": "data",
+  "question": "Compare January and December 2025: Delivered order count, GMV in INR, and AOV in INR for each month. For both Delivered order count and AOV, calculate the percentage change from January to December as (December value minus January value) divided by January value times 100. Show both percentage changes and state which grew faster.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "ffde7fbebc6e393182946e35173dbc682d761b0a7108ddcb03258f03a9f8ef1e",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T05:02:38.721998+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH monthly AS (\n  SELECT\n    DATE_TRUNC('MONTH', ORDER_DATE)::DATE AS MONTH,\n    COUNT_IF(ORDER_STATUS = 'Delivered') AS DELIVERED_ORDER_COUNT,\n    SUM(IFF(ORDER_STATUS = 'Delivered', SALES_AMOUNT, 0)) AS GMV_INR\n  FROM ZOMATO_DLR.CORE.FACT_ORDER\n  WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n    AND CURRENCY = 'INR'\n    AND MONTH(ORDER_DATE) IN (1, 12)\n  GROUP BY 1\n), paired AS (\n  SELECT\n    MAX(IFF(MONTH = '2025-01-01', DELIVERED_ORDER_COUNT, NULL)) AS JAN_DELIVERED_ORDER_COUNT,\n    MAX(IFF(MONTH = '2025-01-01', GMV_INR, NULL)) AS JAN_GMV_INR,\n    MAX(IFF(MONTH = '2025-12-01', DELIVERED_ORDER_COUNT, NULL)) AS DEC_DELIVERED_ORDER_COUNT,\n    MAX(IFF(MONTH = '2025-12-01', GMV_INR, NULL)) AS DEC_GMV_INR\n  FROM monthly\n)\nSELECT\n  'January 2025' AS MONTH,\n  JAN_DELIVERED_ORDER_COUNT AS DELIVERED_ORDER_COUNT,\n  JAN_GMV_INR AS GMV_INR,\n  JAN_GMV_INR / NULLIF(JAN_DELIVERED_ORDER_COUNT, 0) AS AOV_INR,\n  (DEC_DELIVERED_ORDER_COUNT - JAN_DELIVERED_ORDER_COUNT) / NULLIF(JAN_DELIVERED_ORDER_COUNT, 0) * 100 AS DELIVERED_ORDER_COUNT_PCT_CHANGE_JAN_TO_DEC,\n  ((DEC_GMV_INR / NULLIF(DEC_DELIVERED_ORDER_COUNT, 0)) - (JAN_GMV_INR / NULLIF(JAN_DELIVERED_ORDER_COUNT, 0))) / NULLIF((JAN_GMV_INR / NULLIF(JAN_DELIVERED_ORDER_COUNT, 0)), 0) * 100 AS AOV_PCT_CHANGE_JAN_TO_DEC\nFROM paired\nUNION ALL\nSELECT\n  'December 2025' AS MONTH,\n  DEC_DELIVERED_ORDER_COUNT AS DELIVERED_ORDER_COUNT,\n  DEC_GMV_INR AS GMV_INR,\n  DEC_GMV_INR / NULLIF(DEC_DELIVERED_ORDER_COUNT, 0) AS AOV_INR,\n  (DEC_DELIVERED_ORDER_COUNT - JAN_DELIVERED_ORDER_COUNT) / NULLIF(JAN_DELIVERED_ORDER_COUNT, 0) * 100 AS DELIVERED_ORDER_COUNT_PCT_CHANGE_JAN_TO_DEC,\n  ((DEC_GMV_INR / NULLIF(DEC_DELIVERED_ORDER_COUNT, 0)) - (JAN_GMV_INR / NULLIF(JAN_DELIVERED_ORDER_COUNT, 0))) / NULLIF((JAN_GMV_INR / NULLIF(JAN_DELIVERED_ORDER_COUNT, 0)), 0) * 100 AS AOV_PCT_CHANGE_JAN_TO_DEC\nFROM paired",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 13.9,
+        "prompt_tokens": 3490,
+        "completion_tokens": 813
+      },
+      "tool_error": "ValueError: Expected exactly one SELECT"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT\n  COUNT_IF(ORDER_STATUS = 'Delivered' AND ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2025-02-01') AS JAN_2025_DELIVERED_ORDER_COUNT,\n  SUM(IFF(ORDER_STATUS = 'Delivered' AND ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2025-02-01', SALES_AMOUNT, 0)) AS JAN_2025_GMV_INR,\n  SUM(IFF(ORDER_STATUS = 'Delivered' AND ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2025-02-01', SALES_AMOUNT, 0)) / NULLIF(COUNT_IF(ORDER_STATUS = 'Delivered' AND ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2025-02-01'), 0) AS JAN_2025_AOV_INR,\n  COUNT_IF(ORDER_STATUS = 'Delivered' AND ORDER_DATE >= '2025-12-01' AND ORDER_DATE < '2026-01-01') AS DEC_2025_DELIVERED_ORDER_COUNT,\n  SUM(IFF(ORDER_STATUS = 'Delivered' AND ORDER_DATE >= '2025-12-01' AND ORDER_DATE < '2026-01-01', SALES_AMOUNT, 0)) AS DEC_2025_GMV_INR,\n  SUM(IFF(ORDER_STATUS = 'Delivered' AND ORDER_DATE >= '2025-12-01' AND ORDER_DATE < '2026-01-01', SALES_AMOUNT, 0)) / NULLIF(COUNT_IF(ORDER_STATUS = 'Delivered' AND ORDER_DATE >= '2025-12-01' AND ORDER_DATE < '2026-01-01'), 0) AS DEC_2025_AOV_INR,\n  (COUNT_IF(ORDER_STATUS = 'Delivered' AND ORDER_DATE >= '2025-12-01' AND ORDER_DATE < '2026-01-01') - COUNT_IF(ORDER_STATUS = 'Delivered' AND ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2025-02-01')) / NULLIF(COUNT_IF(ORDER_STATUS = 'Delivered' AND ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2025-02-01'), 0) * 100 AS DELIVERED_ORDER_COUNT_PCT_CHANGE_JAN_TO_DEC,\n  ((SUM(IFF(ORDER_STATUS = 'Delivered' AND ORDER_DATE >= '2025-12-01' AND ORDER_DATE < '2026-01-01', SALES_AMOUNT, 0)) / NULLIF(COUNT_IF(ORDER_STATUS = 'Delivered' AND ORDER_DATE >= '2025-12-01' AND ORDER_DATE < '2026-01-01'), 0)) - (SUM(IFF(ORDER_STATUS = 'Delivered' AND ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2025-02-01', SALES_AMOUNT, 0)) / NULLIF(COUNT_IF(ORDER_STATUS = 'Delivered' AND ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2025-02-01'), 0))) / NULLIF((SUM(IFF(ORDER_STATUS = 'Delivered' AND ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2025-02-01', SALES_AMOUNT, 0)) / NULLIF(COUNT_IF(ORDER_STATUS = 'Delivered' AND ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2025-02-01'), 0)), 0) * 100 AS AOV_PCT_CHANGE_JAN_TO_DEC\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01' AND CURRENCY = 'INR'",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 16.53,
+        "prompt_tokens": 4247,
+        "completion_tokens": 1005
+      },
+      "result": {
+        "columns": [
+          "JAN_2025_DELIVERED_ORDER_COUNT",
+          "JAN_2025_GMV_INR",
+          "JAN_2025_AOV_INR",
+          "DEC_2025_DELIVERED_ORDER_COUNT",
+          "DEC_2025_GMV_INR",
+          "DEC_2025_AOV_INR",
+          "DELIVERED_ORDER_COUNT_PCT_CHANGE_JAN_TO_DEC",
+          "AOV_PCT_CHANGE_JAN_TO_DEC"
+        ],
+        "rows": [
+          [
+            "286712",
+            "138573283.00",
+            "483.31874145",
+            "383530",
+            "185263071.00",
+            "483.04714364",
+            "33.768400",
+            "-0.056194346900"
+          ]
+        ],
+        "query_id": "01c7df0f-0001-b442-0000-d295000482ea",
+        "seconds": 1.11
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "| Month (2025) | Delivered orders (count) | GMV (INR) | AOV (INR per delivered order) |\n|---|---:|---:|---:|\n| January | 286,712 | 138,573,283.00 | 483.318741 |\n| December | 383,530 | 185,263,071.00 | 483.047144 |\n\nJanuary-to-December change, calculated as (December − January) / January × 100: delivered order count **+33.768400%**; AOV **−0.056194%**. Delivered order count grew faster; AOV decreased slightly. The population is orders recorded in 2025 with currency INR and Delivered status; GMV is the sum of recorded sales amount, and AOV is GMV divided by delivered orders.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 6.56,
+        "prompt_tokens": 5310,
+        "completion_tokens": 293
+      }
+    }
+  ],
+  "final_answer": "| Month (2025) | Delivered orders (count) | GMV (INR) | AOV (INR per delivered order) |\n|---|---:|---:|---:|\n| January | 286,712 | 138,573,283.00 | 483.318741 |\n| December | 383,530 | 185,263,071.00 | 483.047144 |\n\nJanuary-to-December change, calculated as (December − January) / January × 100: delivered order count **+33.768400%**; AOV **−0.056194%**. Delivered order count grew faster; AOV decreased slightly. The population is orders recorded in 2025 with currency INR and Delivered status; GMV is the sum of recorded sales amount, and AOV is GMV divided by delivered orders.",
+  "outcome": "answer",
+  "total_seconds": 38.13,
+  "finished_utc": "2026-10-21T05:03:16.850116+00:00"
+}

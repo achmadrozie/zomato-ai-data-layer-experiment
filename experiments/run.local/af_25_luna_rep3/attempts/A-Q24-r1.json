@@ -1,0 +1,39 @@
+{
+  "id": "A-Q24-r1",
+  "arm": "A",
+  "question_id": "Q24",
+  "stratum": "context",
+  "question": "How many repeat customers were there in January–June 2025 and in July–December 2025? Evaluate repeat status separately within each reporting period, then say which half had more.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "47aaa7d55358153cbbba418ac8794c3771f8644e5bb9851213b684c61f0a1372",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T07:25:03.441605+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "clarify",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "Should repeat customers be counted using all recorded orders, or only completed/delivered orders? I would define a repeat customer as a customer with at least two qualifying orders within the same half-year."
+      },
+      "model_stats": {
+        "seconds": 4.1,
+        "prompt_tokens": 1314,
+        "completion_tokens": 309
+      }
+    }
+  ],
+  "final_answer": "Should repeat customers be counted using all recorded orders, or only completed/delivered orders? I would define a repeat customer as a customer with at least two qualifying orders within the same half-year.",
+  "outcome": "clarification",
+  "total_seconds": 4.1,
+  "finished_utc": "2026-10-21T07:25:07.537172+00:00"
+}

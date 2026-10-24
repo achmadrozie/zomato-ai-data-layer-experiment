@@ -1,0 +1,39 @@
+{
+  "id": "C-Q24-r1",
+  "arm": "C",
+  "question_id": "Q24",
+  "stratum": "context",
+  "question": "How many repeat customers were there in January–June 2025 and in July–December 2025? Evaluate repeat status separately within each reporting period, then say which half had more.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "47aaa7d55358153cbbba418ac8794c3771f8644e5bb9851213b684c61f0a1372",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T03:56:24.538984+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "clarify",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "Should repeat status count all recorded orders, or only delivered orders? The snapshot includes cancelled, refunded, and other order statuses, and the counts may differ."
+      },
+      "model_stats": {
+        "seconds": 8.6,
+        "prompt_tokens": 2188,
+        "completion_tokens": 432
+      }
+    }
+  ],
+  "final_answer": "Should repeat status count all recorded orders, or only delivered orders? The snapshot includes cancelled, refunded, and other order statuses, and the counts may differ.",
+  "outcome": "clarification",
+  "total_seconds": 8.6,
+  "finished_utc": "2026-10-21T03:56:33.139180+00:00"
+}

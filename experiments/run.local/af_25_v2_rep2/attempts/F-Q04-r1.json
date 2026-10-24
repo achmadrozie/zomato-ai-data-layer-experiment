@@ -1,0 +1,69 @@
+{
+  "id": "F-Q04-r1",
+  "arm": "F",
+  "question_id": "Q04",
+  "stratum": "data",
+  "question": "What was the cancellation rate as a percentage for the full year 2025? Use the recorded order date for the 2025 scope.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "c78053dc8b040d814fe60448b43cd930654dd067b593ed4f86d73191b907169a",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T01:42:07.749510+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "cancellation_rate",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.19,
+        "prompt_tokens": 3451,
+        "completion_tokens": 43
+      },
+      "result": {
+        "columns": [
+          "CANCELLATION_RATE"
+        ],
+        "rows": [
+          [
+            "5.997009"
+          ]
+        ],
+        "metric_definitions": {
+          "cancellation_rate": "Ratio of cancelled orders per total orders."
+        },
+        "seconds": 5.0
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "cancellation_rate",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "The cancellation rate for all recorded orders in 2025, using the recorded order date, was 5.997009%. This means that approximately 6 out of every 100 orders were cancelled during the year. The population is all orders placed in 2025, and the unit is percentage of orders cancelled.",
+        "reason": "The metricflow result directly provides the cancellation rate as a percentage for the requested period and population."
+      },
+      "model_stats": {
+        "seconds": 1.6,
+        "prompt_tokens": 3583,
+        "completion_tokens": 123
+      }
+    }
+  ],
+  "final_answer": "The cancellation rate for all recorded orders in 2025, using the recorded order date, was 5.997009%. This means that approximately 6 out of every 100 orders were cancelled during the year. The population is all orders placed in 2025, and the unit is percentage of orders cancelled.",
+  "outcome": "answer",
+  "total_seconds": 7.8,
+  "finished_utc": "2026-10-21T01:42:15.547186+00:00"
+}

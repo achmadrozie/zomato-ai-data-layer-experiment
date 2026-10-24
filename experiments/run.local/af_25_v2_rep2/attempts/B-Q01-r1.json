@@ -1,0 +1,67 @@
+{
+  "id": "B-Q01-r1",
+  "arm": "B",
+  "question_id": "Q01",
+  "stratum": "data",
+  "question": "How many orders were placed during 2025? Use the recorded order date and report a count.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "968aad7d611f901a7d8dfa1d40ac00ed82254c5407f1175667aee50fc5949a8c",
+  "question_sha256": "26a8123001af6a9345ad0cf4c1e3b09eec0ec006c7e9ec43b587c5e59377b8a4",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:42:15.548637+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT COUNT(*) AS order_count\nFROM ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'",
+        "metrics": "order count",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.23,
+        "prompt_tokens": 1669,
+        "completion_tokens": 85
+      },
+      "result": {
+        "columns": [
+          "ORDER_COUNT"
+        ],
+        "rows": [
+          [
+            "4359773"
+          ]
+        ],
+        "query_id": "01c7de46-0001-b38b-0000-d295000461e2",
+        "seconds": 0.15
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "order count",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "A total of 4,359,773 orders were placed during 2025, based on the recorded order date. The population is all orders in the ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE table with ORDER_DATE in 2025. The unit is orders. This is a simple count and does not reflect cancellations, deliveries, or refunds—just orders placed.",
+        "reason": "The query directly counts all orders with a recorded order date in 2025, as requested."
+      },
+      "model_stats": {
+        "seconds": 1.52,
+        "prompt_tokens": 1845,
+        "completion_tokens": 134
+      }
+    }
+  ],
+  "final_answer": "A total of 4,359,773 orders were placed during 2025, based on the recorded order date. The population is all orders in the ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE table with ORDER_DATE in 2025. The unit is orders. This is a simple count and does not reflect cancellations, deliveries, or refunds—just orders placed.",
+  "outcome": "answer",
+  "total_seconds": 2.89,
+  "finished_utc": "2026-10-21T01:42:18.442346+00:00"
+}

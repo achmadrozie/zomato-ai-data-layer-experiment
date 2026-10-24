@@ -1,0 +1,163 @@
+{
+  "id": "D-Q13-r1",
+  "arm": "D",
+  "question_id": "Q13",
+  "stratum": "data",
+  "question": "Which three exact cuisine labels had the highest 2025 Delivered-order GMV in INR? For each label, also give total order count and cancellation rate. Do not split comma-separated cuisine labels.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "b1f6e14c773bd842d58a660b709e48a10852a27a37faa316466d6e5582ae5f7b",
+  "question_sha256": "5a3ce21426ab9c55f11a602608b374b91fb0a9a7a62404be1ef55a222df3ccea",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T00:56:59.795490+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT CUISINE, SUM(DELIVERED_SALES_AMOUNT) AS DELIVERED_GMV_INR, SUM(ORDER_COUNT) AS TOTAL_ORDER_COUNT, SUM(CANCELLED_ORDER_COUNT) AS TOTAL_CANCELLED_ORDER_COUNT, SUM(DELIVERED_ORDER_COUNT) AS TOTAL_DELIVERED_ORDER_COUNT\nFROM ZOMATO_DLR.MARTS.MART_ORDER_CITY_CURRENCY_DAY_UTC\nWHERE ORDER_DATE_UTC >= '2025-01-01' AND ORDER_DATE_UTC < '2026-01-01' AND CURRENCY = 'INR'\nGROUP BY CUISINE\nORDER BY DELIVERED_GMV_INR DESC\nLIMIT 10;",
+        "metrics": "DELIVERED_GMV_INR, TOTAL_ORDER_COUNT, TOTAL_CANCELLED_ORDER_COUNT, TOTAL_DELIVERED_ORDER_COUNT",
+        "group_by": "CUISINE",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "Identify the top three cuisine labels by 2025 delivered GMV in INR, and collect order and cancellation counts for rate calculation. Limiting to 10 in case of ties or nulls; will select top 3 from results."
+      },
+      "model_stats": {
+        "seconds": 1.87,
+        "prompt_tokens": 2533,
+        "completion_tokens": 254
+      },
+      "tool_error": "ProgrammingError: 000904 (42000): SQL compilation error: error line 1 at position 7\ninvalid identifier 'CUISINE' (request_id=dab32a4e-97c3-42b6-96ff-5d3b70d7043f, sfqid=01c7de19-0001-b442-0000-d29500040836)"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT CUISINE, SUM(DELIVERED_SALES_AMOUNT) AS DELIVERED_GMV_INR, SUM(ORDER_COUNT) AS TOTAL_ORDER_COUNT, SUM(CANCELLED_ORDER_COUNT) AS TOTAL_CANCELLED_ORDER_COUNT\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01' AND CURRENCY = 'INR'\nGROUP BY CUISINE\nORDER BY DELIVERED_GMV_INR DESC\nLIMIT 10;",
+        "metrics": "DELIVERED_GMV_INR, TOTAL_ORDER_COUNT, TOTAL_CANCELLED_ORDER_COUNT",
+        "group_by": "CUISINE",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "The previous table did not have a CUISINE column. FACT_ORDER contains CUISINE and the required financial and status fields, so we aggregate by CUISINE here."
+      },
+      "model_stats": {
+        "seconds": 1.67,
+        "prompt_tokens": 2913,
+        "completion_tokens": 208
+      },
+      "tool_error": "ProgrammingError: 000904 (42000): SQL compilation error: error line 1 at position 70\ninvalid identifier 'ORDER_COUNT' (request_id=32b64846-4dc6-4c6c-972a-683101899d3a, sfqid=01c7de19-0001-b38b-0000-d29500044eb6)"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT CUISINE, \n       SUM(CASE WHEN IS_DELIVERED THEN SALES_AMOUNT ELSE 0 END) AS DELIVERED_GMV_INR,\n       COUNT(*) AS TOTAL_ORDER_COUNT,\n       SUM(CASE WHEN IS_CANCELLED THEN 1 ELSE 0 END) AS TOTAL_CANCELLED_ORDER_COUNT\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01' AND CURRENCY = 'INR'\nGROUP BY CUISINE\nORDER BY DELIVERED_GMV_INR DESC\nLIMIT 10;",
+        "metrics": "DELIVERED_GMV_INR, TOTAL_ORDER_COUNT, TOTAL_CANCELLED_ORDER_COUNT",
+        "group_by": "CUISINE",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "Corrected the query to count orders and cancellations directly, since there is no ORDER_COUNT column in FACT_ORDER. This will allow calculation of cancellation rate for each cuisine."
+      },
+      "model_stats": {
+        "seconds": 1.66,
+        "prompt_tokens": 3245,
+        "completion_tokens": 225
+      },
+      "result": {
+        "columns": [
+          "CUISINE",
+          "DELIVERED_GMV_INR",
+          "TOTAL_ORDER_COUNT",
+          "TOTAL_CANCELLED_ORDER_COUNT"
+        ],
+        "rows": [
+          [
+            "North Indian,Chinese",
+            "97195380.00",
+            "202651",
+            "11916"
+          ],
+          [
+            "Indian,Chinese",
+            "60447386.00",
+            "126766",
+            "7583"
+          ],
+          [
+            "Indian",
+            "58362786.00",
+            "148932",
+            "8936"
+          ],
+          [
+            "North Indian",
+            "53639738.00",
+            "130777",
+            "7842"
+          ],
+          [
+            "Chinese",
+            "48388429.00",
+            "114700",
+            "6927"
+          ],
+          [
+            "Pizzas",
+            "44349724.00",
+            "84132",
+            "5061"
+          ],
+          [
+            "South Indian",
+            "36014878.00",
+            "112450",
+            "6752"
+          ],
+          [
+            "Bakery",
+            "32049780.00",
+            "64434",
+            "3919"
+          ],
+          [
+            "Chinese,North Indian",
+            "30522301.00",
+            "67766",
+            "4052"
+          ],
+          [
+            "Bakery,Desserts",
+            "29775525.00",
+            "64147",
+            "3785"
+          ]
+        ],
+        "query_id": "01c7de19-0001-b442-0000-d2950004083a",
+        "seconds": 0.28
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "Delivered GMV in INR, total order count, cancellation rate",
+        "group_by": "Cuisine label",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "The three exact cuisine labels with the highest 2025 delivered-order GMV in INR are:\n\n1. North Indian,Chinese\n   - Delivered GMV (INR): 97,195,380.00\n   - Total order count: 202,651\n   - Cancellation rate: 0.058800 (11,916 cancelled / 202,651 total)\n\n2. Indian,Chinese\n   - Delivered GMV (INR): 60,447,386.00\n   - Total order count: 126,766\n   - Cancellation rate: 0.059832 (7,583 cancelled / 126,766 total)\n\n3. Indian\n   - Delivered GMV (INR): 58,362,786.00\n   - Total order count: 148,932\n   - Cancellation rate: 0.060011 (8,936 cancelled / 148,932 total)\n\nPopulation: All orders in 2025 with currency INR, grouped by exact cuisine label (no splitting of comma-separated labels). Units: INR for GMV, count for orders, rate for cancellation. Interpretation: These three cuisine labels generated the highest delivered GMV in 2025, with cancellation rates between 5.88% and 6.00%.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 4.2,
+        "prompt_tokens": 3806,
+        "completion_tokens": 324
+      }
+    }
+  ],
+  "final_answer": "The three exact cuisine labels with the highest 2025 delivered-order GMV in INR are:\n\n1. North Indian,Chinese\n   - Delivered GMV (INR): 97,195,380.00\n   - Total order count: 202,651\n   - Cancellation rate: 0.058800 (11,916 cancelled / 202,651 total)\n\n2. Indian,Chinese\n   - Delivered GMV (INR): 60,447,386.00\n   - Total order count: 126,766\n   - Cancellation rate: 0.059832 (7,583 cancelled / 126,766 total)\n\n3. Indian\n   - Delivered GMV (INR): 58,362,786.00\n   - Total order count: 148,932\n   - Cancellation rate: 0.060011 (8,936 cancelled / 148,932 total)\n\nPopulation: All orders in 2025 with currency INR, grouped by exact cuisine label (no splitting of comma-separated labels). Units: INR for GMV, count for orders, rate for cancellation. Interpretation: These three cuisine labels generated the highest delivered GMV in 2025, with cancellation rates between 5.88% and 6.00%.",
+  "outcome": "answer",
+  "total_seconds": 9.9,
+  "finished_utc": "2026-10-21T00:57:09.691085+00:00"
+}

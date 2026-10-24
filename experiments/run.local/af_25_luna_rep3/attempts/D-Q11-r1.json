@@ -1,0 +1,86 @@
+{
+  "id": "D-Q11-r1",
+  "arm": "D",
+  "question_id": "Q11",
+  "stratum": "data",
+  "question": "For each recorded order status in 2025, report total orders, the share with a non-null customer rating, and average customer rating among rated orders. What population does each average describe?",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "b1f6e14c773bd842d58a660b709e48a10852a27a37faa316466d6e5582ae5f7b",
+  "question_sha256": "5862dd0c5f141a397d30a274573ca261508f56f6b704cb4c138b381e3db1ebd5",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T06:41:20.138102+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT ORDER_STATUS, COUNT(*) AS TOTAL_ORDERS, COUNT(CUSTOMER_RATING) / NULLIF(COUNT(*), 0) AS RATED_ORDER_SHARE, AVG(CUSTOMER_RATING) AS AVG_RATING_AMONG_RATED_ORDERS FROM ZOMATO_DLR.CORE.FACT_ORDER WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01' GROUP BY ORDER_STATUS ORDER BY ORDER_STATUS",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.55,
+        "prompt_tokens": 2530,
+        "completion_tokens": 279
+      },
+      "result": {
+        "columns": [
+          "ORDER_STATUS",
+          "TOTAL_ORDERS",
+          "RATED_ORDER_SHARE",
+          "AVG_RATING_AMONG_RATED_ORDERS"
+        ],
+        "rows": [
+          [
+            "Cancelled",
+            "261456",
+            "0.000000",
+            null
+          ],
+          [
+            "Delivered",
+            "3989077",
+            "0.700305",
+            "4.14547985"
+          ],
+          [
+            "Refunded",
+            "109240",
+            "0.000000",
+            null
+          ]
+        ],
+        "query_id": "01c7df71-0001-b38b-0000-d29500046bce",
+        "seconds": 0.15
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "For orders with recorded ORDER_DATE in 2025 (2025-01-01 through 2025-12-31):\n\n- Cancelled: 261,456 total orders; rated-order share 0.000000 (0.000000%); average customer rating: N/A (no rated orders).\n- Delivered: 3,989,077 total orders; rated-order share 0.700305 (70.030500%); average customer rating among rated orders: 4.145480.\n- Refunded: 109,240 total orders; rated-order share 0.000000 (0.000000%); average customer rating: N/A (no rated orders).\n\nFor each status, the rated-order share is the number of orders with a non-null CUSTOMER_RATING divided by all orders of that status. Each average describes only 2025 orders of that status with a non-null customer rating; it does not describe unrated orders or all orders in the status. Ratings are in the source rating units.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 4.07,
+        "prompt_tokens": 2814,
+        "completion_tokens": 333
+      }
+    }
+  ],
+  "final_answer": "For orders with recorded ORDER_DATE in 2025 (2025-01-01 through 2025-12-31):\n\n- Cancelled: 261,456 total orders; rated-order share 0.000000 (0.000000%); average customer rating: N/A (no rated orders).\n- Delivered: 3,989,077 total orders; rated-order share 0.700305 (70.030500%); average customer rating among rated orders: 4.145480.\n- Refunded: 109,240 total orders; rated-order share 0.000000 (0.000000%); average customer rating: N/A (no rated orders).\n\nFor each status, the rated-order share is the number of orders with a non-null CUSTOMER_RATING divided by all orders of that status. Each average describes only 2025 orders of that status with a non-null customer rating; it does not describe unrated orders or all orders in the status. Ratings are in the source rating units.",
+  "outcome": "answer",
+  "total_seconds": 7.77,
+  "finished_utc": "2026-10-21T06:41:27.907926+00:00"
+}

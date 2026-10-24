@@ -1,0 +1,128 @@
+{
+  "id": "F-Q22-r1",
+  "arm": "F",
+  "question_id": "Q22",
+  "stratum": "context",
+  "question": "For the standard market report covering 2025, what were Delivered-order GMV in INR, Delivered order count, and AOV? Apply the standard market eligibility rule consistently to all three.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "0b4050774275381d90e71ce6a53187fa1bc3bc3555976a96ef9d759f720db807",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T02:43:53.575603+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "gmv,count_order_delivered,aov",
+        "group_by": "order_id__currency",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "The standard market report requires filtering to eligible restaurants (rating_count >= 100) and reporting by currency. The metricflow tool can provide GMV, delivered order count, and AOV by currency for 2025, but I will need to filter to eligible restaurants in a follow-up SQL step if metricflow cannot apply this eligibility directly."
+      },
+      "model_stats": {
+        "seconds": 1.31,
+        "prompt_tokens": 3461,
+        "completion_tokens": 120
+      },
+      "result": {
+        "columns": [
+          "ORDER_ID__CURRENCY",
+          "GMV",
+          "COUNT_ORDER_DELIVERED",
+          "AOV"
+        ],
+        "rows": [
+          [
+            "INR",
+            "1926466048.0",
+            "3989077",
+            "482.9352875364401"
+          ]
+        ],
+        "metric_definitions": {
+          "gmv": "Sum of `sales_amount` for orders whose `order_status` is `Delivered`.",
+          "count_order_delivered": "Number of orders marked as delivered. Each order contributes one when `is_delivered` is true and zero otherwise.",
+          "aov": "Average sales amount per delivered order, calculated as GMV divided by the number of delivered orders."
+        },
+        "seconds": 6.08
+      }
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT r.RESTAURANT_ID\nFROM ZOMATO_DLR.CORE.DIM_RESTAURANT r\nWHERE r.RATING_COUNT >= 100",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "To apply the standard market eligibility rule (restaurants with at least 100 ratings), I need to identify eligible restaurant IDs. This will allow me to filter the delivered order metrics to only those from eligible restaurants."
+      },
+      "model_stats": {
+        "seconds": 1.29,
+        "prompt_tokens": 3768,
+        "completion_tokens": 97
+      },
+      "tool_error": "ValueError: Result exceeds 40 rows; return a smaller aggregate"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT SUM(f.SALES_AMOUNT) AS GMV_INR, COUNT(*) AS DELIVERED_ORDER_COUNT, AVG(f.SALES_AMOUNT) AS AOV_INR\nFROM ZOMATO_DLR.CORE.FACT_ORDER f\nJOIN ZOMATO_DLR.CORE.DIM_RESTAURANT r ON f.RESTAURANT_ID = r.RESTAURANT_ID\nWHERE f.ORDER_STATUS = 'Delivered'\n  AND f.CURRENCY = 'INR'\n  AND f.ORDER_DATE >= '2025-01-01' AND f.ORDER_DATE < '2026-01-01'\n  AND r.RATING_COUNT >= 100",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "This query directly calculates GMV, delivered order count, and AOV for delivered orders in INR, restricting to restaurants with at least 100 ratings, as required by the standard market eligibility rule."
+      },
+      "model_stats": {
+        "seconds": 1.38,
+        "prompt_tokens": 3921,
+        "completion_tokens": 197
+      },
+      "result": {
+        "columns": [
+          "GMV_INR",
+          "DELIVERED_ORDER_COUNT",
+          "AOV_INR"
+        ],
+        "rows": [
+          [
+            "927955016.00",
+            "1848107",
+            "502.11108772"
+          ]
+        ],
+        "query_id": "01c7de84-0001-b38b-0000-d29500046662",
+        "seconds": 0.78
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "gmv,count_order_delivered,aov",
+        "group_by": "order_id__currency (INR), eligible restaurants only",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "For the standard market report in 2025 (applying the eligibility rule: restaurants with at least 100 ratings), the results for Delivered orders in INR are as follows:\n- GMV (Gross Merchandise Value): 927,955,016.00 INR\n- Delivered order count: 1,848,107\n- AOV (Average Order Value): 502.11108772 INR\n\nPopulation: Delivered orders at eligible restaurants (rating_count >= 100), currency INR, order date in 2025.\nUnits: GMV and AOV in INR, order count as integer.\nInterpretation: These figures represent the delivered-order sales and average order value for the eligible segment of the market, not the full market. The eligibility filter substantially reduces both GMV and delivered order count compared to the unfiltered totals.",
+        "reason": "All requested metrics are provided, filtered to the eligible restaurant population as required by the standard market report policy."
+      },
+      "model_stats": {
+        "seconds": 1.91,
+        "prompt_tokens": 4269,
+        "completion_tokens": 249
+      }
+    }
+  ],
+  "final_answer": "For the standard market report in 2025 (applying the eligibility rule: restaurants with at least 100 ratings), the results for Delivered orders in INR are as follows:\n- GMV (Gross Merchandise Value): 927,955,016.00 INR\n- Delivered order count: 1,848,107\n- AOV (Average Order Value): 502.11108772 INR\n\nPopulation: Delivered orders at eligible restaurants (rating_count >= 100), currency INR, order date in 2025.\nUnits: GMV and AOV in INR, order count as integer.\nInterpretation: These figures represent the delivered-order sales and average order value for the eligible segment of the market, not the full market. The eligibility filter substantially reduces both GMV and delivered order count compared to the unfiltered totals.",
+  "outcome": "answer",
+  "total_seconds": 13.22,
+  "finished_utc": "2026-10-21T02:44:06.799751+00:00"
+}

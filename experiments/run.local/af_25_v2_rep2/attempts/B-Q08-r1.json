@@ -1,0 +1,103 @@
+{
+  "id": "B-Q08-r1",
+  "arm": "B",
+  "question_id": "Q08",
+  "stratum": "data",
+  "question": "For 2025, list the top three order-recorded cities by Delivered-order GMV in INR. For each city, also show Delivered order count and AOV. Treat each exact city label as one city.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "968aad7d611f901a7d8dfa1d40ac00ed82254c5407f1175667aee50fc5949a8c",
+  "question_sha256": "88b3e1ffc60ed7e564ccdf820987cc82a3ff0e5dce15f6f2fe18ac3ab2472cfd",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:54:18.942642+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT CITY, \n       SUM(DELIVERED_SALES_AMOUNT) AS DELIVERED_GMV_INR, \n       COUNT(ORDER_ID) AS DELIVERED_ORDER_COUNT, \n       CASE WHEN COUNT(ORDER_ID) > 0 THEN SUM(DELIVERED_SALES_AMOUNT) / COUNT(ORDER_ID) ELSE NULL END AS AOV_INR\nFROM ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE ob\nJOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FINANCIALS ofi ON ob.ORDER_ID = ofi.ORDER_ID\nWHERE ob.ORDER_DATE >= '2025-01-01' AND ob.ORDER_DATE < '2026-01-01'\n  AND ofi.DELIVERED_SALES_AMOUNT IS NOT NULL\n  AND ob.CURRENCY = 'INR'\n  AND ofi.DELIVERED_SALES_AMOUNT > 0\nGROUP BY CITY\nORDER BY DELIVERED_GMV_INR DESC\nLIMIT 3;",
+        "metrics": "DELIVERED_GMV_INR, DELIVERED_ORDER_COUNT, AOV_INR",
+        "group_by": "CITY",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.16,
+        "prompt_tokens": 1692,
+        "completion_tokens": 263
+      },
+      "tool_error": "ProgrammingError: 002028 (42601): SQL compilation error:\nambiguous column name 'ORDER_ID' (request_id=810c0517-6562-40d7-abb3-d61c262c87f7, sfqid=01c7de52-0001-b442-0000-d29500040cf2)"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT ob.CITY, \n       SUM(ofi.DELIVERED_SALES_AMOUNT) AS DELIVERED_GMV_INR, \n       COUNT(ob.ORDER_ID) AS DELIVERED_ORDER_COUNT, \n       CASE WHEN COUNT(ob.ORDER_ID) > 0 THEN SUM(ofi.DELIVERED_SALES_AMOUNT) / COUNT(ob.ORDER_ID) ELSE NULL END AS AOV_INR\nFROM ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE ob\nJOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FINANCIALS ofi ON ob.ORDER_ID = ofi.ORDER_ID\nWHERE ob.ORDER_DATE >= '2025-01-01' AND ob.ORDER_DATE < '2026-01-01'\n  AND ofi.DELIVERED_SALES_AMOUNT IS NOT NULL\n  AND ob.CURRENCY = 'INR'\n  AND ofi.DELIVERED_SALES_AMOUNT > 0\nGROUP BY ob.CITY\nORDER BY DELIVERED_GMV_INR DESC\nLIMIT 3;",
+        "metrics": "DELIVERED_GMV_INR, DELIVERED_ORDER_COUNT, AOV_INR",
+        "group_by": "CITY",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "Disambiguated ORDER_ID by prefixing with table alias."
+      },
+      "model_stats": {
+        "seconds": 2.06,
+        "prompt_tokens": 2071,
+        "completion_tokens": 282
+      },
+      "result": {
+        "columns": [
+          "CITY",
+          "DELIVERED_GMV_INR",
+          "DELIVERED_ORDER_COUNT",
+          "AOV_INR"
+        ],
+        "rows": [
+          [
+            "Bangalore",
+            "233341258.00",
+            "440743",
+            "529.42703117"
+          ],
+          [
+            "Delhi",
+            "177702873.00",
+            "339384",
+            "523.60415635"
+          ],
+          [
+            "Chennai",
+            "155055243.00",
+            "310963",
+            "498.62923563"
+          ]
+        ],
+        "query_id": "01c7de52-0001-b38b-0000-d29500046312",
+        "seconds": 0.18
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "DELIVERED_GMV_INR, DELIVERED_ORDER_COUNT, AOV_INR",
+        "group_by": "CITY",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "For 2025, the top three order-recorded cities by Delivered-order GMV in INR are:\n\n1. Bangalore: Delivered GMV = 233,341,258 INR, Delivered order count = 440,743, AOV = 529.427031 INR\n2. Delhi: Delivered GMV = 177,702,873 INR, Delivered order count = 339,384, AOV = 523.604156 INR\n3. Chennai: Delivered GMV = 155,055,243 INR, Delivered order count = 310,963, AOV = 498.629236 INR\n\nPopulation: All delivered orders in 2025 with currency INR, grouped by exact city label. Units: GMV and AOV in INR, order count as integer. Interpretation: Bangalore had the highest delivered GMV and order count, with the highest average order value among the top three cities.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.96,
+        "prompt_tokens": 2524,
+        "completion_tokens": 247
+      }
+    }
+  ],
+  "final_answer": "For 2025, the top three order-recorded cities by Delivered-order GMV in INR are:\n\n1. Bangalore: Delivered GMV = 233,341,258 INR, Delivered order count = 440,743, AOV = 529.427031 INR\n2. Delhi: Delivered GMV = 177,702,873 INR, Delivered order count = 339,384, AOV = 523.604156 INR\n3. Chennai: Delivered GMV = 155,055,243 INR, Delivered order count = 310,963, AOV = 498.629236 INR\n\nPopulation: All delivered orders in 2025 with currency INR, grouped by exact city label. Units: GMV and AOV in INR, order count as integer. Interpretation: Bangalore had the highest delivered GMV and order count, with the highest average order value among the top three cities.",
+  "outcome": "answer",
+  "total_seconds": 6.55,
+  "finished_utc": "2026-10-21T01:54:25.493214+00:00"
+}

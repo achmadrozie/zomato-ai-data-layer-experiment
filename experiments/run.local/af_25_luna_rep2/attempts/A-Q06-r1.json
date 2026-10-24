@@ -1,0 +1,109 @@
+{
+  "id": "A-Q06-r1",
+  "arm": "A",
+  "question_id": "Q06",
+  "stratum": "data",
+  "question": "In 2025, which month had the highest Delivered-order GMV in INR? Give that month's GMV, the runner-up month's GMV, and the gap between them.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "4acf2281f3c70a54cd1b5548e8bf681e9cb90b7906d0b054d53e1083d674c16e",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T05:37:40.779641+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH monthly_gmv AS (\n  SELECT DATE_TRUNC('MONTH', ORDER_DATE)::DATE AS MONTH,\n         SUM(SALES_AMOUNT) AS GMV_INR\n  FROM ZOMATO_DLR.STAGING.STG_ZOMATO__ORDER\n  WHERE ORDER_DATE >= '2025-01-01'::DATE\n    AND ORDER_DATE < '2026-01-01'::DATE\n    AND IS_DELIVERED = TRUE\n    AND UPPER(CURRENCY) = 'INR'\n  GROUP BY 1\n), ranked AS (\n  SELECT MONTH, GMV_INR,\n         ROW_NUMBER() OVER (ORDER BY GMV_INR DESC, MONTH) AS RN,\n         LEAD(GMV_INR) OVER (ORDER BY GMV_INR DESC, MONTH) AS RUNNER_UP_GMV_INR\n  FROM monthly_gmv\n)\nSELECT MONTH, GMV_INR, RUNNER_UP_GMV_INR,\n       GMV_INR - RUNNER_UP_GMV_INR AS GAP_INR\nFROM ranked\nWHERE RN = 1",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 6.22,
+        "prompt_tokens": 1312,
+        "completion_tokens": 439
+      },
+      "result": {
+        "columns": [
+          "MONTH",
+          "GMV_INR",
+          "RUNNER_UP_GMV_INR",
+          "GAP_INR"
+        ],
+        "rows": [
+          [
+            "2025-12-01",
+            "185263071.00",
+            "180239871.00",
+            "5023200.00"
+          ]
+        ],
+        "query_id": "01c7df31-0001-b442-0000-d29500048482",
+        "seconds": 0.51
+      }
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT DATE_TRUNC('MONTH', ORDER_DATE)::DATE AS MONTH,\n       SUM(SALES_AMOUNT) AS DELIVERED_GMV_INR\nFROM ZOMATO_DLR.STAGING.STG_ZOMATO__ORDER\nWHERE ORDER_DATE >= '2025-01-01'::DATE\n  AND ORDER_DATE < '2026-01-01'::DATE\n  AND IS_DELIVERED = TRUE\n  AND UPPER(CURRENCY) = 'INR'\nGROUP BY 1\nORDER BY DELIVERED_GMV_INR DESC, MONTH\nLIMIT 2",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.62,
+        "prompt_tokens": 1699,
+        "completion_tokens": 295
+      },
+      "result": {
+        "columns": [
+          "MONTH",
+          "DELIVERED_GMV_INR"
+        ],
+        "rows": [
+          [
+            "2025-12-01",
+            "185263071.00"
+          ],
+          [
+            "2025-11-01",
+            "180239871.00"
+          ]
+        ],
+        "query_id": "01c7df31-0001-b442-0000-d29500048486",
+        "seconds": 0.27
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "December 2025 had the highest Delivered-order GMV: INR 185,263,071.00. Runner-up: November 2025 at INR 180,239,871.00. The gap was INR 5,023,200.00. Population: orders with recorded ORDER_DATE in 2025, marked delivered, and with currency INR; GMV is the sum of SALES_AMOUNT.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.94,
+        "prompt_tokens": 1968,
+        "completion_tokens": 195
+      }
+    }
+  ],
+  "final_answer": "December 2025 had the highest Delivered-order GMV: INR 185,263,071.00. Runner-up: November 2025 at INR 180,239,871.00. The gap was INR 5,023,200.00. Population: orders with recorded ORDER_DATE in 2025, marked delivered, and with currency INR; GMV is the sum of SALES_AMOUNT.",
+  "outcome": "answer",
+  "total_seconds": 13.57,
+  "finished_utc": "2026-10-21T05:37:54.345410+00:00"
+}

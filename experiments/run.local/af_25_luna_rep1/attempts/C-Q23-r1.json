@@ -1,0 +1,39 @@
+{
+  "id": "C-Q23-r1",
+  "arm": "C",
+  "question_id": "Q23",
+  "stratum": "context",
+  "question": "In the 2025 standard market report, which three cities led by Delivered-order GMV in INR? Give each city's GMV and share of standard market GMV, using the reporting geography default.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "8e9d0cfb7f28a61c23e09bf8b8fb7f4025382414d411dc6f612c4c213a65cd6e",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T04:06:18.973515+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "clarify",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "Please provide the 2025 standard market report definition: which orders are included in “standard market,” which order amount represents GMV (for example, DELIVERED_SALES_AMOUNT or SUBTOTAL), and the reporting geography default (for example, order CITY or restaurant CITY). These rules are not specified in the available data definitions."
+      },
+      "model_stats": {
+        "seconds": 5.28,
+        "prompt_tokens": 2190,
+        "completion_tokens": 417
+      }
+    }
+  ],
+  "final_answer": "Please provide the 2025 standard market report definition: which orders are included in “standard market,” which order amount represents GMV (for example, DELIVERED_SALES_AMOUNT or SUBTOTAL), and the reporting geography default (for example, order CITY or restaurant CITY). These rules are not specified in the available data definitions.",
+  "outcome": "clarification",
+  "total_seconds": 5.28,
+  "finished_utc": "2026-10-21T04:06:24.252361+00:00"
+}

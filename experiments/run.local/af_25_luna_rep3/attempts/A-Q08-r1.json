@@ -1,0 +1,39 @@
+{
+  "id": "A-Q08-r1",
+  "arm": "A",
+  "question_id": "Q08",
+  "stratum": "data",
+  "question": "For 2025, list the top three order-recorded cities by Delivered-order GMV in INR. For each city, also show Delivered order count and AOV. Treat each exact city label as one city.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "88b3e1ffc60ed7e564ccdf820987cc82a3ff0e5dce15f6f2fe18ac3ab2472cfd",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T07:21:20.444344+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "clarify",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "Which order amount should define GMV: SUBTOTAL (before discounts, fees, and GST) or SALES_AMOUNT (the recorded order total)? The snapshot contains both, and they can produce different city rankings and AOVs."
+      },
+      "model_stats": {
+        "seconds": 6.83,
+        "prompt_tokens": 1319,
+        "completion_tokens": 594
+      }
+    }
+  ],
+  "final_answer": "Which order amount should define GMV: SUBTOTAL (before discounts, fees, and GST) or SALES_AMOUNT (the recorded order total)? The snapshot contains both, and they can produce different city rankings and AOVs.",
+  "outcome": "clarification",
+  "total_seconds": 6.83,
+  "finished_utc": "2026-10-21T07:21:27.270186+00:00"
+}

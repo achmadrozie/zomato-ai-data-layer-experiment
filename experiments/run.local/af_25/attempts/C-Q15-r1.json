@@ -1,0 +1,79 @@
+{
+  "id": "C-Q15-r1",
+  "arm": "C",
+  "question_id": "Q15",
+  "stratum": "data",
+  "question": "In 2025, what share of orders contained more than one item line? Compare average ordered units per order for one-line and multi-line orders; also report orders with no item line separately.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "597a068c5b5f4f3b488102e5fb6ff26da6762c24c56b9a012f2123b3304db3dc",
+  "context_sha256": null,
+  "started_utc": "2026-10-20T23:45:13.442795+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT \n  CASE \n    WHEN i.ITEM_LINE_COUNT IS NULL THEN 'No item line'\n    WHEN i.ITEM_LINE_COUNT = 1 THEN 'One item line'\n    WHEN i.ITEM_LINE_COUNT > 1 THEN 'Multi item line'\n  END AS order_type,\n  COUNT(o.ORDER_ID) AS order_count,\n  SUM(o.SALES_QTY) AS total_units,\n  AVG(o.SALES_QTY) AS avg_units_per_order\nFROM ZOMATO_DLR.CORE.FACT_ORDER o\nLEFT JOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_ITEM_ROLLUP i\n  ON o.ORDER_ID = i.ORDER_ID\nWHERE o.ORDER_DATE >= '2025-01-01' AND o.ORDER_DATE < '2026-01-01'\nGROUP BY order_type\nORDER BY \n  CASE order_type \n    WHEN 'No item line' THEN 0\n    WHEN 'One item line' THEN 1\n    WHEN 'Multi item line' THEN 2\n  END",
+        "metrics": "order_count, total_units, avg_units_per_order",
+        "group_by": "order_type",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.19,
+        "prompt_tokens": 2191,
+        "completion_tokens": 269
+      },
+      "result": {
+        "columns": [
+          "ORDER_TYPE",
+          "ORDER_COUNT",
+          "TOTAL_UNITS",
+          "AVG_UNITS_PER_ORDER"
+        ],
+        "rows": [
+          [
+            "One item line",
+            "1307684",
+            "1595051",
+            "1.219753"
+          ],
+          [
+            "Multi item line",
+            "3052089",
+            "10635826",
+            "3.484769"
+          ]
+        ],
+        "query_id": "01c7ddd1-0001-b38b-0000-d29500044c36",
+        "seconds": 1.03
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "order_count, total_units, avg_units_per_order",
+        "group_by": "order_type",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "In 2025, there were no orders with zero item lines reported in the data. Out of all orders:\n\n- 1,307,684 orders (about 30%) had exactly one item line, with an average of 1.219753 units ordered per order.\n- 3,052,089 orders (about 70%) had more than one item line, with an average of 3.484769 units ordered per order.\n\nShare of multi-line orders: 3,052,089 / (1,307,684 + 3,052,089) = 0.700482 (70.0482%).\n\nInterpretation: The majority of 2025 orders (about 70%) contained more than one item line, and these multi-line orders had a much higher average number of units per order compared to single-line orders. No orders with zero item lines were found in the data.",
+        "reason": "All requested values are present in the query result, and the share and averages are calculated as required."
+      },
+      "model_stats": {
+        "seconds": 2.46,
+        "prompt_tokens": 2604,
+        "completion_tokens": 263
+      }
+    }
+  ],
+  "final_answer": "In 2025, there were no orders with zero item lines reported in the data. Out of all orders:\n\n- 1,307,684 orders (about 30%) had exactly one item line, with an average of 1.219753 units ordered per order.\n- 3,052,089 orders (about 70%) had more than one item line, with an average of 3.484769 units ordered per order.\n\nShare of multi-line orders: 3,052,089 / (1,307,684 + 3,052,089) = 0.700482 (70.0482%).\n\nInterpretation: The majority of 2025 orders (about 70%) contained more than one item line, and these multi-line orders had a much higher average number of units per order compared to single-line orders. No orders with zero item lines were found in the data.",
+  "outcome": "answer",
+  "total_seconds": 5.69,
+  "finished_utc": "2026-10-20T23:45:19.129030+00:00"
+}

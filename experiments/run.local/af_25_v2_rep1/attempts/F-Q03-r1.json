@@ -1,0 +1,71 @@
+{
+  "id": "F-Q03-r1",
+  "arm": "F",
+  "question_id": "Q03",
+  "stratum": "data",
+  "question": "What was AOV in INR for Delivered orders in the full year 2025? Use the recorded order date for the 2025 scope.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "57beaba4b4339db13b7043c2a2928cf39d5baa511836db3dbde6518945b0b963",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T01:16:10.594520+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "aov",
+        "group_by": "order_id__currency",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "AOV (average order value) in INR for Delivered orders in 2025 requires filtering by currency and using the defined metric. The metricflow tool will provide AOV by currency, from which INR can be selected."
+      },
+      "model_stats": {
+        "seconds": 1.24,
+        "prompt_tokens": 3452,
+        "completion_tokens": 90
+      },
+      "result": {
+        "columns": [
+          "ORDER_ID__CURRENCY",
+          "AOV"
+        ],
+        "rows": [
+          [
+            "INR",
+            "482.9352875364401"
+          ]
+        ],
+        "metric_definitions": {
+          "aov": "Average sales amount per delivered order, calculated as GMV divided by the number of delivered orders."
+        },
+        "seconds": 6.99
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "aov",
+        "group_by": "order_id__currency",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "The average order value (AOV) for Delivered orders in INR for the full year 2025, using the recorded order date, was 482.935288 INR per delivered order. This value is calculated as the gross merchandise value (GMV) divided by the number of delivered orders, considering only orders with currency INR. Population: all Delivered orders in 2025 with currency INR. Unit: INR per delivered order. Interpretation: On average, each Delivered order in INR during 2025 had a sales amount of approximately 482.94 INR.",
+        "reason": "The metricflow result provides the AOV in INR for Delivered orders in 2025 as requested, with sufficient decimal precision."
+      },
+      "model_stats": {
+        "seconds": 2.27,
+        "prompt_tokens": 3652,
+        "completion_tokens": 182
+      }
+    }
+  ],
+  "final_answer": "The average order value (AOV) for Delivered orders in INR for the full year 2025, using the recorded order date, was 482.935288 INR per delivered order. This value is calculated as the gross merchandise value (GMV) divided by the number of delivered orders, considering only orders with currency INR. Population: all Delivered orders in 2025 with currency INR. Unit: INR per delivered order. Interpretation: On average, each Delivered order in INR during 2025 had a sales amount of approximately 482.94 INR.",
+  "outcome": "answer",
+  "total_seconds": 10.51,
+  "finished_utc": "2026-10-21T01:16:21.104593+00:00"
+}

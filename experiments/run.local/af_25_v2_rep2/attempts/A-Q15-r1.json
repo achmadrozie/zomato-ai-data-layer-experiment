@@ -1,0 +1,76 @@
+{
+  "id": "A-Q15-r1",
+  "arm": "A",
+  "question_id": "Q15",
+  "stratum": "data",
+  "question": "In 2025, what share of orders contained more than one item line? Compare average ordered units per order for one-line and multi-line orders; also report orders with no item line separately.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "597a068c5b5f4f3b488102e5fb6ff26da6762c24c56b9a012f2123b3304db3dc",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:54:48.295662+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH order_item_counts AS (\n  SELECT \n    o.ORDER_ID,\n    COUNT(oi.ORDER_ITEM_ID) AS item_line_count,\n    SUM(CAST(oi.QUANTITY AS FLOAT)) AS total_units\n  FROM ZOMATO_DLR.SOURCES.ORDERS o\n  LEFT JOIN ZOMATO_DLR.SOURCES.ORDER_ITEMS oi\n    ON o.ORDER_ID = oi.ORDER_ID\n  WHERE o.ORDER_DATE >= '2025-01-01' AND o.ORDER_DATE < '2026-01-01'\n  GROUP BY o.ORDER_ID\n)\nSELECT \n  CASE \n    WHEN item_line_count = 0 THEN 'no_item_line'\n    WHEN item_line_count = 1 THEN 'one_item_line'\n    ELSE 'multi_item_line'\n  END AS order_type,\n  COUNT(*) AS order_count,\n  AVG(COALESCE(total_units,0)) AS avg_units_per_order\nFROM order_item_counts\nGROUP BY order_type\nORDER BY order_type;",
+        "metrics": "order_count, avg_units_per_order",
+        "group_by": "order_type",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.75,
+        "prompt_tokens": 1317,
+        "completion_tokens": 264
+      },
+      "result": {
+        "columns": [
+          "ORDER_TYPE",
+          "ORDER_COUNT",
+          "AVG_UNITS_PER_ORDER"
+        ],
+        "rows": [
+          [
+            "multi_item_line",
+            "3052089",
+            "3.484769284250885"
+          ],
+          [
+            "one_item_line",
+            "1307684",
+            "1.219752631369658"
+          ]
+        ],
+        "query_id": "01c7de52-0001-b442-0000-d29500040d06",
+        "seconds": 1.36
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "order_count, avg_units_per_order, share of multi-line orders",
+        "group_by": "order_type",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "In 2025, among orders with at least one item line, 3,052,089 orders (70.01%) contained more than one item line (multi-line orders), while 1,307,684 orders (29.99%) had exactly one item line. No orders were found with zero item lines in the data. The average ordered units per order were 3.484769 for multi-line orders and 1.219753 for one-line orders. This shows that multi-line orders not only represent the majority but also have a significantly higher average quantity of items per order. Population: all 2025 orders in ZOMATO_DLR.SOURCES.ORDERS. Units: orders, units per order. No orders with zero item lines were observed.",
+        "reason": "All requested values were derived from the query: order counts and average units per order by order type, and the share of multi-line orders was calculated as 3,052,089 / (3,052,089 + 1,307,684) = 70.01%. No 'no_item_line' orders were present in the results."
+      },
+      "model_stats": {
+        "seconds": 2.15,
+        "prompt_tokens": 1715,
+        "completion_tokens": 279
+      }
+    }
+  ],
+  "final_answer": "In 2025, among orders with at least one item line, 3,052,089 orders (70.01%) contained more than one item line (multi-line orders), while 1,307,684 orders (29.99%) had exactly one item line. No orders were found with zero item lines in the data. The average ordered units per order were 3.484769 for multi-line orders and 1.219753 for one-line orders. This shows that multi-line orders not only represent the majority but also have a significantly higher average quantity of items per order. Population: all 2025 orders in ZOMATO_DLR.SOURCES.ORDERS. Units: orders, units per order. No orders with zero item lines were observed.",
+  "outcome": "answer",
+  "total_seconds": 5.27,
+  "finished_utc": "2026-10-21T01:54:53.567194+00:00"
+}

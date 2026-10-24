@@ -1,0 +1,102 @@
+{
+  "id": "C-Q19-r1",
+  "arm": "C",
+  "question_id": "Q19",
+  "stratum": "data",
+  "question": "Across every calendar date in 2025, including dates with zero Delivered orders, what was the average number of Delivered orders for each weekday? Which weekday had the highest average?",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "e1eaf3ef9b54696d69a4f4b213fbccf78b1cb1bfd78e3388cce48b93e7dfc197",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T03:42:36.663487+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH daily AS (\n  SELECT d.DATE_DAY, f.DAY_NAME,\n         COUNT(o.ORDER_ID) AS DELIVERED_ORDERS\n  FROM ZOMATO_DLR.INTERMEDIATE.INT_DATE_FEATURES d\n  JOIN ZOMATO_DLR.CORE.DIM_DATE f ON f.DATE_DAY = d.DATE_DAY\n  LEFT JOIN ZOMATO_DLR.CORE.FACT_ORDER o\n    ON o.ORDER_DATE = d.DATE_DAY AND o.IS_DELIVERED = TRUE\n  WHERE d.DATE_DAY >= '2025-01-01' AND d.DATE_DAY < '2026-01-01'\n  GROUP BY d.DATE_DAY, f.DAY_NAME\n)\nSELECT DAY_NAME AS WEEKDAY,\n       COUNT(*) AS CALENDAR_DATES,\n       AVG(DELIVERED_ORDERS) AS AVG_DELIVERED_ORDERS_PER_DATE\nFROM daily\nGROUP BY DAY_NAME\nORDER BY AVG_DELIVERED_ORDERS_PER_DATE DESC",
+        "metrics": "Average count of orders with IS_DELIVERED = TRUE per calendar date, grouped by weekday; dates with no delivered orders are included as zero. Population: all 2025 calendar dates.",
+        "group_by": "weekday",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 5.13,
+        "prompt_tokens": 2185,
+        "completion_tokens": 436
+      },
+      "result": {
+        "columns": [
+          "WEEKDAY",
+          "CALENDAR_DATES",
+          "AVG_DELIVERED_ORDERS_PER_DATE"
+        ],
+        "rows": [
+          [
+            "Sat",
+            "52",
+            "14486.211538"
+          ],
+          [
+            "Sun",
+            "52",
+            "13119.134615"
+          ],
+          [
+            "Fri",
+            "52",
+            "12228.980769"
+          ],
+          [
+            "Thu",
+            "52",
+            "9473.653846"
+          ],
+          [
+            "Mon",
+            "52",
+            "9094.365385"
+          ],
+          [
+            "Tue",
+            "52",
+            "9082.788462"
+          ],
+          [
+            "Wed",
+            "53",
+            "9053.773585"
+          ]
+        ],
+        "query_id": "01c7debe-0001-b442-0000-d29500048186",
+        "seconds": 0.68
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "Across all calendar dates in 2025, including dates with zero Delivered orders, the average Delivered orders per date were: Monday 9,094.365385 (52 dates); Tuesday 9,082.788462 (52); Wednesday 9,053.773585 (53); Thursday 9,473.653846 (52); Friday 12,228.980769 (52); Saturday 14,486.211538 (52); Sunday 13,119.134615 (52). Saturday had the highest average, at 14,486.211538 Delivered orders per Saturday.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.17,
+        "prompt_tokens": 2659,
+        "completion_tokens": 233
+      }
+    }
+  ],
+  "final_answer": "Across all calendar dates in 2025, including dates with zero Delivered orders, the average Delivered orders per date were: Monday 9,094.365385 (52 dates); Tuesday 9,082.788462 (52); Wednesday 9,053.773585 (53); Thursday 9,473.653846 (52); Friday 12,228.980769 (52); Saturday 14,486.211538 (52); Sunday 13,119.134615 (52). Saturday had the highest average, at 14,486.211538 Delivered orders per Saturday.",
+  "outcome": "answer",
+  "total_seconds": 8.98,
+  "finished_utc": "2026-10-21T03:42:45.642157+00:00"
+}

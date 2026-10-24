@@ -1,0 +1,69 @@
+{
+  "id": "E-Q01-r1",
+  "arm": "E",
+  "question_id": "Q01",
+  "stratum": "data",
+  "question": "How many orders were placed during 2025? Use the recorded order date and report a count.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "a99a688c8b74f2d1acf86ffb095d4085e198af8d169bb3f0b5cd089f5752e8ce",
+  "question_sha256": "26a8123001af6a9345ad0cf4c1e3b09eec0ec006c7e9ec43b587c5e59377b8a4",
+  "context_sha256": null,
+  "started_utc": "2026-10-20T23:45:30.083970+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "count_order_total",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "The user requested the total number of orders placed in 2025 using the recorded order date. The governed metric 'count_order_total' provides this count, and the full year 2025 is specified as the time range."
+      },
+      "model_stats": {
+        "seconds": 1.33,
+        "prompt_tokens": 3058,
+        "completion_tokens": 87
+      },
+      "result": {
+        "columns": [
+          "COUNT_ORDER_TOTAL"
+        ],
+        "rows": [
+          [
+            "4359773"
+          ]
+        ],
+        "metric_definitions": {
+          "count_order_total": "Number of orders, regardless of status. Each non-null `order_id` contributes one."
+        },
+        "seconds": 19.51
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "count_order_total",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "A total of 4,359,773 orders were placed during 2025, based on the recorded order date. This count includes all orders regardless of their status.",
+        "reason": "The metric 'count_order_total' counts all orders with a recorded order date in 2025, matching the user's request."
+      },
+      "model_stats": {
+        "seconds": 1.35,
+        "prompt_tokens": 3241,
+        "completion_tokens": 100
+      }
+    }
+  ],
+  "final_answer": "A total of 4,359,773 orders were placed during 2025, based on the recorded order date. This count includes all orders regardless of their status.",
+  "outcome": "answer",
+  "total_seconds": 22.19,
+  "finished_utc": "2026-10-20T23:45:52.276615+00:00"
+}

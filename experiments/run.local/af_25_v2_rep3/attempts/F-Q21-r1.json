@@ -1,0 +1,69 @@
+{
+  "id": "F-Q21-r1",
+  "arm": "F",
+  "question_id": "Q21",
+  "stratum": "data",
+  "question": "Across the twelve calendar months of 2025, compute the Pearson correlation between monthly cancellation rate and average Delivered-order delivery time using SQL's CORR() function. Monthly cancellation rate = cancelled orders divided by all orders. Average delivery time = mean of delivery_time_min for Delivered orders with a non-null delivery duration only. Report the correlation coefficient, the number of months used, and whether that correlation alone supports a causal claim.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "43968c3cf736550a6edfb6bc71c34af46d6463670472144a22383f4bd85d921c",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T02:47:42.618409+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT \n  COUNT(*) AS months_used,\n  CORR(cancellation_rate, avg_delivery_time_min) AS pearson_corr\nFROM (\n  SELECT \n    d.MONTH AS calendar_month,\n    COUNT(CASE WHEN f.IS_CANCELLED THEN 1 END) * 1.0 / COUNT(*) AS cancellation_rate,\n    AVG(CASE WHEN f.IS_DELIVERED AND f.DELIVERY_TIME_MIN IS NOT NULL THEN f.DELIVERY_TIME_MIN END) AS avg_delivery_time_min\n  FROM ZOMATO_DLR.CORE.FACT_ORDER f\n  JOIN ZOMATO_DLR.CORE.DIM_DATE d ON f.ORDER_DATE = d.DATE_DAY\n  WHERE f.ORDER_DATE >= '2025-01-01' AND f.ORDER_DATE < '2026-01-01'\n  GROUP BY d.MONTH\n  HAVING COUNT(*) > 0 AND COUNT(CASE WHEN f.IS_DELIVERED AND f.DELIVERY_TIME_MIN IS NOT NULL THEN 1 END) > 0\n) sub",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.77,
+        "prompt_tokens": 3507,
+        "completion_tokens": 247
+      },
+      "result": {
+        "columns": [
+          "MONTHS_USED",
+          "PEARSON_CORR"
+        ],
+        "rows": [
+          [
+            "12",
+            "-0.01999787909651581"
+          ]
+        ],
+        "query_id": "01c7de87-0001-b442-0000-d29500048142",
+        "seconds": 0.12
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "The Pearson correlation coefficient between monthly cancellation rate and average Delivered-order delivery time across the twelve calendar months of 2025 is -0.01999787909651581. All 12 months were used in the calculation. This correlation is extremely close to zero, indicating virtually no linear relationship between the two metrics at the monthly level in 2025. Importantly, correlation alone does not support a causal claim; it only measures linear association, not causation. Additional analysis and business context would be required to establish any causal relationship.",
+        "reason": "All requested values are present: correlation coefficient (-0.01999787909651581), number of months (12), and an interpretation regarding causality."
+      },
+      "model_stats": {
+        "seconds": 1.58,
+        "prompt_tokens": 3851,
+        "completion_tokens": 160
+      }
+    }
+  ],
+  "final_answer": "The Pearson correlation coefficient between monthly cancellation rate and average Delivered-order delivery time across the twelve calendar months of 2025 is -0.01999787909651581. All 12 months were used in the calculation. This correlation is extremely close to zero, indicating virtually no linear relationship between the two metrics at the monthly level in 2025. Importantly, correlation alone does not support a causal claim; it only measures linear association, not causation. Additional analysis and business context would be required to establish any causal relationship.",
+  "outcome": "answer",
+  "total_seconds": 3.48,
+  "finished_utc": "2026-10-21T02:47:46.097823+00:00"
+}

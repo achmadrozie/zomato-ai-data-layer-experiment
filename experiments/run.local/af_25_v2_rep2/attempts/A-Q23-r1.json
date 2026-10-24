@@ -1,0 +1,106 @@
+{
+  "id": "A-Q23-r1",
+  "arm": "A",
+  "question_id": "Q23",
+  "stratum": "context",
+  "question": "In the 2025 standard market report, which three cities led by Delivered-order GMV in INR? Give each city's GMV and share of standard market GMV, using the reporting geography default.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "8e9d0cfb7f28a61c23e09bf8b8fb7f4025382414d411dc6f612c4c213a65cd6e",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:47:41.128371+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT RESTAURANT_CITY AS CITY, SUM(SALES_AMOUNT) AS GMV_INR\nFROM ZOMATO_DLR.SOURCES.ORDERS\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n  AND ORDER_STATUS = 'Delivered' AND CURRENCY = 'INR'\nGROUP BY RESTAURANT_CITY\nORDER BY GMV_INR DESC\nLIMIT 3;",
+        "metrics": "SUM(SALES_AMOUNT) as GMV_INR",
+        "group_by": "RESTAURANT_CITY",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.34,
+        "prompt_tokens": 1318,
+        "completion_tokens": 150
+      },
+      "result": {
+        "columns": [
+          "CITY",
+          "GMV_INR"
+        ],
+        "rows": [
+          [
+            "Bikaner",
+            "29030997.0"
+          ],
+          [
+            "Indiranagar,Bangalore",
+            "22092650.0"
+          ],
+          [
+            "Koramangala,Bangalore",
+            "18686823.0"
+          ]
+        ],
+        "query_id": "01c7de4b-0001-b38b-0000-d29500046286",
+        "seconds": 0.12
+      }
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT SUM(SALES_AMOUNT) AS TOTAL_GMV_INR\nFROM ZOMATO_DLR.SOURCES.ORDERS\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n  AND ORDER_STATUS = 'Delivered' AND CURRENCY = 'INR';",
+        "metrics": "SUM(SALES_AMOUNT) as TOTAL_GMV_INR",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "To calculate each city's share of the standard market GMV, I need the total delivered-order GMV in INR for 2025."
+      },
+      "model_stats": {
+        "seconds": 1.36,
+        "prompt_tokens": 1599,
+        "completion_tokens": 143
+      },
+      "result": {
+        "columns": [
+          "TOTAL_GMV_INR"
+        ],
+        "rows": [
+          [
+            "1926466048.0"
+          ]
+        ],
+        "query_id": "01c7de4b-0001-b38b-0000-d2950004628a",
+        "seconds": 0.11
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "GMV (INR), share of standard market GMV (%)",
+        "group_by": "CITY",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "In the 2025 standard market report, the three cities leading by Delivered-order GMV in INR were:\n\n1. Bikaner: GMV = 29,030,997 INR, share = 0.0150706 (1.50706%)\n2. Indiranagar,Bangalore: GMV = 22,092,650 INR, share = 0.0114702 (1.14702%)\n3. Koramangala,Bangalore: GMV = 18,686,823 INR, share = 0.0096982 (0.96982%)\n\nPopulation: Delivered orders in INR currency, 2025, by city (reporting geography default).\nUnit: GMV in INR, share as a decimal and percent of total standard market GMV (1,926,466,048 INR).\nInterpretation: These three cities together contributed about 3.62% of the delivered-order GMV in INR for the standard market in 2025.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.95,
+        "prompt_tokens": 1840,
+        "completion_tokens": 264
+      }
+    }
+  ],
+  "final_answer": "In the 2025 standard market report, the three cities leading by Delivered-order GMV in INR were:\n\n1. Bikaner: GMV = 29,030,997 INR, share = 0.0150706 (1.50706%)\n2. Indiranagar,Bangalore: GMV = 22,092,650 INR, share = 0.0114702 (1.14702%)\n3. Koramangala,Bangalore: GMV = 18,686,823 INR, share = 0.0096982 (0.96982%)\n\nPopulation: Delivered orders in INR currency, 2025, by city (reporting geography default).\nUnit: GMV in INR, share as a decimal and percent of total standard market GMV (1,926,466,048 INR).\nInterpretation: These three cities together contributed about 3.62% of the delivered-order GMV in INR for the standard market in 2025.",
+  "outcome": "answer",
+  "total_seconds": 4.89,
+  "finished_utc": "2026-10-21T01:47:46.015213+00:00"
+}

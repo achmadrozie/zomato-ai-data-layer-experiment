@@ -1,0 +1,106 @@
+{
+  "id": "A-Q09-r1",
+  "arm": "A",
+  "question_id": "Q09",
+  "stratum": "data",
+  "question": "Among order-recorded cities with at least 50,000 total orders in 2025, which had the highest cancellation rate? Give its order count, cancellation rate, and gap versus the overall 2025 cancellation rate in percentage points.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "6e0a1cd1cbada372d52c245b3fa84cdc25c7a0c50ae89b3d0d2e75a314024446",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T02:04:39.621696+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT RESTAURANT_CITY, COUNT(*) AS order_count, SUM(CASE WHEN ORDER_STATUS = 'CANCELLED' THEN 1 ELSE 0 END) AS cancelled_count, AVG(CASE WHEN ORDER_STATUS = 'CANCELLED' THEN 1 ELSE 0 END) AS cancellation_rate\nFROM ZOMATO_DLR.SOURCES.ORDERS\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\nGROUP BY RESTAURANT_CITY\nHAVING COUNT(*) >= 50000\nORDER BY cancellation_rate DESC\nLIMIT 1;",
+        "metrics": "order_count, cancellation_rate",
+        "group_by": "RESTAURANT_CITY",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "First, identify cities with at least 50,000 orders in 2025 and find the one with the highest cancellation rate."
+      },
+      "model_stats": {
+        "seconds": 1.44,
+        "prompt_tokens": 1326,
+        "completion_tokens": 201
+      },
+      "result": {
+        "columns": [
+          "RESTAURANT_CITY",
+          "ORDER_COUNT",
+          "CANCELLED_COUNT",
+          "CANCELLATION_RATE"
+        ],
+        "rows": [
+          [
+            "Bikaner",
+            "53571",
+            "0",
+            "0.000000"
+          ]
+        ],
+        "query_id": "01c7de5c-0001-b38b-0000-d295000464da",
+        "seconds": 0.19
+      }
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT COUNT(*) AS total_orders, SUM(CASE WHEN ORDER_STATUS = 'CANCELLED' THEN 1 ELSE 0 END) AS total_cancelled, AVG(CASE WHEN ORDER_STATUS = 'CANCELLED' THEN 1 ELSE 0 END) AS overall_cancellation_rate\nFROM ZOMATO_DLR.SOURCES.ORDERS\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01';",
+        "metrics": "overall_cancellation_rate",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "Need the overall 2025 cancellation rate to calculate the gap for Bikaner."
+      },
+      "model_stats": {
+        "seconds": 1.28,
+        "prompt_tokens": 1651,
+        "completion_tokens": 154
+      },
+      "result": {
+        "columns": [
+          "TOTAL_ORDERS",
+          "TOTAL_CANCELLED",
+          "OVERALL_CANCELLATION_RATE"
+        ],
+        "rows": [
+          [
+            "4359773",
+            "0",
+            "0.000000"
+          ]
+        ],
+        "query_id": "01c7de5c-0001-b442-0000-d29500040eb2",
+        "seconds": 0.21
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "order count, cancellation rate, gap vs overall cancellation rate",
+        "group_by": "city",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "Among cities with at least 50,000 total orders recorded in 2025, Bikaner had the highest cancellation rate. Bikaner had 53,571 orders, a cancellation rate of 0.000000 (0%), and the gap versus the overall 2025 cancellation rate is 0.00 percentage points (since the overall rate is also 0%).\n\nInterpretation: In 2025, there were no cancelled orders recorded in the data for any city, including Bikaner. Thus, the cancellation rate and the gap are both zero.",
+        "reason": "Both the city and overall cancellation rates are 0%, so the gap is 0 percentage points. All requested values are included."
+      },
+      "model_stats": {
+        "seconds": 1.75,
+        "prompt_tokens": 1921,
+        "completion_tokens": 194
+      }
+    }
+  ],
+  "final_answer": "Among cities with at least 50,000 total orders recorded in 2025, Bikaner had the highest cancellation rate. Bikaner had 53,571 orders, a cancellation rate of 0.000000 (0%), and the gap versus the overall 2025 cancellation rate is 0.00 percentage points (since the overall rate is also 0%).\n\nInterpretation: In 2025, there were no cancelled orders recorded in the data for any city, including Bikaner. Thus, the cancellation rate and the gap are both zero.",
+  "outcome": "answer",
+  "total_seconds": 4.87,
+  "finished_utc": "2026-10-21T02:04:44.491877+00:00"
+}

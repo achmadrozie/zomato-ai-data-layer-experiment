@@ -1,0 +1,129 @@
+{
+  "id": "A-Q19-r1",
+  "arm": "A",
+  "question_id": "Q19",
+  "stratum": "data",
+  "question": "Across every calendar date in 2025, including dates with zero Delivered orders, what was the average number of Delivered orders for each weekday? Which weekday had the highest average?",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "e1eaf3ef9b54696d69a4f4b213fbccf78b1cb1bfd78e3388cce48b93e7dfc197",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:17:50.753835+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH all_dates_2025 AS (\n    SELECT DATEADD(day, seq4(), '2025-01-01') AS order_date\n    FROM TABLE(GENERATOR(ROWCOUNT => 365))\n    WHERE DATEADD(day, seq4(), '2025-01-01') < '2026-01-01'\n),\norders_2025 AS (\n    SELECT ORDER_DATE, IS_DELIVERED\n    FROM ZOMATO_DLR.STAGING.STG_ZOMATO__ORDER\n    WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n)\ndate_delivered_counts AS (\n    SELECT d.order_date, COALESCE(COUNT(o.ORDER_DATE), 0) AS delivered_orders\n    FROM all_dates_2025 d\n    LEFT JOIN orders_2025 o ON d.order_date = o.ORDER_DATE AND o.IS_DELIVERED = TRUE\n    GROUP BY d.order_date\n)\nSELECT \n    TO_VARCHAR(order_date, 'DY') AS weekday,\n    AVG(delivered_orders) AS avg_delivered_orders\nFROM date_delivered_counts\nGROUP BY weekday\nORDER BY avg_delivered_orders DESC;",
+        "metrics": "average delivered orders per weekday",
+        "group_by": "weekday (Mon, Tue, ...)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.49,
+        "prompt_tokens": 1313,
+        "completion_tokens": 309
+      },
+      "tool_error": "ParseError: Required keyword: 'expressions' missing for <class 'sqlglot.expressions.core.Aliases'>. Line 12, Col: 10.\n      WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n)\ndate_delivered_counts AS (\n    \u001b[4mSELECT\u001b[0m d.order_date, COALESCE(COUNT(o.ORDER_DATE), 0) AS delivered_orders\n    FROM all_dates_2025 d\n    LE"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH all_dates_2025 AS (\n    SELECT DATEADD(day, ROW_NUMBER() OVER () - 1, '2025-01-01') AS order_date\n    FROM TABLE(GENERATOR(ROWCOUNT => 365))\n),\ndelivered_orders AS (\n    SELECT ORDER_DATE\n    FROM ZOMATO_DLR.STAGING.STG_ZOMATO__ORDER\n    WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01' AND IS_DELIVERED = TRUE\n),\ndaily_counts AS (\n    SELECT a.order_date, COUNT(d.ORDER_DATE) AS delivered_count\n    FROM all_dates_2025 a\n    LEFT JOIN delivered_orders d ON a.order_date = d.ORDER_DATE\n    GROUP BY a.order_date\n)\nSELECT \n    TO_VARCHAR(order_date, 'DY') AS weekday,\n    AVG(delivered_count) AS avg_delivered_orders\nFROM daily_counts\nGROUP BY weekday\nORDER BY avg_delivered_orders DESC;",
+        "metrics": "average delivered orders per weekday",
+        "group_by": "weekday (Mon, Tue, ...)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.51,
+        "prompt_tokens": 1782,
+        "completion_tokens": 269
+      },
+      "tool_error": "ProgrammingError: 002061 (42601): SQL compilation error:\nWindow function type [ROW_NUMBER] requires ORDER BY in window specification. (request_id=8fe72f28-cd2f-4bef-b228-ede29db926ca, sfqid=01c7de2d-0001-b442-0000-d29500040a72)"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH all_dates_2025 AS (\n    SELECT DATEADD(day, SEQ4(), '2025-01-01') AS order_date\n    FROM TABLE(GENERATOR(ROWCOUNT => 365))\n    WHERE DATEADD(day, SEQ4(), '2025-01-01') < '2026-01-01'\n),\ndelivered_orders AS (\n    SELECT ORDER_DATE\n    FROM ZOMATO_DLR.STAGING.STG_ZOMATO__ORDER\n    WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01' AND IS_DELIVERED = TRUE\n),\ndaily_counts AS (\n    SELECT a.order_date, COUNT(d.ORDER_DATE) AS delivered_count\n    FROM all_dates_2025 a\n    LEFT JOIN delivered_orders d ON a.order_date = d.ORDER_DATE\n    GROUP BY a.order_date\n)\nSELECT \n    TO_VARCHAR(order_date, 'DY') AS weekday,\n    AVG(delivered_count) AS avg_delivered_orders\nFROM daily_counts\nGROUP BY weekday\nORDER BY avg_delivered_orders DESC;",
+        "metrics": "average delivered orders per weekday",
+        "group_by": "weekday (Mon, Tue, ...)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.61,
+        "prompt_tokens": 2171,
+        "completion_tokens": 292
+      },
+      "result": {
+        "columns": [
+          "WEEKDAY",
+          "AVG_DELIVERED_ORDERS"
+        ],
+        "rows": [
+          [
+            "Sat",
+            "14486.211538"
+          ],
+          [
+            "Sun",
+            "13119.134615"
+          ],
+          [
+            "Fri",
+            "12228.980769"
+          ],
+          [
+            "Thu",
+            "9473.653846"
+          ],
+          [
+            "Mon",
+            "9094.365385"
+          ],
+          [
+            "Tue",
+            "9082.788462"
+          ],
+          [
+            "Wed",
+            "9053.773585"
+          ]
+        ],
+        "query_id": "01c7de2d-0001-b442-0000-d29500040a76",
+        "seconds": 0.43
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "average delivered orders per weekday in 2025",
+        "group_by": "weekday (Mon, Tue, ...)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "Across every calendar date in 2025 (including dates with zero Delivered orders), the average number of Delivered orders for each weekday was:\n- Saturday: 14486.211538 orders\n- Sunday: 13119.134615 orders\n- Friday: 12228.980769 orders\n- Thursday: 9473.653846 orders\n- Monday: 9094.365385 orders\n- Tuesday: 9082.788462 orders\n- Wednesday: 9053.773585 orders\n\nThe weekday with the highest average number of Delivered orders was Saturday (14486.211538 orders per Saturday). Population: all 365 calendar dates in 2025. Unit: orders per day. Interpretation: Saturdays had the highest average delivered order volume, while Wednesdays had the lowest.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.67,
+        "prompt_tokens": 2661,
+        "completion_tokens": 219
+      }
+    }
+  ],
+  "final_answer": "Across every calendar date in 2025 (including dates with zero Delivered orders), the average number of Delivered orders for each weekday was:\n- Saturday: 14486.211538 orders\n- Sunday: 13119.134615 orders\n- Friday: 12228.980769 orders\n- Thursday: 9473.653846 orders\n- Monday: 9094.365385 orders\n- Tuesday: 9082.788462 orders\n- Wednesday: 9053.773585 orders\n\nThe weekday with the highest average number of Delivered orders was Saturday (14486.211538 orders per Saturday). Population: all 365 calendar dates in 2025. Unit: orders per day. Interpretation: Saturdays had the highest average delivered order volume, while Wednesdays had the lowest.",
+  "outcome": "answer",
+  "total_seconds": 8.82,
+  "finished_utc": "2026-10-21T01:17:59.569873+00:00"
+}

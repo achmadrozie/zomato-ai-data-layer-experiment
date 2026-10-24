@@ -1,0 +1,174 @@
+{
+  "id": "F-Q13-r1",
+  "arm": "F",
+  "question_id": "Q13",
+  "stratum": "data",
+  "question": "Which three exact cuisine labels had the highest 2025 Delivered-order GMV in INR? For each label, also give total order count and cancellation rate. Do not split comma-separated cuisine labels.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "5a3ce21426ab9c55f11a602608b374b91fb0a9a7a62404be1ef55a222df3ccea",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T01:43:05.056450+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "gmv,count_order_total,cancellation_rate",
+        "group_by": "restaurant_id__cuisine,order_id__currency",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31 23:59:59.999",
+        "answer": "",
+        "reason": "To identify the top three cuisine labels by 2025 Delivered-order GMV in INR, and for each, also provide total order count and cancellation rate, I will group by the exact cuisine label and currency, filter for INR, and sort by GMV descending."
+      },
+      "model_stats": {
+        "seconds": 1.38,
+        "prompt_tokens": 3462,
+        "completion_tokens": 119
+      },
+      "tool_error": "ValueError: Invalid isoformat string: '2025-12-31 23:59:59.999'"
+    },
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "gmv,count_order_total,cancellation_rate",
+        "group_by": "restaurant_id__cuisine,order_id__currency",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "The previous query failed due to an invalid end_time format. I will retry with the correct date format for the full year 2025."
+      },
+      "model_stats": {
+        "seconds": 1.28,
+        "prompt_tokens": 3648,
+        "completion_tokens": 86
+      },
+      "tool_error": "RuntimeError: MetricFlow query failed: ERROR: Database Error\n  250003: Hit non-retryable SSL error, HTTPSConnectionPool(host='clyqnlt-ew90521.snowflakecomputing.com', port=443): Max retries exceeded with url: /session/v1/login-request?request_id=a0275995-6a7b-4c51-accb-eb140d115222&databaseName=ZOMATO_DLR&schemaName=STAGING&warehouse=ZOMATO_WH&roleName=DBT_LAYER_REFACTOR_ROLE&request_guid=6228a177-b52a-427f-bc50-1561dc0e8808 (Caused by SSLError(SSLError(\"bad handshake: SysCallError(32, 'EPIPE')\"))).\n  Verify that the hostnames and port numbers in SYSTEM$ALLOWLIST are added to your firewall's allowed list.\n  To further troubleshoot your connection you may reference the following article: https://docs.snowflake.com/en/user-guide/client-connectivity-troubleshooting/overview.\n\nLog File:: /Users/achmadrozie/Workstation/zomato-dbt-layer-refactor/dbt_zomato/logs/metricflow.log\nArtifact Path: /Users/achmadrozie/Workstation/zomato-dbt-layer-refactor/dbt_zomato/target/semantic_manifest.json\nArtifact Modified Time: 2026-10-20T17:28:57.630760\n\nIf you think you found a bug, please report it here:\n    https://github.com/dbt-labs/metricflow/issues"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT o.CUISINE, COUNT(*) AS ORDER_COUNT, SUM(CASE WHEN o.ORDER_STATUS = 'Delivered' THEN o.SALES_AMOUNT ELSE 0 END) AS DELIVERED_GMV_INR, SUM(CASE WHEN o.ORDER_STATUS = 'Cancelled' THEN 1 ELSE 0 END) AS CANCELLED_COUNT, SUM(CASE WHEN o.ORDER_STATUS = 'Delivered' THEN 1 ELSE 0 END) AS DELIVERED_COUNT\nFROM ZOMATO_DLR.CORE.FACT_ORDER o\nWHERE o.ORDER_DATE >= '2025-01-01' AND o.ORDER_DATE < '2026-01-01' AND o.CURRENCY = 'INR'\nGROUP BY o.CUISINE\nORDER BY DELIVERED_GMV_INR DESC\nLIMIT 10;",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "MetricFlow is unavailable. I will use SQL to get the top three cuisine labels by 2025 Delivered-order GMV in INR, and also retrieve total order count and cancellation count for cancellation rate calculation."
+      },
+      "model_stats": {
+        "seconds": 1.96,
+        "prompt_tokens": 4120,
+        "completion_tokens": 227
+      },
+      "result": {
+        "columns": [
+          "CUISINE",
+          "ORDER_COUNT",
+          "DELIVERED_GMV_INR",
+          "CANCELLED_COUNT",
+          "DELIVERED_COUNT"
+        ],
+        "rows": [
+          [
+            "North Indian,Chinese",
+            "202651",
+            "97195380.00",
+            "11916",
+            "185649"
+          ],
+          [
+            "Indian,Chinese",
+            "126766",
+            "60447386.00",
+            "7583",
+            "116036"
+          ],
+          [
+            "Indian",
+            "148932",
+            "58362786.00",
+            "8936",
+            "136184"
+          ],
+          [
+            "North Indian",
+            "130777",
+            "53639738.00",
+            "7842",
+            "119628"
+          ],
+          [
+            "Chinese",
+            "114700",
+            "48388429.00",
+            "6927",
+            "104877"
+          ],
+          [
+            "Pizzas",
+            "84132",
+            "44349724.00",
+            "5061",
+            "76972"
+          ],
+          [
+            "South Indian",
+            "112450",
+            "36014878.00",
+            "6752",
+            "102843"
+          ],
+          [
+            "Bakery",
+            "64434",
+            "32049780.00",
+            "3919",
+            "58916"
+          ],
+          [
+            "Chinese,North Indian",
+            "67766",
+            "30522301.00",
+            "4052",
+            "62081"
+          ],
+          [
+            "Bakery,Desserts",
+            "64147",
+            "29775525.00",
+            "3785",
+            "58717"
+          ]
+        ],
+        "query_id": "01c7de47-0001-b442-0000-d29500040bc6",
+        "seconds": 1.19
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "The three exact cuisine labels with the highest 2025 Delivered-order GMV in INR are:\n\n1. North Indian,Chinese\n   - Delivered-order GMV (INR): 97,195,380.00\n   - Total order count: 202,651\n   - Cancellation rate: 0.058800 (11,916 cancelled / 202,651 total)\n\n2. Indian,Chinese\n   - Delivered-order GMV (INR): 60,447,386.00\n   - Total order count: 126,766\n   - Cancellation rate: 0.059836 (7,583 cancelled / 126,766 total)\n\n3. Indian\n   - Delivered-order GMV (INR): 58,362,786.00\n   - Total order count: 148,932\n   - Cancellation rate: 0.060018 (8,936 cancelled / 148,932 total)\n\nInterpretation: These cuisine labels (not split by comma) generated the highest delivered GMV in INR for 2025. All rates and counts are for orders recorded with INR currency, and cancellation rate is the proportion of cancelled orders to total orders for each cuisine label.",
+        "reason": "All requested values are provided: cuisine label, delivered GMV in INR, total order count, and cancellation rate, using the exact cuisine label as recorded (not split)."
+      },
+      "model_stats": {
+        "seconds": 2.22,
+        "prompt_tokens": 4727,
+        "completion_tokens": 311
+      }
+    }
+  ],
+  "final_answer": "The three exact cuisine labels with the highest 2025 Delivered-order GMV in INR are:\n\n1. North Indian,Chinese\n   - Delivered-order GMV (INR): 97,195,380.00\n   - Total order count: 202,651\n   - Cancellation rate: 0.058800 (11,916 cancelled / 202,651 total)\n\n2. Indian,Chinese\n   - Delivered-order GMV (INR): 60,447,386.00\n   - Total order count: 126,766\n   - Cancellation rate: 0.059836 (7,583 cancelled / 126,766 total)\n\n3. Indian\n   - Delivered-order GMV (INR): 58,362,786.00\n   - Total order count: 148,932\n   - Cancellation rate: 0.060018 (8,936 cancelled / 148,932 total)\n\nInterpretation: These cuisine labels (not split by comma) generated the highest delivered GMV in INR for 2025. All rates and counts are for orders recorded with INR currency, and cancellation rate is the proportion of cancelled orders to total orders for each cuisine label.",
+  "outcome": "answer",
+  "total_seconds": 13.72,
+  "finished_utc": "2026-10-21T01:43:18.774405+00:00"
+}

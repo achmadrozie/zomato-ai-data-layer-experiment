@@ -1,0 +1,70 @@
+{
+  "id": "E-Q05-r1",
+  "arm": "E",
+  "question_id": "Q05",
+  "stratum": "data",
+  "question": "What was ordered quantity per order for the full year 2025? Use the recorded order date for the 2025 scope.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "a99a688c8b74f2d1acf86ffb095d4085e198af8d169bb3f0b5cd089f5752e8ce",
+  "question_sha256": "ea883bbd9440eaafaff5343a59ff8dcbd1aa4f1afa8c0d1e08ce4956a43b2a3e",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T06:21:05.349388+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "ordered_quantity_per_order",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.65,
+        "prompt_tokens": 3062,
+        "completion_tokens": 157
+      },
+      "result": {
+        "columns": [
+          "ORDERED_QUANTITY_PER_ORDER"
+        ],
+        "rows": [
+          [
+            "2.8053930789515875"
+          ]
+        ],
+        "metric_definitions": {
+          "ordered_quantity_per_order": "Ordered item quantity divided by number of orders; combines both fact semantic models."
+        },
+        "seconds": 10.63
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "For orders with recorded order dates from 2025-01-01 through 2025-12-31, ordered quantity per order was 2.805393 items per order. This is total ordered item quantity divided by total orders, regardless of order status.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.48,
+        "prompt_tokens": 3210,
+        "completion_tokens": 215
+      }
+    }
+  ],
+  "final_answer": "For orders with recorded order dates from 2025-01-01 through 2025-12-31, ordered quantity per order was 2.805393 items per order. This is total ordered item quantity divided by total orders, regardless of order status.",
+  "outcome": "answer",
+  "total_seconds": 16.76,
+  "finished_utc": "2026-10-21T06:21:22.111277+00:00"
+}

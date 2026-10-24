@@ -1,0 +1,39 @@
+{
+  "id": "D-Q23-r1",
+  "arm": "D",
+  "question_id": "Q23",
+  "stratum": "context",
+  "question": "In the 2025 standard market report, which three cities led by Delivered-order GMV in INR? Give each city's GMV and share of standard market GMV, using the reporting geography default.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "b1f6e14c773bd842d58a660b709e48a10852a27a37faa316466d6e5582ae5f7b",
+  "question_sha256": "8e9d0cfb7f28a61c23e09bf8b8fb7f4025382414d411dc6f612c4c213a65cd6e",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T06:24:44.677398+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "clarify",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "Please specify the reporting-geography default for assigning orders to cities (for example, order city or restaurant city). That rule is not defined in the available snapshot metadata."
+      },
+      "model_stats": {
+        "seconds": 4.3,
+        "prompt_tokens": 2532,
+        "completion_tokens": 320
+      }
+    }
+  ],
+  "final_answer": "Please specify the reporting-geography default for assigning orders to cities (for example, order city or restaurant city). That rule is not defined in the available snapshot metadata.",
+  "outcome": "clarification",
+  "total_seconds": 4.3,
+  "finished_utc": "2026-10-21T06:24:48.976366+00:00"
+}

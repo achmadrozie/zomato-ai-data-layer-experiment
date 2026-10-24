@@ -1,0 +1,307 @@
+{
+  "id": "D-Q04-r1",
+  "arm": "D",
+  "question_id": "Q04",
+  "stratum": "data",
+  "question": "What was the cancellation rate, as a percentage, during 2025, by recorded order date?",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "b1f6e14c773bd842d58a660b709e48a10852a27a37faa316466d6e5582ae5f7b",
+  "question_sha256": "3cb30cc4a616283e5b44cde1e7aa89d226aa35eb72dd53428ff3cd172373767d",
+  "context_sha256": null,
+  "started_utc": "2026-10-20T23:58:33.839868+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT ORDER_DATE, \n       COUNT(CASE WHEN IS_CANCELLED THEN 1 END) AS CANCELLED_ORDER_COUNT,\n       COUNT(*) AS TOTAL_ORDER_COUNT,\n       100.0 * COUNT(CASE WHEN IS_CANCELLED THEN 1 END) / NULLIF(COUNT(*),0) AS CANCELLATION_RATE_PERCENT\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\nGROUP BY ORDER_DATE\nORDER BY ORDER_DATE\nLIMIT 40;",
+        "metrics": "cancellation rate as a percentage, cancelled order count, total order count",
+        "group_by": "ORDER_DATE",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.7,
+        "prompt_tokens": 2514,
+        "completion_tokens": 178
+      },
+      "result": {
+        "columns": [
+          "ORDER_DATE",
+          "CANCELLED_ORDER_COUNT",
+          "TOTAL_ORDER_COUNT",
+          "CANCELLATION_RATE_PERCENT"
+        ],
+        "rows": [
+          [
+            "2025-01-01",
+            "529",
+            "8202",
+            "6.449646"
+          ],
+          [
+            "2025-01-02",
+            "520",
+            "8654",
+            "6.008782"
+          ],
+          [
+            "2025-01-03",
+            "667",
+            "11269",
+            "5.918893"
+          ],
+          [
+            "2025-01-04",
+            "787",
+            "13116",
+            "6.000305"
+          ],
+          [
+            "2025-01-05",
+            "713",
+            "12105",
+            "5.890128"
+          ],
+          [
+            "2025-01-06",
+            "506",
+            "8278",
+            "6.112588"
+          ],
+          [
+            "2025-01-07",
+            "486",
+            "8338",
+            "5.828736"
+          ],
+          [
+            "2025-01-08",
+            "503",
+            "8384",
+            "5.999523"
+          ],
+          [
+            "2025-01-09",
+            "565",
+            "8890",
+            "6.355456"
+          ],
+          [
+            "2025-01-10",
+            "645",
+            "11488",
+            "5.614554"
+          ],
+          [
+            "2025-01-11",
+            "846",
+            "13537",
+            "6.249538"
+          ],
+          [
+            "2025-01-12",
+            "736",
+            "12046",
+            "6.109912"
+          ],
+          [
+            "2025-01-13",
+            "493",
+            "8374",
+            "5.887270"
+          ],
+          [
+            "2025-01-14",
+            "512",
+            "8512",
+            "6.015038"
+          ],
+          [
+            "2025-01-15",
+            "527",
+            "8334",
+            "6.323494"
+          ],
+          [
+            "2025-01-16",
+            "509",
+            "8773",
+            "5.801892"
+          ],
+          [
+            "2025-01-17",
+            "685",
+            "11447",
+            "5.984101"
+          ],
+          [
+            "2025-01-18",
+            "791",
+            "13384",
+            "5.910042"
+          ],
+          [
+            "2025-01-19",
+            "753",
+            "12314",
+            "6.114991"
+          ],
+          [
+            "2025-01-20",
+            "527",
+            "8554",
+            "6.160860"
+          ],
+          [
+            "2025-01-21",
+            "510",
+            "8384",
+            "6.083015"
+          ],
+          [
+            "2025-01-22",
+            "515",
+            "8353",
+            "6.165450"
+          ],
+          [
+            "2025-01-23",
+            "550",
+            "8735",
+            "6.296508"
+          ],
+          [
+            "2025-01-24",
+            "717",
+            "11474",
+            "6.248911"
+          ],
+          [
+            "2025-01-25",
+            "821",
+            "13667",
+            "6.007171"
+          ],
+          [
+            "2025-01-26",
+            "698",
+            "12414",
+            "5.622684"
+          ],
+          [
+            "2025-01-27",
+            "536",
+            "8551",
+            "6.268273"
+          ],
+          [
+            "2025-01-28",
+            "518",
+            "8447",
+            "6.132355"
+          ],
+          [
+            "2025-01-29",
+            "536",
+            "8867",
+            "6.044886"
+          ],
+          [
+            "2025-01-30",
+            "574",
+            "9005",
+            "6.374237"
+          ],
+          [
+            "2025-01-31",
+            "704",
+            "11565",
+            "6.087332"
+          ],
+          [
+            "2025-02-01",
+            "789",
+            "13500",
+            "5.844444"
+          ],
+          [
+            "2025-02-02",
+            "746",
+            "12403",
+            "6.014674"
+          ],
+          [
+            "2025-02-03",
+            "523",
+            "8681",
+            "6.024652"
+          ],
+          [
+            "2025-02-04",
+            "532",
+            "8606",
+            "6.181734"
+          ],
+          [
+            "2025-02-05",
+            "548",
+            "8651",
+            "6.334528"
+          ],
+          [
+            "2025-02-06",
+            "561",
+            "8969",
+            "6.254878"
+          ],
+          [
+            "2025-02-07",
+            "738",
+            "11544",
+            "6.392931"
+          ],
+          [
+            "2025-02-08",
+            "830",
+            "13831",
+            "6.001012"
+          ],
+          [
+            "2025-02-09",
+            "776",
+            "12564",
+            "6.176377"
+          ]
+        ],
+        "query_id": "01c7ddde-0001-b38b-0000-d29500044d3a",
+        "seconds": 0.19
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "cancellation rate as a percentage, cancelled order count, total order count",
+        "group_by": "ORDER_DATE",
+        "start_time": "2025-01-01",
+        "end_time": "2025-02-09",
+        "answer": "During 2025, the cancellation rate by recorded order date ranged from approximately 5.614554% to 6.449646% for the first 40 days of the year. For example, on 2025-01-01, there were 529 cancelled orders out of 8,202 total orders, resulting in a cancellation rate of 6.449646%. On 2025-01-10, the rate was 5.614554% (645 cancelled out of 11,488 total). This means that, on average, about 6% of orders were cancelled each day during this period. The population for each date is all orders recorded on that date, and the unit is percentage of orders cancelled. Interpretation: The daily cancellation rate was relatively stable, with minor fluctuations, indicating consistent customer or operational behavior regarding cancellations in early 2025.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.48,
+        "prompt_tokens": 3639,
+        "completion_tokens": 233
+      }
+    }
+  ],
+  "final_answer": "During 2025, the cancellation rate by recorded order date ranged from approximately 5.614554% to 6.449646% for the first 40 days of the year. For example, on 2025-01-01, there were 529 cancelled orders out of 8,202 total orders, resulting in a cancellation rate of 6.449646%. On 2025-01-10, the rate was 5.614554% (645 cancelled out of 11,488 total). This means that, on average, about 6% of orders were cancelled each day during this period. The population for each date is all orders recorded on that date, and the unit is percentage of orders cancelled. Interpretation: The daily cancellation rate was relatively stable, with minor fluctuations, indicating consistent customer or operational behavior regarding cancellations in early 2025.",
+  "outcome": "answer",
+  "total_seconds": 4.36,
+  "finished_utc": "2026-10-20T23:58:38.203942+00:00"
+}

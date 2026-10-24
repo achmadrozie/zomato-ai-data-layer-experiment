@@ -1,0 +1,100 @@
+{
+  "id": "E-Q07-r1",
+  "arm": "E",
+  "question_id": "Q07",
+  "stratum": "data",
+  "question": "Compare January and December 2025: Delivered order count, GMV in INR, and AOV in INR for each month. For both Delivered order count and AOV, calculate the percentage change from January to December as (December value minus January value) divided by January value times 100. Show both percentage changes and state which grew faster.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "a99a688c8b74f2d1acf86ffb095d4085e198af8d169bb3f0b5cd089f5752e8ce",
+  "question_sha256": "ffde7fbebc6e393182946e35173dbc682d761b0a7108ddcb03258f03a9f8ef1e",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T03:53:08.170505+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "count_order_delivered,gmv,aov",
+        "group_by": "metric_time__month,order_id__currency",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.5,
+        "prompt_tokens": 3105,
+        "completion_tokens": 171
+      },
+      "tool_error": "RuntimeError: MetricFlow query failed: ERROR: Database Error\n  250003: Hit non-retryable SSL error, HTTPSConnectionPool(host='clyqnlt-ew90521.snowflakecomputing.com', port=443): Max retries exceeded with url: /session/v1/login-request?request_id=d465f0c6-e5d5-45b9-baa6-29e1fbac68b9&databaseName=ZOMATO_DLR&schemaName=STAGING&warehouse=ZOMATO_WH&roleName=DBT_LAYER_REFACTOR_ROLE&request_guid=79a5c804-89de-4d77-8445-4a581cd42048 (Caused by SSLError(SSLError(\"bad handshake: SysCallError(32, 'EPIPE')\"))).\n  Verify that the hostnames and port numbers in SYSTEM$ALLOWLIST are added to your firewall's allowed list.\n  To further troubleshoot your connection you may reference the following article: https://docs.snowflake.com/en/user-guide/client-connectivity-troubleshooting/overview.\n\nLog File:: /Users/achmadrozie/Workstation/zomato-dbt-layer-refactor/dbt_zomato/logs/metricflow.log\nArtifact Path: /Users/achmadrozie/Workstation/zomato-dbt-layer-refactor/dbt_zomato/target/semantic_manifest.json\nArtifact Modified Time: 2026-10-20T17:28:57.630760\n\nIf you think you found a bug, please report it here:\n    https://github.com/dbt-labs/metricflow/issues"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH monthly AS (\n  SELECT\n    DATE_TRUNC('MONTH', ORDER_DATE)::DATE AS MONTH_DATE,\n    SUM(IFF(IS_DELIVERED, 1, 0)) AS DELIVERED_ORDER_COUNT,\n    SUM(IFF(ORDER_STATUS = 'Delivered', SALES_AMOUNT, 0)) AS GMV_INR\n  FROM ZOMATO_DLR.CORE.FACT_ORDER\n  WHERE ORDER_DATE >= '2025-01-01'\n    AND ORDER_DATE < '2026-01-01'\n    AND CURRENCY = 'INR'\n  GROUP BY 1\n), comparison AS (\n  SELECT\n    SUM(IFF(MONTH_DATE = '2025-01-01', DELIVERED_ORDER_COUNT, 0)) AS JAN_DELIVERED_ORDER_COUNT,\n    SUM(IFF(MONTH_DATE = '2025-01-01', GMV_INR, 0)) AS JAN_GMV_INR,\n    SUM(IFF(MONTH_DATE = '2025-12-01', DELIVERED_ORDER_COUNT, 0)) AS DEC_DELIVERED_ORDER_COUNT,\n    SUM(IFF(MONTH_DATE = '2025-12-01', GMV_INR, 0)) AS DEC_GMV_INR\n  FROM monthly\n)\nSELECT\n  JAN_DELIVERED_ORDER_COUNT,\n  JAN_GMV_INR,\n  JAN_GMV_INR / NULLIF(JAN_DELIVERED_ORDER_COUNT, 0) AS JAN_AOV_INR,\n  DEC_DELIVERED_ORDER_COUNT,\n  DEC_GMV_INR,\n  DEC_GMV_INR / NULLIF(DEC_DELIVERED_ORDER_COUNT, 0) AS DEC_AOV_INR,\n  100.0 * (DEC_DELIVERED_ORDER_COUNT - JAN_DELIVERED_ORDER_COUNT) / NULLIF(JAN_DELIVERED_ORDER_COUNT, 0) AS DELIVERED_ORDER_COUNT_PCT_CHANGE,\n  100.0 * ((DEC_GMV_INR / NULLIF(DEC_DELIVERED_ORDER_COUNT, 0)) - (JAN_GMV_INR / NULLIF(JAN_DELIVERED_ORDER_COUNT, 0))) / NULLIF(JAN_GMV_INR / NULLIF(JAN_DELIVERED_ORDER_COUNT, 0), 0) AS AOV_PCT_CHANGE\nFROM comparison",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 9.39,
+        "prompt_tokens": 3558,
+        "completion_tokens": 1025
+      },
+      "result": {
+        "columns": [
+          "JAN_DELIVERED_ORDER_COUNT",
+          "JAN_GMV_INR",
+          "JAN_AOV_INR",
+          "DEC_DELIVERED_ORDER_COUNT",
+          "DEC_GMV_INR",
+          "DEC_AOV_INR",
+          "DELIVERED_ORDER_COUNT_PCT_CHANGE",
+          "AOV_PCT_CHANGE"
+        ],
+        "rows": [
+          [
+            "286712",
+            "138573283.00",
+            "483.31874145",
+            "383530",
+            "185263071.00",
+            "483.04714364",
+            "33.768381",
+            "-0.056194346858"
+          ]
+        ],
+        "query_id": "01c7dec9-0001-b38b-0000-d29500046816",
+        "seconds": 0.59
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "For recorded orders in 2025 with currency INR, comparing January with December:\n\n| Metric | January 2025 | December 2025 |\n|---|---:|---:|\n| Delivered orders | 286,712 orders | 383,530 orders |\n| GMV | INR 138,573,283.00 | INR 185,263,071.00 |\n| AOV (GMV per delivered order) | INR 483.318741 | INR 483.047144 |\n\nPercentage change from January to December: delivered order count **+33.768381%**; AOV **−0.056194%**. Delivered order count grew faster; AOV decreased slightly.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.69,
+        "prompt_tokens": 4273,
+        "completion_tokens": 252
+      }
+    }
+  ],
+  "final_answer": "For recorded orders in 2025 with currency INR, comparing January with December:\n\n| Metric | January 2025 | December 2025 |\n|---|---:|---:|\n| Delivered orders | 286,712 orders | 383,530 orders |\n| GMV | INR 138,573,283.00 | INR 185,263,071.00 |\n| AOV (GMV per delivered order) | INR 483.318741 | INR 483.047144 |\n\nPercentage change from January to December: delivered order count **+33.768381%**; AOV **−0.056194%**. Delivered order count grew faster; AOV decreased slightly.",
+  "outcome": "answer",
+  "total_seconds": 21.57,
+  "finished_utc": "2026-10-21T03:53:29.738106+00:00"
+}

@@ -1,0 +1,103 @@
+{
+  "id": "B-Q18-r1",
+  "arm": "B",
+  "question_id": "Q18",
+  "stratum": "data",
+  "question": "For 2025 Delivered orders in INR, show up to three customer age segments ranked by Delivered order count. Include Delivered order count, GMV, and AOV, using the existing customer dimension's segment labels. If fewer than three segments occur, report only those present.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "968aad7d611f901a7d8dfa1d40ac00ed82254c5407f1175667aee50fc5949a8c",
+  "question_sha256": "43755eab8a5718c24234f6fa409f14df3e4447edee255e17edc7340b37ed9afe",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:49:04.523830+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT u.AGE AS CUSTOMER_AGE_SEGMENT, COUNT(o.ORDER_ID) AS DELIVERED_ORDER_COUNT, SUM(f.DELIVERED_SALES_AMOUNT) AS GMV_INR, AVG(f.DELIVERED_SALES_AMOUNT) AS AOV_INR\nFROM ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE o\nJOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FINANCIALS f ON o.ORDER_ID = f.ORDER_ID\nJOIN ZOMATO_DLR.STAGING.STG_ZOMATO__USER u ON o.CUSTOMER_ID = u.CUSTOMER_ID\nWHERE o.ORDER_DATE >= '2025-01-01' AND o.ORDER_DATE < '2026-01-01'\n  AND o.CURRENCY = 'INR'\n  AND f.DELIVERED_SALES_AMOUNT IS NOT NULL\nORDER BY DELIVERED_ORDER_COUNT DESC\nLIMIT 3;",
+        "metrics": "Delivered order count, GMV, AOV (all for INR, delivered orders, 2025)",
+        "group_by": "Customer age segment label",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.8,
+        "prompt_tokens": 1704,
+        "completion_tokens": 252
+      },
+      "tool_error": "ProgrammingError: 000979 (42601): SQL compilation error:\n[U.AGE] is not a valid group by expression (request_id=d1b7f73a-ab0d-4ae4-b7c4-d115c21a22d2, sfqid=01c7de4d-0001-b442-0000-d29500040c86)"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT u.AGE AS CUSTOMER_AGE_SEGMENT, COUNT(o.ORDER_ID) AS DELIVERED_ORDER_COUNT, SUM(f.DELIVERED_SALES_AMOUNT) AS GMV_INR, AVG(f.DELIVERED_SALES_AMOUNT) AS AOV_INR\nFROM ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE o\nJOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FINANCIALS f ON o.ORDER_ID = f.ORDER_ID\nJOIN ZOMATO_DLR.STAGING.STG_ZOMATO__USER u ON o.CUSTOMER_ID = u.CUSTOMER_ID\nWHERE o.ORDER_DATE >= '2025-01-01' AND o.ORDER_DATE < '2026-01-01'\n  AND o.CURRENCY = 'INR'\n  AND f.DELIVERED_SALES_AMOUNT IS NOT NULL\nGROUP BY u.AGE\nORDER BY DELIVERED_ORDER_COUNT DESC\nLIMIT 3;",
+        "metrics": "Delivered order count, GMV, AOV (all for INR, delivered orders, 2025)",
+        "group_by": "Customer age segment label (u.AGE)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.67,
+        "prompt_tokens": 2080,
+        "completion_tokens": 263
+      },
+      "result": {
+        "columns": [
+          "CUSTOMER_AGE_SEGMENT",
+          "DELIVERED_ORDER_COUNT",
+          "GMV_INR",
+          "AOV_INR"
+        ],
+        "rows": [
+          [
+            "23",
+            "816654",
+            "361091281.00",
+            "442.15944696"
+          ],
+          [
+            "22",
+            "645755",
+            "285775099.00",
+            "442.54415219"
+          ],
+          [
+            "25",
+            "592537",
+            "262072908.00",
+            "442.28952454"
+          ]
+        ],
+        "query_id": "01c7de4d-0001-b38b-0000-d295000462b6",
+        "seconds": 1.63
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "Delivered order count, GMV, AOV (all for INR, delivered orders, 2025)",
+        "group_by": "Customer age segment label (u.AGE)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "For 2025 delivered orders in INR, the top three customer age segments by delivered order count are:\n\n1. Age 23: 816,654 delivered orders, GMV 361,091,281 INR, AOV 442.159447 INR\n2. Age 22: 645,755 delivered orders, GMV 285,775,099 INR, AOV 442.544152 INR\n3. Age 25: 592,537 delivered orders, GMV 262,072,908 INR, AOV 442.289525 INR\n\nAll values are for delivered orders in INR during 2025. Customer age segments are as labeled in the customer dimension. Fewer than three segments would have been reported if present. AOV is average order value (GMV divided by delivered order count).",
+        "reason": "Query grouped by customer age segment and ranked by delivered order count, as requested. All requested metrics and population details are included."
+      },
+      "model_stats": {
+        "seconds": 1.89,
+        "prompt_tokens": 2516,
+        "completion_tokens": 266
+      }
+    }
+  ],
+  "final_answer": "For 2025 delivered orders in INR, the top three customer age segments by delivered order count are:\n\n1. Age 23: 816,654 delivered orders, GMV 361,091,281 INR, AOV 442.159447 INR\n2. Age 22: 645,755 delivered orders, GMV 285,775,099 INR, AOV 442.544152 INR\n3. Age 25: 592,537 delivered orders, GMV 262,072,908 INR, AOV 442.289525 INR\n\nAll values are for delivered orders in INR during 2025. Customer age segments are as labeled in the customer dimension. Fewer than three segments would have been reported if present. AOV is average order value (GMV divided by delivered order count).",
+  "outcome": "answer",
+  "total_seconds": 7.3,
+  "finished_utc": "2026-10-21T01:49:11.822648+00:00"
+}

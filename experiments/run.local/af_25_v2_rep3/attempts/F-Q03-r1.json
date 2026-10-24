@@ -1,0 +1,85 @@
+{
+  "id": "F-Q03-r1",
+  "arm": "F",
+  "question_id": "Q03",
+  "stratum": "data",
+  "question": "What was AOV in INR for Delivered orders in the full year 2025? Use the recorded order date for the 2025 scope.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "57beaba4b4339db13b7043c2a2928cf39d5baa511836db3dbde6518945b0b963",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T02:45:20.746930+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "aov",
+        "group_by": "order_id__currency",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "Metricflow can directly calculate AOV by currency for delivered orders in 2025, using the defined metric and grouping by currency to isolate INR."
+      },
+      "model_stats": {
+        "seconds": 1.1,
+        "prompt_tokens": 3452,
+        "completion_tokens": 75
+      },
+      "tool_error": "RuntimeError: MetricFlow query failed: ERROR: Database Error\n  250003: Hit non-retryable SSL error, HTTPSConnectionPool(host='clyqnlt-ew90521.snowflakecomputing.com', port=443): Max retries exceeded with url: /session/v1/login-request?request_id=edc47734-5cf6-4be2-88a3-839f8cd751aa&databaseName=ZOMATO_DLR&schemaName=STAGING&warehouse=ZOMATO_WH&roleName=DBT_LAYER_REFACTOR_ROLE&request_guid=3f42b269-639f-41e5-af53-a44030ed9fba (Caused by SSLError(SSLError(\"bad handshake: SysCallError(32, 'EPIPE')\"))).\n  Verify that the hostnames and port numbers in SYSTEM$ALLOWLIST are added to your firewall's allowed list.\n  To further troubleshoot your connection you may reference the following article: https://docs.snowflake.com/en/user-guide/client-connectivity-troubleshooting/overview.\n\nLog File:: /Users/achmadrozie/Workstation/zomato-dbt-layer-refactor/dbt_zomato/logs/metricflow.log\nArtifact Path: /Users/achmadrozie/Workstation/zomato-dbt-layer-refactor/dbt_zomato/target/semantic_manifest.json\nArtifact Modified Time: 2026-10-20T17:28:57.630760\n\nIf you think you found a bug, please report it here:\n    https://github.com/dbt-labs/metricflow/issues"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT ROUND(SUM(DELIVERED_SALES_AMOUNT) / NULLIF(SUM(DELIVERED_ORDER_COUNT), 0), 6) AS AOV_INR_2025\nFROM ZOMATO_DLR.MARTS.MART_ORDER_CITY_CURRENCY_DAY_UTC\nWHERE ORDER_DATE_UTC >= '2025-01-01' AND ORDER_DATE_UTC < '2026-01-01'\n  AND CURRENCY = 'INR'",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "Metricflow is unavailable. This SQL calculates AOV for delivered orders in INR for 2025 by dividing total delivered sales by delivered order count, using the correct mart and currency filter."
+      },
+      "model_stats": {
+        "seconds": 1.51,
+        "prompt_tokens": 3916,
+        "completion_tokens": 157
+      },
+      "result": {
+        "columns": [
+          "AOV_INR_2025"
+        ],
+        "rows": [
+          [
+            "482.935288"
+          ]
+        ],
+        "query_id": "01c7de85-0001-b442-0000-d295000480ae",
+        "seconds": 0.11
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "aov",
+        "group_by": "order_id__currency",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "The average order value (AOV) for Delivered orders in INR for the full year 2025 was 482.935288 INR. This value is calculated as the total delivered sales amount divided by the number of delivered orders, considering only orders recorded in 2025 and reported in INR. Population: all delivered orders with currency INR and order date in 2025. Unit: INR per delivered order. Interpretation: On average, each delivered order in INR during 2025 had a sales value of approximately 482.94 INR.",
+        "reason": "The SQL result provides the requested AOV for delivered orders in INR for 2025, using the correct population and unit."
+      },
+      "model_stats": {
+        "seconds": 1.64,
+        "prompt_tokens": 4168,
+        "completion_tokens": 178
+      }
+    }
+  ],
+  "final_answer": "The average order value (AOV) for Delivered orders in INR for the full year 2025 was 482.935288 INR. This value is calculated as the total delivered sales amount divided by the number of delivered orders, considering only orders recorded in 2025 and reported in INR. Population: all delivered orders with currency INR and order date in 2025. Unit: INR per delivered order. Interpretation: On average, each delivered order in INR during 2025 had a sales value of approximately 482.94 INR.",
+  "outcome": "answer",
+  "total_seconds": 9.19,
+  "finished_utc": "2026-10-21T02:45:29.937205+00:00"
+}

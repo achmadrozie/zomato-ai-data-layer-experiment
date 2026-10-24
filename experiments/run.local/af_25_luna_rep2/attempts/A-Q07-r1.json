@@ -1,0 +1,39 @@
+{
+  "id": "A-Q07-r1",
+  "arm": "A",
+  "question_id": "Q07",
+  "stratum": "data",
+  "question": "Compare January and December 2025: Delivered order count, GMV in INR, and AOV in INR for each month. For both Delivered order count and AOV, calculate the percentage change from January to December as (December value minus January value) divided by January value times 100. Show both percentage changes and state which grew faster.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "ffde7fbebc6e393182946e35173dbc682d761b0a7108ddcb03258f03a9f8ef1e",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T06:16:56.810607+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "clarify",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "Please specify the GMV basis: should INR GMV be the sum of order SUBTOTAL, SALES_AMOUNT, or another field? These fields can include different components. I’ll calculate AOV as GMV divided by delivered orders unless you prefer a different definition."
+      },
+      "model_stats": {
+        "seconds": 6.14,
+        "prompt_tokens": 1345,
+        "completion_tokens": 407
+      }
+    }
+  ],
+  "final_answer": "Please specify the GMV basis: should INR GMV be the sum of order SUBTOTAL, SALES_AMOUNT, or another field? These fields can include different components. I’ll calculate AOV as GMV divided by delivered orders unless you prefer a different definition.",
+  "outcome": "clarification",
+  "total_seconds": 6.14,
+  "finished_utc": "2026-10-21T06:17:02.948215+00:00"
+}

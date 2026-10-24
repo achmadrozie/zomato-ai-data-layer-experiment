@@ -1,0 +1,94 @@
+{
+  "id": "B-Q19-r1",
+  "arm": "B",
+  "question_id": "Q19",
+  "stratum": "data",
+  "question": "Across every calendar date in 2025, including dates with zero Delivered orders, what was the average number of Delivered orders for each weekday? Which weekday had the highest average?",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "968aad7d611f901a7d8dfa1d40ac00ed82254c5407f1175667aee50fc5949a8c",
+  "question_sha256": "e1eaf3ef9b54696d69a4f4b213fbccf78b1cb1bfd78e3388cce48b93e7dfc197",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T03:40:29.848877+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH delivered_by_date AS (\n  SELECT ob.ORDER_DATE,\n         COUNT_IF(ofl.IS_DELIVERED) AS DELIVERED_ORDERS\n  FROM ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE ob\n  JOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FULFILLMENT ofl\n    ON ob.ORDER_ID = ofl.ORDER_ID\n  WHERE ob.ORDER_DATE >= '2025-01-01' AND ob.ORDER_DATE < '2026-01-01'\n  GROUP BY ob.ORDER_DATE\n)\nSELECT df.DAY_NAME AS WEEKDAY,\n       AVG(COALESCE(d.DELIVERED_ORDERS, 0)) AS AVG_DELIVERED_ORDERS_PER_CALENDAR_DATE\nFROM ZOMATO_DLR.INTERMEDIATE.INT_DATE_SPINE ds\nJOIN ZOMATO_DLR.INTERMEDIATE.INT_DATE_FEATURES df\n  ON ds.DATE_DAY = df.DATE_DAY\nLEFT JOIN delivered_by_date d\n  ON ds.DATE_DAY = d.ORDER_DATE\nWHERE ds.DATE_DAY >= '2025-01-01' AND ds.DATE_DAY < '2026-01-01'\nGROUP BY df.DAY_NAME\nORDER BY AVG_DELIVERED_ORDERS_PER_CALENDAR_DATE DESC",
+        "metrics": "Average count of orders with IS_DELIVERED = TRUE, averaged over every calendar date in 2025, including dates with zero delivered orders.",
+        "group_by": "Weekday",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 7.55,
+        "prompt_tokens": 1682,
+        "completion_tokens": 670
+      },
+      "result": {
+        "columns": [
+          "WEEKDAY",
+          "AVG_DELIVERED_ORDERS_PER_CALENDAR_DATE"
+        ],
+        "rows": [
+          [
+            "Sat",
+            "14486.211538"
+          ],
+          [
+            "Sun",
+            "13119.134615"
+          ],
+          [
+            "Fri",
+            "12228.980769"
+          ],
+          [
+            "Thu",
+            "9473.653846"
+          ],
+          [
+            "Mon",
+            "9094.365385"
+          ],
+          [
+            "Tue",
+            "9082.788462"
+          ],
+          [
+            "Wed",
+            "9053.773585"
+          ]
+        ],
+        "query_id": "01c7debc-0001-b38b-0000-d295000467ae",
+        "seconds": 1.73
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "Weekday",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "Average Delivered orders per calendar date in 2025 (including dates with zero Delivered orders): Monday 9,094.365385; Tuesday 9,082.788462; Wednesday 9,053.773585; Thursday 9,473.653846; Friday 12,228.980769; Saturday 14,486.211538; Sunday 13,119.134615. Saturday had the highest average, at 14,486.211538 Delivered orders per calendar date. These are averages across all 2025 dates for each weekday, counting orders where IS_DELIVERED is TRUE.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.71,
+        "prompt_tokens": 2179,
+        "completion_tokens": 247
+      }
+    }
+  ],
+  "final_answer": "Average Delivered orders per calendar date in 2025 (including dates with zero Delivered orders): Monday 9,094.365385; Tuesday 9,082.788462; Wednesday 9,053.773585; Thursday 9,473.653846; Friday 12,228.980769; Saturday 14,486.211538; Sunday 13,119.134615. Saturday had the highest average, at 14,486.211538 Delivered orders per calendar date. These are averages across all 2025 dates for each weekday, counting orders where IS_DELIVERED is TRUE.",
+  "outcome": "answer",
+  "total_seconds": 12.99,
+  "finished_utc": "2026-10-21T03:40:42.842121+00:00"
+}

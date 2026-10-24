@@ -1,0 +1,137 @@
+{
+  "id": "F-Q15-r1",
+  "arm": "F",
+  "question_id": "Q15",
+  "stratum": "data",
+  "question": "In 2025, what share of orders contained more than one item line? Compare average ordered units per order for one-line and multi-line orders; also report orders with no item line separately.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "597a068c5b5f4f3b488102e5fb6ff26da6762c24c56b9a012f2123b3304db3dc",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T00:02:55.583958+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT \n  CASE \n    WHEN i.ITEM_LINE_COUNT IS NULL OR i.ITEM_LINE_COUNT = 0 THEN 'No item line'\n    WHEN i.ITEM_LINE_COUNT = 1 THEN 'One item line'\n    ELSE 'Multi-line order'\n  END AS order_line_type,\n  COUNT(o.ORDER_ID) AS order_count,\n  SUM(i.ITEM_QUANTITY) AS total_ordered_quantity,\n  AVG(i.ITEM_QUANTITY) AS avg_ordered_quantity_per_order\nFROM ZOMATO_DLR.CORE.FACT_ORDER o\nLEFT JOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_ITEM_ROLLUP i\n  ON o.ORDER_ID = i.ORDER_ID\nWHERE o.ORDER_DATE >= '2025-01-01' AND o.ORDER_DATE < '2026-01-01'\nGROUP BY 1\nORDER BY 1;",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.58,
+        "prompt_tokens": 3462,
+        "completion_tokens": 212
+      },
+      "result": {
+        "columns": [
+          "ORDER_LINE_TYPE",
+          "ORDER_COUNT",
+          "TOTAL_ORDERED_QUANTITY",
+          "AVG_ORDERED_QUANTITY_PER_ORDER"
+        ],
+        "rows": [
+          [
+            "Multi-line order",
+            "3052089",
+            "10635826",
+            "3.484769"
+          ],
+          [
+            "One item line",
+            "1307684",
+            "1595051",
+            "1.219753"
+          ]
+        ],
+        "query_id": "01c7dde2-0001-b38b-0000-d29500044e5a",
+        "seconds": 0.98
+      }
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT COUNT(o.ORDER_ID) AS total_orders\nFROM ZOMATO_DLR.CORE.FACT_ORDER o\nWHERE o.ORDER_DATE >= '2025-01-01' AND o.ORDER_DATE < '2026-01-01';",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "Needed to calculate the share of each order type, including those with no item line, by getting the total number of orders in 2025."
+      },
+      "model_stats": {
+        "seconds": 1.72,
+        "prompt_tokens": 3816,
+        "completion_tokens": 102
+      },
+      "result": {
+        "columns": [
+          "TOTAL_ORDERS"
+        ],
+        "rows": [
+          [
+            "4359773"
+          ]
+        ],
+        "query_id": "01c7dde3-0001-b442-0000-d295000407ce",
+        "seconds": 0.18
+      }
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT COUNT(o.ORDER_ID) AS orders_with_item_lines\nFROM ZOMATO_DLR.INTERMEDIATE.INT_ORDER_ITEM_ROLLUP i\nJOIN ZOMATO_DLR.CORE.FACT_ORDER o ON o.ORDER_ID = i.ORDER_ID\nWHERE o.ORDER_DATE >= '2025-01-01' AND o.ORDER_DATE < '2026-01-01';",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "Needed to determine the number of orders with at least one item line, so we can infer the count of orders with no item line by subtracting from the total."
+      },
+      "model_stats": {
+        "seconds": 1.97,
+        "prompt_tokens": 4009,
+        "completion_tokens": 132
+      },
+      "result": {
+        "columns": [
+          "ORDERS_WITH_ITEM_LINES"
+        ],
+        "rows": [
+          [
+            "4359773"
+          ]
+        ],
+        "query_id": "01c7dde3-0001-b38b-0000-d29500044e5e",
+        "seconds": 1.16
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "In 2025, all recorded orders (4,359,773) contained at least one item line; there were no orders with zero item lines in the data. \n\n- Multi-line orders (more than one item line): 3,052,089 orders, which is 70.03% of all orders. The average ordered units per multi-line order was 3.484769.\n- One-line orders (exactly one item line): 1,307,684 orders, which is 29.97% of all orders. The average ordered units per one-line order was 1.219753.\n- Orders with no item line: 0 orders (0.00%).\n\nInterpretation: The vast majority of orders (70%) contained more than one item line, and these orders had a much higher average number of ordered units per order compared to single-line orders. There were no orders without item lines in the 2025 data. All shares are out of the total 4,359,773 orders. Units are in ordered item units per order.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.75,
+        "prompt_tokens": 4268,
+        "completion_tokens": 247
+      }
+    }
+  ],
+  "final_answer": "In 2025, all recorded orders (4,359,773) contained at least one item line; there were no orders with zero item lines in the data. \n\n- Multi-line orders (more than one item line): 3,052,089 orders, which is 70.03% of all orders. The average ordered units per multi-line order was 3.484769.\n- One-line orders (exactly one item line): 1,307,684 orders, which is 29.97% of all orders. The average ordered units per one-line order was 1.219753.\n- Orders with no item line: 0 orders (0.00%).\n\nInterpretation: The vast majority of orders (70%) contained more than one item line, and these orders had a much higher average number of ordered units per order compared to single-line orders. There were no orders without item lines in the 2025 data. All shares are out of the total 4,359,773 orders. Units are in ordered item units per order.",
+  "outcome": "answer",
+  "total_seconds": 11.34,
+  "finished_utc": "2026-10-21T00:03:06.927338+00:00"
+}

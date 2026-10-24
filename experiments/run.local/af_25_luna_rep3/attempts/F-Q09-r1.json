@@ -1,0 +1,78 @@
+{
+  "id": "F-Q09-r1",
+  "arm": "F",
+  "question_id": "Q09",
+  "stratum": "data",
+  "question": "Among order-recorded cities with at least 50,000 total orders in 2025, which had the highest cancellation rate? Give its order count, cancellation rate, and gap versus the overall 2025 cancellation rate in percentage points.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "6e0a1cd1cbada372d52c245b3fa84cdc25c7a0c50ae89b3d0d2e75a314024446",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T06:27:16.541443+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH city_rates AS (\n    SELECT\n        CITY,\n        COUNT(*) AS ORDER_COUNT,\n        SUM(IFF(IS_CANCELLED, 1, 0)) AS CANCELLED_ORDER_COUNT,\n        SUM(IFF(IS_CANCELLED, 1, 0)) / COUNT(*)::FLOAT AS CANCELLATION_RATE\n    FROM ZOMATO_DLR.CORE.FACT_ORDER\n    WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n    GROUP BY CITY\n    HAVING COUNT(*) >= 50000\n), overall_rate AS (\n    SELECT\n        SUM(IFF(IS_CANCELLED, 1, 0)) / COUNT(*)::FLOAT AS OVERALL_CANCELLATION_RATE\n    FROM ZOMATO_DLR.CORE.FACT_ORDER\n    WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n)\nSELECT\n    c.CITY,\n    c.ORDER_COUNT,\n    c.CANCELLED_ORDER_COUNT,\n    c.CANCELLATION_RATE,\n    o.OVERALL_CANCELLATION_RATE,\n    (c.CANCELLATION_RATE - o.OVERALL_CANCELLATION_RATE) * 100 AS GAP_VS_OVERALL_PP\nFROM city_rates c\nCROSS JOIN overall_rate o\nORDER BY c.CANCELLATION_RATE DESC, c.CITY\nLIMIT 1",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 5.66,
+        "prompt_tokens": 3469,
+        "completion_tokens": 516
+      },
+      "result": {
+        "columns": [
+          "CITY",
+          "ORDER_COUNT",
+          "CANCELLED_ORDER_COUNT",
+          "CANCELLATION_RATE",
+          "OVERALL_CANCELLATION_RATE",
+          "GAP_VS_OVERALL_PP"
+        ],
+        "rows": [
+          [
+            "Hyderabad",
+            "319122",
+            "19236",
+            "0.06027788745370109",
+            "0.05997009477328292",
+            "0.030779268041817437"
+          ]
+        ],
+        "query_id": "01c7df63-0001-b38b-0000-d29500046b6e",
+        "seconds": 0.52
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "Hyderabad had the highest cancellation rate among order-recorded cities with at least 50,000 orders in 2025: 319,122 total orders, of which 19,236 were cancelled. Its cancellation rate was 6.027789%, compared with 5.997009% overall across all 2025 orders—a gap of +0.030779 percentage points.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.43,
+        "prompt_tokens": 3963,
+        "completion_tokens": 195
+      }
+    }
+  ],
+  "final_answer": "Hyderabad had the highest cancellation rate among order-recorded cities with at least 50,000 orders in 2025: 319,122 total orders, of which 19,236 were cancelled. Its cancellation rate was 6.027789%, compared with 5.997009% overall across all 2025 orders—a gap of +0.030779 percentage points.",
+  "outcome": "answer",
+  "total_seconds": 9.62,
+  "finished_utc": "2026-10-21T06:27:26.162335+00:00"
+}

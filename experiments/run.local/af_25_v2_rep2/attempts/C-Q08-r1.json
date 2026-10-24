@@ -1,0 +1,85 @@
+{
+  "id": "C-Q08-r1",
+  "arm": "C",
+  "question_id": "Q08",
+  "stratum": "data",
+  "question": "For 2025, list the top three order-recorded cities by Delivered-order GMV in INR. For each city, also show Delivered order count and AOV. Treat each exact city label as one city.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "88b3e1ffc60ed7e564ccdf820987cc82a3ff0e5dce15f6f2fe18ac3ab2472cfd",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:44:52.261642+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT CITY, \n       SUM(DELIVERED_SALES_AMOUNT) AS DELIVERED_GMV_INR, \n       COUNT(CASE WHEN IS_DELIVERED = TRUE THEN 1 END) AS DELIVERED_ORDER_COUNT, \n       CASE WHEN COUNT(CASE WHEN IS_DELIVERED = TRUE THEN 1 END) > 0 THEN SUM(DELIVERED_SALES_AMOUNT) / COUNT(CASE WHEN IS_DELIVERED = TRUE THEN 1 END) ELSE NULL END AS AOV_INR\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n  AND IS_DELIVERED = TRUE\n  AND CURRENCY = 'INR'\nGROUP BY CITY\nORDER BY DELIVERED_GMV_INR DESC\nLIMIT 3;",
+        "metrics": "DELIVERED_GMV_INR, DELIVERED_ORDER_COUNT, AOV_INR",
+        "group_by": "CITY",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.63,
+        "prompt_tokens": 2195,
+        "completion_tokens": 242
+      },
+      "result": {
+        "columns": [
+          "CITY",
+          "DELIVERED_GMV_INR",
+          "DELIVERED_ORDER_COUNT",
+          "AOV_INR"
+        ],
+        "rows": [
+          [
+            "Bangalore",
+            "233341258.00",
+            "440743",
+            "529.42703117"
+          ],
+          [
+            "Delhi",
+            "177702873.00",
+            "339384",
+            "523.60415635"
+          ],
+          [
+            "Chennai",
+            "155055243.00",
+            "310963",
+            "498.62923563"
+          ]
+        ],
+        "query_id": "01c7de48-0001-b442-0000-d29500040bfa",
+        "seconds": 0.21
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "DELIVERED_GMV_INR, DELIVERED_ORDER_COUNT, AOV_INR",
+        "group_by": "CITY",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "For 2025, the top three order-recorded cities by Delivered-order GMV in INR are:\n\n1. Bangalore: Delivered GMV = 233,341,258.00 INR, Delivered order count = 440,743, AOV = 529.427031 INR\n2. Delhi: Delivered GMV = 177,702,873.00 INR, Delivered order count = 339,384, AOV = 523.604156 INR\n3. Chennai: Delivered GMV = 155,055,243.00 INR, Delivered order count = 310,963, AOV = 498.629236 INR\n\nPopulation: All delivered orders in 2025 with currency INR, grouped by exact city label. Units: GMV and AOV in INR, order count as integer. Interpretation: Bangalore led in delivered GMV, order count, and had the highest average order value among the top three cities.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.72,
+        "prompt_tokens": 2608,
+        "completion_tokens": 253
+      }
+    }
+  ],
+  "final_answer": "For 2025, the top three order-recorded cities by Delivered-order GMV in INR are:\n\n1. Bangalore: Delivered GMV = 233,341,258.00 INR, Delivered order count = 440,743, AOV = 529.427031 INR\n2. Delhi: Delivered GMV = 177,702,873.00 INR, Delivered order count = 339,384, AOV = 523.604156 INR\n3. Chennai: Delivered GMV = 155,055,243.00 INR, Delivered order count = 310,963, AOV = 498.629236 INR\n\nPopulation: All delivered orders in 2025 with currency INR, grouped by exact city label. Units: GMV and AOV in INR, order count as integer. Interpretation: Bangalore led in delivered GMV, order count, and had the highest average order value among the top three cities.",
+  "outcome": "answer",
+  "total_seconds": 3.56,
+  "finished_utc": "2026-10-21T01:44:55.816860+00:00"
+}

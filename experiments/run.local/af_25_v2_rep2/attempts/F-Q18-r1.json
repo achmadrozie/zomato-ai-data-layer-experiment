@@ -1,0 +1,97 @@
+{
+  "id": "F-Q18-r1",
+  "arm": "F",
+  "question_id": "Q18",
+  "stratum": "data",
+  "question": "For 2025 Delivered orders in INR, show up to three customer age segments ranked by Delivered order count. Include Delivered order count, GMV, and AOV, using the existing customer dimension's segment labels. If fewer than three segments occur, report only those present.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "43755eab8a5718c24234f6fa409f14df3e4447edee255e17edc7340b37ed9afe",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T01:42:18.444313+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "count_order_delivered,gmv,aov",
+        "group_by": "customer_id__age_segment",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "Metricflow can directly group by customer age segment and filter by year and currency. I will filter for INR and Delivered orders, then rank by delivered order count."
+      },
+      "model_stats": {
+        "seconds": 1.45,
+        "prompt_tokens": 3478,
+        "completion_tokens": 86
+      },
+      "tool_error": "RuntimeError: MetricFlow query failed: ERROR: Database Error\n  250003: Hit non-retryable SSL error, HTTPSConnectionPool(host='clyqnlt-ew90521.snowflakecomputing.com', port=443): Max retries exceeded with url: /session/v1/login-request?request_id=3fc0cd0e-7e41-418b-9e11-8183a5e54af0&databaseName=ZOMATO_DLR&schemaName=STAGING&warehouse=ZOMATO_WH&roleName=DBT_LAYER_REFACTOR_ROLE&request_guid=11931ac7-1635-4e18-af01-f514ade208e5 (Caused by SSLError(SSLError(\"bad handshake: SysCallError(32, 'EPIPE')\"))).\n  Verify that the hostnames and port numbers in SYSTEM$ALLOWLIST are added to your firewall's allowed list.\n  To further troubleshoot your connection you may reference the following article: https://docs.snowflake.com/en/user-guide/client-connectivity-troubleshooting/overview.\n\nLog File:: /Users/achmadrozie/Workstation/zomato-dbt-layer-refactor/dbt_zomato/logs/metricflow.log\nArtifact Path: /Users/achmadrozie/Workstation/zomato-dbt-layer-refactor/dbt_zomato/target/semantic_manifest.json\nArtifact Modified Time: 2026-10-20T17:28:57.630760\n\nIf you think you found a bug, please report it here:\n    https://github.com/dbt-labs/metricflow/issues"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT c.AGE_SEGMENT, COUNT(o.ORDER_ID) AS DELIVERED_ORDER_COUNT, SUM(o.SALES_AMOUNT) AS GMV, AVG(o.SALES_AMOUNT) AS AOV\nFROM ZOMATO_DLR.CORE.FACT_ORDER o\nJOIN ZOMATO_DLR.CORE.DIM_CUSTOMER c ON o.CUSTOMER_ID = c.CUSTOMER_ID\nWHERE o.ORDER_DATE >= '2025-01-01' AND o.ORDER_DATE < '2026-01-01'\n  AND o.CURRENCY = 'INR'\n  AND o.IS_DELIVERED = TRUE\nGROUP BY c.AGE_SEGMENT\nORDER BY DELIVERED_ORDER_COUNT DESC\nLIMIT 3;",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "Metricflow is unavailable. This SQL query will return the top three customer age segments by delivered order count for 2025 INR Delivered orders, including delivered order count, GMV, and AOV."
+      },
+      "model_stats": {
+        "seconds": 1.61,
+        "prompt_tokens": 3954,
+        "completion_tokens": 211
+      },
+      "result": {
+        "columns": [
+          "AGE_SEGMENT",
+          "DELIVERED_ORDER_COUNT",
+          "GMV",
+          "AOV"
+        ],
+        "rows": [
+          [
+            "Gen Z",
+            "2222349",
+            "1073372395.00",
+            "482.99002317"
+          ],
+          [
+            "Millennial",
+            "1766728",
+            "853093653.00",
+            "482.86643615"
+          ]
+        ],
+        "query_id": "01c7de46-0001-b38b-0000-d295000461e6",
+        "seconds": 0.61
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "Delivered order count, GMV, AOV",
+        "group_by": "customer age segment (dimension label)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "For 2025 Delivered orders in INR, the top customer age segments by Delivered order count are:\n\n1. Gen Z: 2,222,349 Delivered orders, GMV 1,073,372,395.00 INR, AOV 482.990023 INR\n2. Millennial: 1,766,728 Delivered orders, GMV 853,093,653.00 INR, AOV 482.866436 INR\n\nOnly two age segments occurred in the data. All values are for Delivered orders in INR, using the customer dimension's segment labels. AOV is the average sales amount per Delivered order. Units: order count (orders), GMV (INR), AOV (INR/order).",
+        "reason": "The SQL result showed only two age segments with Delivered orders in INR for 2025. All requested metrics and labels are included, with correct units and interpretation."
+      },
+      "model_stats": {
+        "seconds": 2.08,
+        "prompt_tokens": 4314,
+        "completion_tokens": 240
+      }
+    }
+  ],
+  "final_answer": "For 2025 Delivered orders in INR, the top customer age segments by Delivered order count are:\n\n1. Gen Z: 2,222,349 Delivered orders, GMV 1,073,372,395.00 INR, AOV 482.990023 INR\n2. Millennial: 1,766,728 Delivered orders, GMV 853,093,653.00 INR, AOV 482.866436 INR\n\nOnly two age segments occurred in the data. All values are for Delivered orders in INR, using the customer dimension's segment labels. AOV is the average sales amount per Delivered order. Units: order count (orders), GMV (INR), AOV (INR/order).",
+  "outcome": "answer",
+  "total_seconds": 8.04,
+  "finished_utc": "2026-10-21T01:42:26.479607+00:00"
+}

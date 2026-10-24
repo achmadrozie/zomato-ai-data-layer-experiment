@@ -1,0 +1,92 @@
+{
+  "id": "E-Q05-r1",
+  "arm": "E",
+  "question_id": "Q05",
+  "stratum": "data",
+  "question": "What was ordered quantity per order for the full year 2025? Use the recorded order date for the 2025 scope.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "a99a688c8b74f2d1acf86ffb095d4085e198af8d169bb3f0b5cd089f5752e8ce",
+  "question_sha256": "ea883bbd9440eaafaff5343a59ff8dcbd1aa4f1afa8c0d1e08ce4956a43b2a3e",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T02:47:07.219288+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "ordered_quantity_per_order",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "The user requested the ordered quantity per order for the full year 2025 using the recorded order date. The metricflow tool can directly provide this metric at the requested grain and time scope."
+      },
+      "model_stats": {
+        "seconds": 1.14,
+        "prompt_tokens": 3064,
+        "completion_tokens": 81
+      },
+      "tool_error": "RuntimeError: MetricFlow query failed: ERROR: Database Error\n  250003: Hit non-retryable SSL error, HTTPSConnectionPool(host='clyqnlt-ew90521.snowflakecomputing.com', port=443): Max retries exceeded with url: /session/v1/login-request?request_id=a2e9358f-6bdb-4b68-8031-686bef15498c&databaseName=ZOMATO_DLR&schemaName=STAGING&warehouse=ZOMATO_WH&roleName=DBT_LAYER_REFACTOR_ROLE&request_guid=6ee3e6e7-5e0b-48b3-8ff3-76beb705b729 (Caused by SSLError(SSLError(\"bad handshake: SysCallError(32, 'EPIPE')\"))).\n  Verify that the hostnames and port numbers in SYSTEM$ALLOWLIST are added to your firewall's allowed list.\n  To further troubleshoot your connection you may reference the following article: https://docs.snowflake.com/en/user-guide/client-connectivity-troubleshooting/overview.\n\nLog File:: /Users/achmadrozie/Workstation/zomato-dbt-layer-refactor/dbt_zomato/logs/metricflow.log\nArtifact Path: /Users/achmadrozie/Workstation/zomato-dbt-layer-refactor/dbt_zomato/target/semantic_manifest.json\nArtifact Modified Time: 2026-10-20T17:28:57.630760\n\nIf you think you found a bug, please report it here:\n    https://github.com/dbt-labs/metricflow/issues"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT SUM(ORDERED_QUANTITY) / NULLIF(SUM(ORDER_COUNT), 0) AS ORDERED_QUANTITY_PER_ORDER\nFROM ZOMATO_DLR.MARTS.MART_ORDER_ITEM_CITY_CURRENCY_DAY_UTC\nWHERE ORDER_DATE_UTC >= '2025-01-01' AND ORDER_DATE_UTC < '2026-01-01';",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "Metricflow is unavailable, so I will calculate ordered quantity per order for 2025 using the marts table, summing ordered quantity and order count for the year and dividing."
+      },
+      "model_stats": {
+        "seconds": 1.19,
+        "prompt_tokens": 3538,
+        "completion_tokens": 135
+      },
+      "tool_error": "ProgrammingError: 000904 (42000): SQL compilation error: error line 1 at position 42\ninvalid identifier 'ORDER_COUNT' (request_id=986663b4-b196-4925-9116-7fda30d4f387, sfqid=01c7de87-0001-b38b-0000-d2950004671e)"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT SUM(ORDERED_QUANTITY) / NULLIF(COUNT(DISTINCT ORDER_ID), 0) AS ORDERED_QUANTITY_PER_ORDER\nFROM ZOMATO_DLR.CORE.FACT_ORDER_ITEM\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01';",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "The previous marts table does not have order count, so I will use the FACT_ORDER_ITEM table, summing ordered quantity and dividing by the distinct order count for 2025."
+      },
+      "model_stats": {
+        "seconds": 1.12,
+        "prompt_tokens": 3795,
+        "completion_tokens": 127
+      },
+      "tool_error": "ProgrammingError: 000904 (42000): SQL compilation error: error line 1 at position 11\ninvalid identifier 'ORDERED_QUANTITY' (request_id=f0e9c070-e5bd-4963-ac52-f5ea96b9e09d, sfqid=01c7de87-0001-b38b-0000-d29500046722)"
+    },
+    {
+      "action": {
+        "kind": "clarify",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "A required data field is missing: the FACT_ORDER_ITEM table does not contain an 'ORDERED_QUANTITY' column, and the marts table does not provide order count at the required grain. Without a valid source for both total ordered quantity and total order count for 2025, the ordered quantity per order cannot be calculated from the accessible data. Please clarify which table or metric should be used to obtain both total ordered quantity and total order count for the year 2025."
+      },
+      "model_stats": {
+        "seconds": 1.35,
+        "prompt_tokens": 4078,
+        "completion_tokens": 119
+      }
+    }
+  ],
+  "final_answer": "A required data field is missing: the FACT_ORDER_ITEM table does not contain an 'ORDERED_QUANTITY' column, and the marts table does not provide order count at the required grain. Without a valid source for both total ordered quantity and total order count for 2025, the ordered quantity per order cannot be calculated from the accessible data. Please clarify which table or metric should be used to obtain both total ordered quantity and total order count for the year 2025.",
+  "outcome": "clarification",
+  "total_seconds": 7.25,
+  "finished_utc": "2026-10-21T02:47:14.470065+00:00"
+}

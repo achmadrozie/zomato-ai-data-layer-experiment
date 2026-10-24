@@ -1,0 +1,76 @@
+{
+  "id": "B-Q10-r1",
+  "arm": "B",
+  "question_id": "Q10",
+  "stratum": "data",
+  "question": "For Delivered orders in 2025 with a recorded delivery duration, compare the average delivery time in order-recorded Bangalore and Delhi. Which city was slower, and by how many minutes?",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "968aad7d611f901a7d8dfa1d40ac00ed82254c5407f1175667aee50fc5949a8c",
+  "question_sha256": "a5ab611d5fcdfe1de5ae276f83652dbfb9eb7150fb423aacb910c78cbf03a38c",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:48:50.930069+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT CITY, AVG(DELIVERY_TIME_MIN) AS AVG_DELIVERY_TIME_MIN, COUNT(*) AS ORDER_COUNT\nFROM ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE ob\nJOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FULFILLMENT ofu ON ob.ORDER_ID = ofu.ORDER_ID\nWHERE ob.ORDER_DATE >= '2025-01-01' AND ob.ORDER_DATE < '2026-01-01'\n  AND ofu.IS_DELIVERED = TRUE\n  AND ofu.DELIVERY_TIME_MIN IS NOT NULL\n  AND CITY IN ('Bangalore', 'Delhi')\nGROUP BY CITY",
+        "metrics": "AVG(DELIVERY_TIME_MIN), ORDER_COUNT",
+        "group_by": "CITY",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.6,
+        "prompt_tokens": 1686,
+        "completion_tokens": 181
+      },
+      "result": {
+        "columns": [
+          "CITY",
+          "AVG_DELIVERY_TIME_MIN",
+          "ORDER_COUNT"
+        ],
+        "rows": [
+          [
+            "Delhi",
+            "31.0484820",
+            "339384"
+          ],
+          [
+            "Bangalore",
+            "31.0560894",
+            "440743"
+          ]
+        ],
+        "query_id": "01c7de4c-0001-b442-0000-d29500040c7a",
+        "seconds": 0.19
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "Average delivery time (minutes) for delivered 2025 orders with recorded delivery duration: Bangalore = 31.056089, Delhi = 31.048482. Population: 440,743 orders (Bangalore), 339,384 orders (Delhi).",
+        "group_by": "CITY",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "In 2025, for delivered orders with a recorded delivery duration, Bangalore had an average delivery time of 31.056089 minutes, while Delhi had an average of 31.048482 minutes. Bangalore was slower by 0.007607 minutes (about 0.46 seconds). The difference is extremely small and likely not operationally significant.",
+        "reason": "Both cities had nearly identical average delivery times for delivered orders in 2025, with Bangalore being marginally slower."
+      },
+      "model_stats": {
+        "seconds": 1.55,
+        "prompt_tokens": 1993,
+        "completion_tokens": 186
+      }
+    }
+  ],
+  "final_answer": "In 2025, for delivered orders with a recorded delivery duration, Bangalore had an average delivery time of 31.056089 minutes, while Delhi had an average of 31.048482 minutes. Bangalore was slower by 0.007607 minutes (about 0.46 seconds). The difference is extremely small and likely not operationally significant.",
+  "outcome": "answer",
+  "total_seconds": 3.35,
+  "finished_utc": "2026-10-21T01:48:54.283556+00:00"
+}

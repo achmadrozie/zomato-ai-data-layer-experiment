@@ -1,0 +1,194 @@
+{
+  "id": "A-Q21-r1",
+  "arm": "A",
+  "question_id": "Q21",
+  "stratum": "data",
+  "question": "Across the twelve calendar months of 2025, compute the Pearson correlation between monthly cancellation rate and average Delivered-order delivery time using SQL's CORR() function. Monthly cancellation rate = cancelled orders divided by all orders. Average delivery time = mean of delivery_time_min for Delivered orders with a non-null delivery duration only. Report the correlation coefficient, the number of months used, and whether that correlation alone supports a causal claim.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "43968c3cf736550a6edfb6bc71c34af46d6463670472144a22383f4bd85d921c",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:49:11.824232+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT \n  TO_CHAR(ORDER_DATE, 'YYYY-MM') AS month,\n  COUNT(*) AS total_orders,\n  SUM(CASE WHEN IS_CANCELLED THEN 1 ELSE 0 END) AS cancelled_orders,\n  SUM(CASE WHEN IS_DELIVERED AND DELIVERY_TIME_MIN IS NOT NULL THEN 1 ELSE 0 END) AS delivered_orders_with_time,\n  AVG(CASE WHEN IS_DELIVERED AND DELIVERY_TIME_MIN IS NOT NULL THEN DELIVERY_TIME_MIN ELSE NULL END) AS avg_delivery_time_min,\n  (SUM(CASE WHEN IS_CANCELLED THEN 1 ELSE 0 END) * 1.0 / COUNT(*)) AS cancellation_rate\nFROM ZOMATO_DLR.STAGING.STG_ZOMATO__ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\nGROUP BY TO_CHAR(ORDER_DATE, 'YYYY-MM')\nORDER BY month;",
+        "metrics": "monthly cancellation rate, average delivery time (delivered orders only)",
+        "group_by": "month (YYYY-MM)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "First, we need to compute the monthly cancellation rate and average delivery time for each month in 2025 before calculating the Pearson correlation between these two metrics."
+      },
+      "model_stats": {
+        "seconds": 1.83,
+        "prompt_tokens": 1362,
+        "completion_tokens": 287
+      },
+      "result": {
+        "columns": [
+          "MONTH",
+          "TOTAL_ORDERS",
+          "CANCELLED_ORDERS",
+          "DELIVERED_ORDERS_WITH_TIME",
+          "AVG_DELIVERY_TIME_MIN",
+          "CANCELLATION_RATE"
+        ],
+        "rows": [
+          [
+            "2025-01",
+            "313461",
+            "18979",
+            "286712",
+            "31.0460776",
+            "0.060547"
+          ],
+          [
+            "2025-02",
+            "293542",
+            "17560",
+            "268570",
+            "31.0880404",
+            "0.059821"
+          ],
+          [
+            "2025-03",
+            "338799",
+            "20381",
+            "310046",
+            "31.0834263",
+            "0.060157"
+          ],
+          [
+            "2025-04",
+            "329474",
+            "19556",
+            "301706",
+            "31.0723784",
+            "0.059355"
+          ],
+          [
+            "2025-05",
+            "358565",
+            "21408",
+            "328311",
+            "31.0927048",
+            "0.059705"
+          ],
+          [
+            "2025-06",
+            "353065",
+            "21334",
+            "322898",
+            "31.0628651",
+            "0.060425"
+          ],
+          [
+            "2025-07",
+            "369692",
+            "22078",
+            "338254",
+            "31.0602092",
+            "0.059720"
+          ],
+          [
+            "2025-08",
+            "394089",
+            "23602",
+            "360436",
+            "31.0834267",
+            "0.059890"
+          ],
+          [
+            "2025-09",
+            "378620",
+            "22524",
+            "346662",
+            "31.0970975",
+            "0.059490"
+          ],
+          [
+            "2025-10",
+            "402668",
+            "24351",
+            "368301",
+            "31.0946834",
+            "0.060474"
+          ],
+          [
+            "2025-11",
+            "408891",
+            "24727",
+            "373651",
+            "31.0823790",
+            "0.060473"
+          ],
+          [
+            "2025-12",
+            "418907",
+            "24956",
+            "383530",
+            "31.0304070",
+            "0.059574"
+          ]
+        ],
+        "query_id": "01c7de4d-0001-b442-0000-d29500040c8a",
+        "seconds": 0.15
+      }
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT CORR(cancellation_rate, avg_delivery_time_min) AS pearson_corr\nFROM (\n  SELECT \n    TO_CHAR(ORDER_DATE, 'YYYY-MM') AS month,\n    (SUM(CASE WHEN IS_CANCELLED THEN 1 ELSE 0 END) * 1.0 / COUNT(*)) AS cancellation_rate,\n    AVG(CASE WHEN IS_DELIVERED AND DELIVERY_TIME_MIN IS NOT NULL THEN DELIVERY_TIME_MIN ELSE NULL END) AS avg_delivery_time_min\n  FROM ZOMATO_DLR.STAGING.STG_ZOMATO__ORDER\n  WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n  GROUP BY TO_CHAR(ORDER_DATE, 'YYYY-MM')\n);",
+        "metrics": "Pearson correlation between monthly cancellation rate and average delivery time",
+        "group_by": "none (correlation across months)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "Now that we have the monthly metrics, we need to compute the Pearson correlation coefficient between cancellation rate and average delivery time across the 12 months."
+      },
+      "model_stats": {
+        "seconds": 1.55,
+        "prompt_tokens": 2145,
+        "completion_tokens": 246
+      },
+      "result": {
+        "columns": [
+          "PEARSON_CORR"
+        ],
+        "rows": [
+          [
+            "-0.0199978790500742"
+          ]
+        ],
+        "query_id": "01c7de4d-0001-b442-0000-d29500040c8e",
+        "seconds": 0.13
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "Pearson correlation coefficient, number of months, interpretation of causality",
+        "group_by": "month (YYYY-MM)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "The Pearson correlation coefficient between monthly cancellation rate and average delivered-order delivery time across the twelve calendar months of 2025 is -0.0199978790500742. This calculation used all 12 months of 2025. The correlation is very close to zero, indicating almost no linear relationship between the two metrics at the monthly level. Correlation alone does not support a causal claim; it only measures the strength and direction of a linear association. Additional analysis and business context would be required to establish causality.",
+        "reason": "All requested values are included: the correlation coefficient (-0.019998), the number of months (12), and a statement on causality. The correlation is nearly zero, so there is no evidence of a linear relationship, and correlation does not imply causation."
+      },
+      "model_stats": {
+        "seconds": 1.54,
+        "prompt_tokens": 2492,
+        "completion_tokens": 213
+      }
+    }
+  ],
+  "final_answer": "The Pearson correlation coefficient between monthly cancellation rate and average delivered-order delivery time across the twelve calendar months of 2025 is -0.0199978790500742. This calculation used all 12 months of 2025. The correlation is very close to zero, indicating almost no linear relationship between the two metrics at the monthly level. Correlation alone does not support a causal claim; it only measures the strength and direction of a linear association. Additional analysis and business context would be required to establish causality.",
+  "outcome": "answer",
+  "total_seconds": 5.21,
+  "finished_utc": "2026-10-21T01:49:17.032952+00:00"
+}

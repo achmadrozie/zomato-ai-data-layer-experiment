@@ -1,0 +1,85 @@
+{
+  "id": "A-Q18-r1",
+  "arm": "A",
+  "question_id": "Q18",
+  "stratum": "data",
+  "question": "For 2025 Delivered orders in INR, show up to three customer age segments ranked by Delivered order count. Include Delivered order count, GMV, and AOV, using the existing customer dimension's segment labels. If fewer than three segments occur, report only those present.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "43755eab8a5718c24234f6fa409f14df3e4447edee255e17edc7340b37ed9afe",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:40:19.191424+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT \n  u.AGE AS CUSTOMER_AGE_SEGMENT,\n  COUNT(o.ORDER_ID) AS DELIVERED_ORDER_COUNT,\n  SUM(o.SALES_AMOUNT) AS GMV_INR,\n  CASE WHEN COUNT(o.ORDER_ID) > 0 THEN SUM(o.SALES_AMOUNT) / COUNT(o.ORDER_ID) ELSE NULL END AS AOV_INR\nFROM ZOMATO_DLR.SOURCES.ORDERS o\nJOIN ZOMATO_DLR.SOURCES.USERS u ON o.USER_ID = u.USER_ID\nWHERE o.ORDER_DATE >= '2025-01-01' AND o.ORDER_DATE < '2026-01-01'\n  AND o.ORDER_STATUS = 'Delivered'\n  AND o.CURRENCY = 'INR'\nGROUP BY u.AGE\nORDER BY DELIVERED_ORDER_COUNT DESC\nLIMIT 3;",
+        "metrics": "Delivered order count, GMV, AOV (all for INR, 2025, Delivered orders)",
+        "group_by": "customer age segment (using existing segment labels)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "This query calculates the required metrics for each customer age segment, filters for 2025 Delivered orders in INR, and ranks by Delivered order count, limiting to three segments."
+      },
+      "model_stats": {
+        "seconds": 2.09,
+        "prompt_tokens": 1333,
+        "completion_tokens": 280
+      },
+      "result": {
+        "columns": [
+          "CUSTOMER_AGE_SEGMENT",
+          "DELIVERED_ORDER_COUNT",
+          "GMV_INR",
+          "AOV_INR"
+        ],
+        "rows": [
+          [
+            "23",
+            "747305",
+            "361091281.0",
+            "483.1913087695118"
+          ],
+          [
+            "22",
+            "590755",
+            "285775099.0",
+            "483.7455442611573"
+          ],
+          [
+            "25",
+            "542236",
+            "262072908.0",
+            "483.3189017328248"
+          ]
+        ],
+        "query_id": "01c7de44-0001-b38b-0000-d295000461a6",
+        "seconds": 0.55
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "Delivered order count, GMV, AOV (all for INR, 2025, Delivered orders)",
+        "group_by": "customer age segment (using existing segment labels)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "For 2025 Delivered orders in INR, the top three customer age segments by Delivered order count are:\n\n1. Age segment '23':\n   - Delivered order count: 747,305\n   - GMV: 361,091,281 INR\n   - AOV: 483.191309 INR\n2. Age segment '22':\n   - Delivered order count: 590,755\n   - GMV: 285,775,099 INR\n   - AOV: 483.745544 INR\n3. Age segment '25':\n   - Delivered order count: 542,236\n   - GMV: 262,072,908 INR\n   - AOV: 483.318902 INR\n\nAll values are for Delivered orders in INR during 2025. The age segments are as labeled in the customer dimension. The average order value (AOV) is calculated as GMV divided by Delivered order count for each segment.",
+        "reason": "All requested metrics and groupings are present in the query result, with clear population, units, and interpretation."
+      },
+      "model_stats": {
+        "seconds": 2.35,
+        "prompt_tokens": 1791,
+        "completion_tokens": 296
+      }
+    }
+  ],
+  "final_answer": "For 2025 Delivered orders in INR, the top three customer age segments by Delivered order count are:\n\n1. Age segment '23':\n   - Delivered order count: 747,305\n   - GMV: 361,091,281 INR\n   - AOV: 483.191309 INR\n2. Age segment '22':\n   - Delivered order count: 590,755\n   - GMV: 285,775,099 INR\n   - AOV: 483.745544 INR\n3. Age segment '25':\n   - Delivered order count: 542,236\n   - GMV: 262,072,908 INR\n   - AOV: 483.318902 INR\n\nAll values are for Delivered orders in INR during 2025. The age segments are as labeled in the customer dimension. The average order value (AOV) is calculated as GMV divided by Delivered order count for each segment.",
+  "outcome": "answer",
+  "total_seconds": 4.99,
+  "finished_utc": "2026-10-21T01:40:24.180541+00:00"
+}

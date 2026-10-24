@@ -1,0 +1,102 @@
+{
+  "id": "A-Q19-r1",
+  "arm": "A",
+  "question_id": "Q19",
+  "stratum": "data",
+  "question": "Across every calendar date in 2025, including dates with zero Delivered orders, what was the average number of Delivered orders for each weekday? Which weekday had the highest average?",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "e1eaf3ef9b54696d69a4f4b213fbccf78b1cb1bfd78e3388cce48b93e7dfc197",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T06:18:42.088910+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH calendar AS (\n  SELECT DATEADD(day, SEQ4(), '2025-01-01'::DATE) AS calendar_date\n  FROM TABLE(GENERATOR(ROWCOUNT => 365))\n), daily AS (\n  SELECT c.calendar_date,\n         DAYOFWEEKISO(c.calendar_date) AS weekday_num,\n         SUM(IFF(o.IS_DELIVERED, 1, 0)) AS delivered_orders\n  FROM calendar c\n  LEFT JOIN ZOMATO_DLR.STAGING.STG_ZOMATO__ORDER o\n    ON o.ORDER_DATE = c.calendar_date\n  GROUP BY c.calendar_date\n)\nSELECT CASE weekday_num\n         WHEN 1 THEN 'Monday' WHEN 2 THEN 'Tuesday' WHEN 3 THEN 'Wednesday'\n         WHEN 4 THEN 'Thursday' WHEN 5 THEN 'Friday' WHEN 6 THEN 'Saturday'\n         WHEN 7 THEN 'Sunday'\n       END AS weekday,\n       COUNT(*) AS calendar_dates,\n       AVG(delivered_orders) AS average_delivered_orders_per_date\nFROM daily\nGROUP BY weekday_num\nORDER BY weekday_num",
+        "metrics": "Average count of delivered orders per calendar date in 2025, grouped by weekday; all dates included, including zero-order dates.",
+        "group_by": "weekday (ISO Monday-Sunday)",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 9.87,
+        "prompt_tokens": 1311,
+        "completion_tokens": 726
+      },
+      "result": {
+        "columns": [
+          "WEEKDAY",
+          "CALENDAR_DATES",
+          "AVERAGE_DELIVERED_ORDERS_PER_DATE"
+        ],
+        "rows": [
+          [
+            "Monday",
+            "52",
+            "9094.365385"
+          ],
+          [
+            "Tuesday",
+            "52",
+            "9082.788462"
+          ],
+          [
+            "Wednesday",
+            "53",
+            "9053.773585"
+          ],
+          [
+            "Thursday",
+            "52",
+            "9473.653846"
+          ],
+          [
+            "Friday",
+            "52",
+            "12228.980769"
+          ],
+          [
+            "Saturday",
+            "52",
+            "14486.211538"
+          ],
+          [
+            "Sunday",
+            "52",
+            "13119.134615"
+          ]
+        ],
+        "query_id": "01c7df5a-0001-b38b-0000-d29500046b3e",
+        "seconds": 0.31
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "Average Delivered orders per calendar date in 2025 (including dates with zero Delivered orders): Monday 9094.365385 (52 dates); Tuesday 9082.788462 (52); Wednesday 9053.773585 (53); Thursday 9473.653846 (52); Friday 12228.980769 (52); Saturday 14486.211538 (52); Sunday 13119.134615 (52). Saturday had the highest average, at 14486.211538 Delivered orders per calendar date.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.42,
+        "prompt_tokens": 1819,
+        "completion_tokens": 228
+      }
+    }
+  ],
+  "final_answer": "Average Delivered orders per calendar date in 2025 (including dates with zero Delivered orders): Monday 9094.365385 (52 dates); Tuesday 9082.788462 (52); Wednesday 9053.773585 (53); Thursday 9473.653846 (52); Friday 12228.980769 (52); Saturday 14486.211538 (52); Sunday 13119.134615 (52). Saturday had the highest average, at 14486.211538 Delivered orders per calendar date.",
+  "outcome": "answer",
+  "total_seconds": 13.61,
+  "finished_utc": "2026-10-21T06:18:55.702541+00:00"
+}

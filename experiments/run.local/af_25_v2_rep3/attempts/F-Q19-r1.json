@@ -1,0 +1,148 @@
+{
+  "id": "F-Q19-r1",
+  "arm": "F",
+  "question_id": "Q19",
+  "stratum": "data",
+  "question": "Across every calendar date in 2025, including dates with zero Delivered orders, what was the average number of Delivered orders for each weekday? Which weekday had the highest average?",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "e1eaf3ef9b54696d69a4f4b213fbccf78b1cb1bfd78e3388cce48b93e7dfc197",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T02:44:23.740056+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT d.DAY_NAME, COUNT(o.ORDER_ID) AS DELIVERED_ORDER_COUNT\nFROM ZOMATO_DLR.CORE.DIM_DATE d\nLEFT JOIN ZOMATO_DLR.CORE.FACT_ORDER o\n  ON d.DATE_DAY = o.ORDER_DATE AND o.IS_DELIVERED = TRUE AND o.ORDER_DATE >= '2025-01-01' AND o.ORDER_DATE < '2026-01-01'\nWHERE d.DATE_DAY >= '2025-01-01' AND d.DATE_DAY < '2026-01-01'\nGROUP BY d.DAY_NAME\nORDER BY d.DAY_NAME;",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "To calculate the average number of Delivered orders per weekday, I first need the total Delivered orders for each weekday and the number of occurrences of each weekday in 2025. This query gets the count of Delivered orders per weekday, including dates with zero orders, by joining the date dimension to the order fact table."
+      },
+      "model_stats": {
+        "seconds": 1.66,
+        "prompt_tokens": 3458,
+        "completion_tokens": 213
+      },
+      "result": {
+        "columns": [
+          "DAY_NAME",
+          "DELIVERED_ORDER_COUNT"
+        ],
+        "rows": [
+          [
+            "Fri",
+            "635907"
+          ],
+          [
+            "Mon",
+            "472907"
+          ],
+          [
+            "Sat",
+            "753283"
+          ],
+          [
+            "Sun",
+            "682195"
+          ],
+          [
+            "Thu",
+            "492630"
+          ],
+          [
+            "Tue",
+            "472305"
+          ],
+          [
+            "Wed",
+            "479850"
+          ]
+        ],
+        "query_id": "01c7de84-0001-b38b-0000-d29500046686",
+        "seconds": 0.13
+      }
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT DAY_NAME, COUNT(*) AS DAY_COUNT\nFROM ZOMATO_DLR.CORE.DIM_DATE\nWHERE DATE_DAY >= '2025-01-01' AND DATE_DAY < '2026-01-01'\nGROUP BY DAY_NAME\nORDER BY DAY_NAME;",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "To compute the average number of Delivered orders per weekday, I need to divide the total Delivered orders for each weekday by the number of times that weekday occurs in 2025. This query gets the count of each weekday in 2025."
+      },
+      "model_stats": {
+        "seconds": 1.58,
+        "prompt_tokens": 3812,
+        "completion_tokens": 129
+      },
+      "result": {
+        "columns": [
+          "DAY_NAME",
+          "DAY_COUNT"
+        ],
+        "rows": [
+          [
+            "Fri",
+            "52"
+          ],
+          [
+            "Mon",
+            "52"
+          ],
+          [
+            "Sat",
+            "52"
+          ],
+          [
+            "Sun",
+            "52"
+          ],
+          [
+            "Thu",
+            "52"
+          ],
+          [
+            "Tue",
+            "52"
+          ],
+          [
+            "Wed",
+            "53"
+          ]
+        ],
+        "query_id": "01c7de84-0001-b38b-0000-d2950004668a",
+        "seconds": 0.21
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "To find the average number of Delivered orders for each weekday in 2025 (including dates with zero Delivered orders), I divided the total Delivered orders for each weekday by the number of times that weekday occurred in 2025:\n\n- Monday:   472,907 / 52 = 9,094.365385\n- Tuesday:  472,305 / 52 = 9,083.750000\n- Wednesday:479,850 / 53 = 9,057.547170\n- Thursday: 492,630 / 52 = 9,473.653846\n- Friday:   635,907 / 52 = 12,229.942308\n- Saturday: 753,283 / 52 = 14,486.211538\n- Sunday:   682,195 / 52 = 13,111.442308\n\nThe weekday with the highest average number of Delivered orders was Saturday, with an average of 14,486.211538 Delivered orders per Saturday in 2025.\n\nPopulation: All calendar dates in 2025 (including those with zero Delivered orders), grouped by weekday. Unit: Delivered orders per weekday. Interpretation: Saturdays had the highest average Delivered order volume.",
+        "reason": "Both the total Delivered orders and the count of each weekday in 2025 were needed to compute the averages as requested."
+      },
+      "model_stats": {
+        "seconds": 2.03,
+        "prompt_tokens": 4073,
+        "completion_tokens": 305
+      }
+    }
+  ],
+  "final_answer": "To find the average number of Delivered orders for each weekday in 2025 (including dates with zero Delivered orders), I divided the total Delivered orders for each weekday by the number of times that weekday occurred in 2025:\n\n- Monday:   472,907 / 52 = 9,094.365385\n- Tuesday:  472,305 / 52 = 9,083.750000\n- Wednesday:479,850 / 53 = 9,057.547170\n- Thursday: 492,630 / 52 = 9,473.653846\n- Friday:   635,907 / 52 = 12,229.942308\n- Saturday: 753,283 / 52 = 14,486.211538\n- Sunday:   682,195 / 52 = 13,111.442308\n\nThe weekday with the highest average number of Delivered orders was Saturday, with an average of 14,486.211538 Delivered orders per Saturday in 2025.\n\nPopulation: All calendar dates in 2025 (including those with zero Delivered orders), grouped by weekday. Unit: Delivered orders per weekday. Interpretation: Saturdays had the highest average Delivered order volume.",
+  "outcome": "answer",
+  "total_seconds": 5.62,
+  "finished_utc": "2026-10-21T02:44:29.361345+00:00"
+}

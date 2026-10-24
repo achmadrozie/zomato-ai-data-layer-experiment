@@ -1,0 +1,96 @@
+{
+  "id": "A-Q15-r1",
+  "arm": "A",
+  "question_id": "Q15",
+  "stratum": "data",
+  "question": "In 2025, what share of orders contained more than one item line? Compare average ordered units per order for one-line and multi-line orders; also report orders with no item line separately.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "597a068c5b5f4f3b488102e5fb6ff26da6762c24c56b9a012f2123b3304db3dc",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:16:54.486956+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH order_item_counts AS (\n  SELECT \n    o.ORDER_ID,\n    COUNT(oi.ORDER_ITEM_ID) AS item_line_count,\n    SUM(CAST(oi.QUANTITY AS FLOAT)) AS total_units\n  FROM ZOMATO_DLR.SOURCES.ORDERS o\n  LEFT JOIN ZOMATO_DLR.SOURCES.ORDER_ITEMS oi\n    ON o.ORDER_ID = oi.ORDER_ID\n  WHERE o.ORDER_DATE >= '2025-01-01' AND o.ORDER_DATE < '2026-01-01'\n  GROUP BY o.ORDER_ID\n)\nSELECT \n  item_line_count,\n  COUNT(*) AS order_count,\n  AVG(COALESCE(total_units,0)) AS avg_units_per_order\nFROM order_item_counts\nGROUP BY item_line_count\nORDER BY item_line_count ASC;",
+        "metrics": "order_count, avg_units_per_order",
+        "group_by": "item_line_count",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "This query counts orders by their number of item lines in 2025, calculates the share of orders with more than one item line, and computes average ordered units per order for each group, including orders with zero item lines."
+      },
+      "model_stats": {
+        "seconds": 1.95,
+        "prompt_tokens": 1317,
+        "completion_tokens": 269
+      },
+      "result": {
+        "columns": [
+          "ITEM_LINE_COUNT",
+          "ORDER_COUNT",
+          "AVG_UNITS_PER_ORDER"
+        ],
+        "rows": [
+          [
+            "1",
+            "1307684",
+            "1.219752631369658"
+          ],
+          [
+            "2",
+            "1483215",
+            "2.4394885434680744"
+          ],
+          [
+            "3",
+            "871006",
+            "3.6595637687914895"
+          ],
+          [
+            "4",
+            "436346",
+            "4.878447378914898"
+          ],
+          [
+            "5",
+            "174475",
+            "6.098902421550365"
+          ],
+          [
+            "6",
+            "87047",
+            "7.320654359139316"
+          ]
+        ],
+        "query_id": "01c7de2c-0001-b38b-0000-d29500046082",
+        "seconds": 2.44
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "share of multi-line orders, average units per order for one-line and multi-line orders, count of orders with no item line",
+        "group_by": "item_line_count (0, 1, >1)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "In 2025, among all orders:\n\n- Orders with exactly one item line: 1,307,684 orders (average units per order: 1.219753)\n- Orders with more than one item line: 2,941,089 orders (sum of orders with 2–6 item lines; average units per order for these orders: weighted average = (2*1,483,215 + 3*871,006 + 4*436,346 + 5*174,475 + 6*87,047) / 2,941,089 ≈ 3.222)\n- Orders with zero item lines: 0 (not present in the data)\n\nShare of orders with more than one item line: 2,941,089 / (1,307,684 + 2,941,089) = 0.692349 (69.2349%)\n\nInterpretation:\n- 69.2349% of 2025 orders contained more than one item line.\n- Single-line orders averaged 1.219753 units per order.\n- Multi-line orders averaged approximately 3.222 units per order.\n- No orders were found with zero item lines in 2025.",
+        "reason": "All requested values are calculated from the grouped order counts and average units per order by item line count."
+      },
+      "model_stats": {
+        "seconds": 2.55,
+        "prompt_tokens": 1784,
+        "completion_tokens": 358
+      }
+    }
+  ],
+  "final_answer": "In 2025, among all orders:\n\n- Orders with exactly one item line: 1,307,684 orders (average units per order: 1.219753)\n- Orders with more than one item line: 2,941,089 orders (sum of orders with 2–6 item lines; average units per order for these orders: weighted average = (2*1,483,215 + 3*871,006 + 4*436,346 + 5*174,475 + 6*87,047) / 2,941,089 ≈ 3.222)\n- Orders with zero item lines: 0 (not present in the data)\n\nShare of orders with more than one item line: 2,941,089 / (1,307,684 + 2,941,089) = 0.692349 (69.2349%)\n\nInterpretation:\n- 69.2349% of 2025 orders contained more than one item line.\n- Single-line orders averaged 1.219753 units per order.\n- Multi-line orders averaged approximately 3.222 units per order.\n- No orders were found with zero item lines in 2025.",
+  "outcome": "answer",
+  "total_seconds": 6.94,
+  "finished_utc": "2026-10-21T01:17:01.426875+00:00"
+}

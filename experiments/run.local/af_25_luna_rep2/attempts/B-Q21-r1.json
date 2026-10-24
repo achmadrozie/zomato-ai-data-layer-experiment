@@ -1,0 +1,70 @@
+{
+  "id": "B-Q21-r1",
+  "arm": "B",
+  "question_id": "Q21",
+  "stratum": "data",
+  "question": "Across the twelve calendar months of 2025, compute the Pearson correlation between monthly cancellation rate and average Delivered-order delivery time using SQL's CORR() function. Monthly cancellation rate = cancelled orders divided by all orders. Average delivery time = mean of delivery_time_min for Delivered orders with a non-null delivery duration only. Report the correlation coefficient, the number of months used, and whether that correlation alone supports a causal claim.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "968aad7d611f901a7d8dfa1d40ac00ed82254c5407f1175667aee50fc5949a8c",
+  "question_sha256": "43968c3cf736550a6edfb6bc71c34af46d6463670472144a22383f4bd85d921c",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T06:18:55.705298+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH months AS (\n  SELECT DATE_TRUNC('MONTH', DATE_DAY)::DATE AS month_start\n  FROM ZOMATO_DLR.INTERMEDIATE.INT_DATE_SPINE\n  WHERE DATE_DAY >= '2025-01-01' AND DATE_DAY < '2026-01-01'\n  GROUP BY 1\n), monthly_metrics AS (\n  SELECT\n    m.month_start,\n    COUNT(b.ORDER_ID) AS order_count,\n    COUNT_IF(f.IS_CANCELLED) AS cancelled_order_count,\n    COUNT_IF(f.IS_DELIVERED AND f.DELIVERY_TIME_MIN IS NOT NULL) AS delivered_with_duration_count,\n    AVG(IFF(f.IS_DELIVERED AND f.DELIVERY_TIME_MIN IS NOT NULL, f.DELIVERY_TIME_MIN, NULL)) AS avg_delivered_delivery_time_min\n  FROM months m\n  LEFT JOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE b\n    ON DATE_TRUNC('MONTH', b.ORDER_DATE)::DATE = m.month_start\n  LEFT JOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FULFILLMENT f\n    ON b.ORDER_ID = f.ORDER_ID\n  GROUP BY m.month_start\n), rates AS (\n  SELECT\n    month_start,\n    cancelled_order_count / NULLIF(order_count, 0)::FLOAT AS cancellation_rate,\n    avg_delivered_delivery_time_min\n  FROM monthly_metrics\n)\nSELECT\n  CORR(cancellation_rate, avg_delivered_delivery_time_min) AS pearson_correlation,\n  COUNT_IF(cancellation_rate IS NOT NULL AND avg_delivered_delivery_time_min IS NOT NULL) AS months_used\nFROM rates",
+        "metrics": "Pearson correlation of monthly cancellation rate and mean delivery_time_min for delivered orders with non-null duration; number of months with both metrics defined",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 86.49,
+        "prompt_tokens": 1731,
+        "completion_tokens": 869
+      },
+      "result": {
+        "columns": [
+          "PEARSON_CORRELATION",
+          "MONTHS_USED"
+        ],
+        "rows": [
+          [
+            "-0.020032840344110223",
+            "12"
+          ]
+        ],
+        "query_id": "01c7df5c-0001-b38b-0000-d29500046b42",
+        "seconds": 2.02
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "Across the 12 calendar months of 2025, the Pearson correlation between monthly cancellation rate (cancelled orders / all orders) and average delivery_time_min for Delivered orders with a non-null duration was -0.020033. This is a near-zero negative correlation. Correlation alone does not support a causal claim.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.29,
+        "prompt_tokens": 2250,
+        "completion_tokens": 130
+      }
+    }
+  ],
+  "final_answer": "Across the 12 calendar months of 2025, the Pearson correlation between monthly cancellation rate (cancelled orders / all orders) and average delivery_time_min for Delivered orders with a non-null duration was -0.020033. This is a near-zero negative correlation. Correlation alone does not support a causal claim.",
+  "outcome": "answer",
+  "total_seconds": 90.82,
+  "finished_utc": "2026-10-21T06:20:26.522746+00:00"
+}

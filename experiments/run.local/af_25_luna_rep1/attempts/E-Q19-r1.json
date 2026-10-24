@@ -1,0 +1,102 @@
+{
+  "id": "E-Q19-r1",
+  "arm": "E",
+  "question_id": "Q19",
+  "stratum": "data",
+  "question": "Across every calendar date in 2025, including dates with zero Delivered orders, what was the average number of Delivered orders for each weekday? Which weekday had the highest average?",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "a99a688c8b74f2d1acf86ffb095d4085e198af8d169bb3f0b5cd089f5752e8ce",
+  "question_sha256": "e1eaf3ef9b54696d69a4f4b213fbccf78b1cb1bfd78e3388cce48b93e7dfc197",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T04:14:25.580193+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH daily AS (\n  SELECT\n    d.DATE_DAY,\n    COALESCE(COUNT(o.ORDER_ID), 0) AS DELIVERED_ORDER_COUNT\n  FROM ZOMATO_DLR.INTERMEDIATE.INT_DATE_SPINE d\n  LEFT JOIN ZOMATO_DLR.CORE.FACT_ORDER o\n    ON o.ORDER_DATE = d.DATE_DAY\n   AND o.IS_DELIVERED = TRUE\n  WHERE d.DATE_DAY >= '2025-01-01' AND d.DATE_DAY < '2026-01-01'\n  GROUP BY d.DATE_DAY\n)\nSELECT\n  f.DAY_NAME AS WEEKDAY,\n  COUNT(*) AS CALENDAR_DATE_COUNT,\n  AVG(d.DELIVERED_ORDER_COUNT) AS AVG_DELIVERED_ORDERS_PER_DATE\nFROM daily d\nJOIN ZOMATO_DLR.INTERMEDIATE.INT_DATE_FEATURES f\n  ON f.DATE_DAY = d.DATE_DAY\nGROUP BY f.DAY_NAME\nORDER BY MIN(f.DATE_DAY)",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 5.84,
+        "prompt_tokens": 3071,
+        "completion_tokens": 484
+      },
+      "result": {
+        "columns": [
+          "WEEKDAY",
+          "CALENDAR_DATE_COUNT",
+          "AVG_DELIVERED_ORDERS_PER_DATE"
+        ],
+        "rows": [
+          [
+            "Wed",
+            "53",
+            "9053.773585"
+          ],
+          [
+            "Thu",
+            "52",
+            "9473.653846"
+          ],
+          [
+            "Fri",
+            "52",
+            "12228.980769"
+          ],
+          [
+            "Sat",
+            "52",
+            "14486.211538"
+          ],
+          [
+            "Sun",
+            "52",
+            "13119.134615"
+          ],
+          [
+            "Mon",
+            "52",
+            "9094.365385"
+          ],
+          [
+            "Tue",
+            "52",
+            "9082.788462"
+          ]
+        ],
+        "query_id": "01c7dede-0001-b442-0000-d29500048272",
+        "seconds": 0.78
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "Average Delivered orders per calendar date in 2025, including dates with zero Delivered orders:\n\n| Weekday | Calendar dates | Average Delivered orders per date |\n|---|---:|---:|\n| Monday | 52 | 9094.365385 |\n| Tuesday | 52 | 9082.788462 |\n| Wednesday | 53 | 9053.773585 |\n| Thursday | 52 | 9473.653846 |\n| Friday | 52 | 12228.980769 |\n| Saturday | 52 | 14486.211538 |\n| Sunday | 52 | 13119.134615 |\n\nSaturday had the highest average: 14486.211538 Delivered orders per calendar date.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.81,
+        "prompt_tokens": 3495,
+        "completion_tokens": 289
+      }
+    }
+  ],
+  "final_answer": "Average Delivered orders per calendar date in 2025, including dates with zero Delivered orders:\n\n| Weekday | Calendar dates | Average Delivered orders per date |\n|---|---:|---:|\n| Monday | 52 | 9094.365385 |\n| Tuesday | 52 | 9082.788462 |\n| Wednesday | 53 | 9053.773585 |\n| Thursday | 52 | 9473.653846 |\n| Friday | 52 | 12228.980769 |\n| Saturday | 52 | 14486.211538 |\n| Sunday | 52 | 13119.134615 |\n\nSaturday had the highest average: 14486.211538 Delivered orders per calendar date.",
+  "outcome": "answer",
+  "total_seconds": 10.44,
+  "finished_utc": "2026-10-21T04:14:36.015625+00:00"
+}

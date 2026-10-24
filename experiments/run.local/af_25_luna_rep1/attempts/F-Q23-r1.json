@@ -1,0 +1,82 @@
+{
+  "id": "F-Q23-r1",
+  "arm": "F",
+  "question_id": "Q23",
+  "stratum": "context",
+  "question": "In the 2025 standard market report, which three cities led by Delivered-order GMV in INR? Give each city's GMV and share of standard market GMV, using the reporting geography default.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "8e9d0cfb7f28a61c23e09bf8b8fb7f4025382414d411dc6f612c4c213a65cd6e",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T03:43:54.338891+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH eligible_city_gmv AS (\n    SELECT\n        r.CITY AS CITY,\n        SUM(o.SALES_AMOUNT) AS GMV\n    FROM ZOMATO_DLR.CORE.FACT_ORDER o\n    JOIN ZOMATO_DLR.CORE.DIM_RESTAURANT r\n        ON o.RESTAURANT_ID = r.RESTAURANT_ID\n    WHERE o.ORDER_DATE >= '2025-01-01'\n      AND o.ORDER_DATE < '2026-01-01'\n      AND o.CURRENCY = 'INR'\n      AND o.ORDER_STATUS = 'Delivered'\n      AND r.RATING_COUNT >= 100\n    GROUP BY r.CITY\n), ranked_cities AS (\n    SELECT\n        CITY,\n        GMV,\n        100.0 * GMV / SUM(GMV) OVER () AS GMV_SHARE_PERCENT,\n        ROW_NUMBER() OVER (ORDER BY GMV DESC, CITY) AS CITY_RANK\n    FROM eligible_city_gmv\n    WHERE CITY IS NOT NULL\n)\nSELECT CITY, GMV, GMV_SHARE_PERCENT\nFROM ranked_cities\nWHERE CITY_RANK <= 3\nORDER BY CITY_RANK",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 9.85,
+        "prompt_tokens": 3461,
+        "completion_tokens": 862
+      },
+      "result": {
+        "columns": [
+          "CITY",
+          "GMV",
+          "GMV_SHARE_PERCENT"
+        ],
+        "rows": [
+          [
+            "Bangalore",
+            "129604607.00",
+            "13.96669071"
+          ],
+          [
+            "Chennai",
+            "92523985.00",
+            "9.97074033"
+          ],
+          [
+            "Hyderabad",
+            "79925454.00",
+            "8.61307419"
+          ]
+        ],
+        "query_id": "01c7dec0-0001-b442-0000-d29500048196",
+        "seconds": 0.6
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "For 2025 recorded orders, using restaurant-dimension city and the standard-market eligibility rule (restaurants with at least 100 recorded ratings), the top cities by Delivered-order GMV in INR are:\n\n1. Bangalore — INR 129,604,607.00; 13.966691% of standard-market GMV.\n2. Chennai — INR 92,523,985.00; 9.970740% of standard-market GMV.\n3. Hyderabad — INR 79,925,454.00; 8.613074% of standard-market GMV.\n\nShares use total Delivered-order GMV for the eligible 2025 INR standard market as the denominator.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 4.3,
+        "prompt_tokens": 3885,
+        "completion_tokens": 272
+      }
+    }
+  ],
+  "final_answer": "For 2025 recorded orders, using restaurant-dimension city and the standard-market eligibility rule (restaurants with at least 100 recorded ratings), the top cities by Delivered-order GMV in INR are:\n\n1. Bangalore — INR 129,604,607.00; 13.966691% of standard-market GMV.\n2. Chennai — INR 92,523,985.00; 9.970740% of standard-market GMV.\n3. Hyderabad — INR 79,925,454.00; 8.613074% of standard-market GMV.\n\nShares use total Delivered-order GMV for the eligible 2025 INR standard market as the denominator.",
+  "outcome": "answer",
+  "total_seconds": 14.76,
+  "finished_utc": "2026-10-21T03:44:09.095051+00:00"
+}

@@ -1,0 +1,69 @@
+{
+  "id": "E-Q05-r1",
+  "arm": "E",
+  "question_id": "Q05",
+  "stratum": "data",
+  "question": "What was ordered quantity per order for the full year 2025? Use the recorded order date for the 2025 scope.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "a99a688c8b74f2d1acf86ffb095d4085e198af8d169bb3f0b5cd089f5752e8ce",
+  "question_sha256": "ea883bbd9440eaafaff5343a59ff8dcbd1aa4f1afa8c0d1e08ce4956a43b2a3e",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:56:01.642829+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "ordered_quantity_per_order",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.04,
+        "prompt_tokens": 3064,
+        "completion_tokens": 44
+      },
+      "result": {
+        "columns": [
+          "ORDERED_QUANTITY_PER_ORDER"
+        ],
+        "rows": [
+          [
+            "2.8053930789515875"
+          ]
+        ],
+        "metric_definitions": {
+          "ordered_quantity_per_order": "Ordered item quantity divided by number of orders; combines both fact semantic models."
+        },
+        "seconds": 4.76
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "ordered_quantity_per_order",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "The ordered quantity per order for the full year 2025, using the recorded order date, was 2.805393 (unit: items per order, population: all recorded orders in 2025). This means that, on average, each order contained approximately 2.805 items.",
+        "reason": "The metric 'ordered_quantity_per_order' directly answers the question for the specified time period and population, with the required precision."
+      },
+      "model_stats": {
+        "seconds": 1.69,
+        "prompt_tokens": 3210,
+        "completion_tokens": 126
+      }
+    }
+  ],
+  "final_answer": "The ordered quantity per order for the full year 2025, using the recorded order date, was 2.805393 (unit: items per order, population: all recorded orders in 2025). This means that, on average, each order contained approximately 2.805 items.",
+  "outcome": "answer",
+  "total_seconds": 7.49,
+  "finished_utc": "2026-10-21T01:56:09.136726+00:00"
+}

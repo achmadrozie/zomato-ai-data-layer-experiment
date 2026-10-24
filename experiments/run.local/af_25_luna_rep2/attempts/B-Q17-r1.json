@@ -1,0 +1,100 @@
+{
+  "id": "B-Q17-r1",
+  "arm": "B",
+  "question_id": "Q17",
+  "stratum": "data",
+  "question": "Does recorded order sales amount reconcile to subtotal minus discount plus delivery fee plus GST for 2025? For each order status, give the count of non-zero differences and their signed sum in INR; do not assume one side is the corrected amount.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "968aad7d611f901a7d8dfa1d40ac00ed82254c5407f1175667aee50fc5949a8c",
+  "question_sha256": "3864edaa78738362e14d70dc187d33a6baf9e596378a324e96b60e5b6c2d0ad6",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T05:38:20.145088+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT f.ORDER_STATUS, COUNT_IF((b.SALES_AMOUNT - (b.SUBTOTAL - b.DISCOUNT + b.DELIVERY_FEE + b.GST)) <> 0) AS NONZERO_DIFFERENCE_ORDER_COUNT, SUM(b.SALES_AMOUNT - (b.SUBTOTAL - b.DISCOUNT + b.DELIVERY_FEE + b.GST)) AS SIGNED_DIFFERENCE_SUM_INR FROM ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE b JOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FINANCIALS f ON b.ORDER_ID = f.ORDER_ID WHERE b.ORDER_DATE >= '2025-01-01' AND b.ORDER_DATE < '2026-01-01' AND b.CURRENCY = 'INR' GROUP BY f.ORDER_STATUS ORDER BY f.ORDER_STATUS",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 96.84,
+        "prompt_tokens": 1696,
+        "completion_tokens": 485
+      },
+      "tool_error": "ProgrammingError: 000904 (42000): SQL compilation error: error line 1 at position 7\ninvalid identifier 'F.ORDER_STATUS' (request_id=67632213-0776-4ba3-983f-c8125b3157bf, sfqid=01c7df47-0001-b442-0000-d2950004848e)"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT u.ORDER_STATUS, COUNT_IF(f.SALES_AMOUNT - (f.SUBTOTAL - f.DISCOUNT + f.DELIVERY_FEE + f.GST) <> 0) AS NONZERO_DIFFERENCE_ORDER_COUNT, SUM(f.SALES_AMOUNT - (f.SUBTOTAL - f.DISCOUNT + f.DELIVERY_FEE + f.GST)) AS SIGNED_DIFFERENCE_SUM_INR FROM ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE b JOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FINANCIALS f ON b.ORDER_ID = f.ORDER_ID JOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FULFILLMENT u ON b.ORDER_ID = u.ORDER_ID WHERE b.ORDER_DATE >= '2025-01-01' AND b.ORDER_DATE < '2026-01-01' AND b.CURRENCY = 'INR' GROUP BY u.ORDER_STATUS ORDER BY u.ORDER_STATUS",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 4.82,
+        "prompt_tokens": 2005,
+        "completion_tokens": 421
+      },
+      "result": {
+        "columns": [
+          "ORDER_STATUS",
+          "NONZERO_DIFFERENCE_ORDER_COUNT",
+          "SIGNED_DIFFERENCE_SUM_INR"
+        ],
+        "rows": [
+          [
+            "Cancelled",
+            "0",
+            "0.00"
+          ],
+          [
+            "Delivered",
+            "0",
+            "0.00"
+          ],
+          [
+            "Refunded",
+            "0",
+            "0.00"
+          ]
+        ],
+        "query_id": "01c7df47-0001-b442-0000-d29500048492",
+        "seconds": 0.24
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "For orders with recorded order dates in 2025 and source currency INR, recorded sales amount reconciles to subtotal − discount + delivery fee + GST for every order in the data. Using signed difference = recorded sales amount − (subtotal − discount + delivery fee + GST), by order status: Cancelled—0 orders with non-zero differences; signed sum ₹0.00. Delivered—0; ₹0.00. Refunded—0; ₹0.00. Neither amount is treated as the corrected value.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 4.14,
+        "prompt_tokens": 2352,
+        "completion_tokens": 254
+      }
+    }
+  ],
+  "final_answer": "For orders with recorded order dates in 2025 and source currency INR, recorded sales amount reconciles to subtotal − discount + delivery fee + GST for every order in the data. Using signed difference = recorded sales amount − (subtotal − discount + delivery fee + GST), by order status: Cancelled—0 orders with non-zero differences; signed sum ₹0.00. Delivered—0; ₹0.00. Refunded—0; ₹0.00. Neither amount is treated as the corrected value.",
+  "outcome": "answer",
+  "total_seconds": 106.64,
+  "finished_utc": "2026-10-21T05:59:41.201491+00:00"
+}

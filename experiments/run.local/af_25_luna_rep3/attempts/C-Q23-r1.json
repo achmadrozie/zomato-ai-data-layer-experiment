@@ -1,0 +1,39 @@
+{
+  "id": "C-Q23-r1",
+  "arm": "C",
+  "question_id": "Q23",
+  "stratum": "context",
+  "question": "In the 2025 standard market report, which three cities led by Delivered-order GMV in INR? Give each city's GMV and share of standard market GMV, using the reporting geography default.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "8e9d0cfb7f28a61c23e09bf8b8fb7f4025382414d411dc6f612c4c213a65cd6e",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T07:15:06.175133+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "clarify",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "The snapshot does not specify the “standard market” scope or the reporting-geography default. Please confirm the market denominator (for example, all 2025 delivered INR orders) and which order geography field/default to use for city attribution."
+      },
+      "model_stats": {
+        "seconds": 7.09,
+        "prompt_tokens": 2190,
+        "completion_tokens": 439
+      }
+    }
+  ],
+  "final_answer": "The snapshot does not specify the “standard market” scope or the reporting-geography default. Please confirm the market denominator (for example, all 2025 delivered INR orders) and which order geography field/default to use for city attribution.",
+  "outcome": "clarification",
+  "total_seconds": 7.09,
+  "finished_utc": "2026-10-21T07:15:13.267397+00:00"
+}

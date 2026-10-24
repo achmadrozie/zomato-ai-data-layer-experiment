@@ -1,0 +1,80 @@
+{
+  "id": "C-Q07-r1",
+  "arm": "C",
+  "question_id": "Q07",
+  "stratum": "data",
+  "question": "Compare January and December 2025: Delivered order count, GMV in INR, and AOV in INR for each month. For both Delivered order count and AOV, calculate the percentage change from January to December as (December value minus January value) divided by January value times 100. Show both percentage changes and state which grew faster.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "ffde7fbebc6e393182946e35173dbc682d761b0a7108ddcb03258f03a9f8ef1e",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T04:16:31.707898+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT DATE_TRUNC('MONTH', ORDER_DATE)::DATE AS MONTH, COUNT(*) AS DELIVERED_ORDER_COUNT, SUM(DELIVERED_SALES_AMOUNT) AS GMV_INR, SUM(DELIVERED_SALES_AMOUNT) / NULLIF(COUNT(*), 0) AS AOV_INR FROM ZOMATO_DLR.CORE.FACT_ORDER WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01' AND ORDER_DATE IN ('2025-01-01', '2025-12-01') AND IS_DELIVERED = TRUE AND CURRENCY = 'INR' GROUP BY 1 ORDER BY 1",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.97,
+        "prompt_tokens": 2219,
+        "completion_tokens": 302
+      },
+      "result": {
+        "columns": [
+          "MONTH",
+          "DELIVERED_ORDER_COUNT",
+          "GMV_INR",
+          "AOV_INR"
+        ],
+        "rows": [
+          [
+            "2025-01-01",
+            "7471",
+            "3577795.00",
+            "478.89104538"
+          ],
+          [
+            "2025-12-01",
+            "10475",
+            "5062088.00",
+            "483.25422434"
+          ]
+        ],
+        "query_id": "01c7dee0-0001-b38b-0000-d295000468ba",
+        "seconds": 0.23
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "January 2025: Delivered orders = 7,471; GMV = INR 3,577,795.00; AOV = INR 478.891045 per delivered order.\nDecember 2025: Delivered orders = 10,475; GMV = INR 5,062,088.00; AOV = INR 483.254224 per delivered order.\nJanuary-to-December percentage change, calculated as (December − January) / January × 100: Delivered order count = 40.208807%; AOV = 0.911101%. Delivered order count grew faster than AOV.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 8.1,
+        "prompt_tokens": 2541,
+        "completion_tokens": 719
+      }
+    }
+  ],
+  "final_answer": "January 2025: Delivered orders = 7,471; GMV = INR 3,577,795.00; AOV = INR 478.891045 per delivered order.\nDecember 2025: Delivered orders = 10,475; GMV = INR 5,062,088.00; AOV = INR 483.254224 per delivered order.\nJanuary-to-December percentage change, calculated as (December − January) / January × 100: Delivered order count = 40.208807%; AOV = 0.911101%. Delivered order count grew faster than AOV.",
+  "outcome": "answer",
+  "total_seconds": 12.3,
+  "finished_utc": "2026-10-21T04:16:44.007578+00:00"
+}

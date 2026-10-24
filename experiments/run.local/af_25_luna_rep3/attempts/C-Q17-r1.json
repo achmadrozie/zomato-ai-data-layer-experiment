@@ -1,0 +1,82 @@
+{
+  "id": "C-Q17-r1",
+  "arm": "C",
+  "question_id": "Q17",
+  "stratum": "data",
+  "question": "Does recorded order sales amount reconcile to subtotal minus discount plus delivery fee plus GST for 2025? For each order status, give the count of non-zero differences and their signed sum in INR; do not assume one side is the corrected amount.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "3864edaa78738362e14d70dc187d33a6baf9e596378a324e96b60e5b6c2d0ad6",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T07:24:26.067942+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT ORDER_STATUS, COUNT_IF(SALES_AMOUNT - (SUBTOTAL - DISCOUNT + DELIVERY_FEE + GST) <> 0) AS NONZERO_DIFFERENCE_ORDER_COUNT, SUM(SALES_AMOUNT - (SUBTOTAL - DISCOUNT + DELIVERY_FEE + GST)) AS SIGNED_DIFFERENCE_SUM_INR FROM ZOMATO_DLR.CORE.FACT_ORDER WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01' AND CURRENCY = 'INR' GROUP BY ORDER_STATUS ORDER BY ORDER_STATUS",
+        "metrics": "For 2025 recorded INR orders, per order status: count of non-zero differences and signed sum, where difference = recorded SALES_AMOUNT minus (SUBTOTAL - DISCOUNT + DELIVERY_FEE + GST).",
+        "group_by": "ORDER_STATUS",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 5.22,
+        "prompt_tokens": 2199,
+        "completion_tokens": 375
+      },
+      "result": {
+        "columns": [
+          "ORDER_STATUS",
+          "NONZERO_DIFFERENCE_ORDER_COUNT",
+          "SIGNED_DIFFERENCE_SUM_INR"
+        ],
+        "rows": [
+          [
+            "Cancelled",
+            "0",
+            "0.00"
+          ],
+          [
+            "Delivered",
+            "0",
+            "0.00"
+          ],
+          [
+            "Refunded",
+            "0",
+            "0.00"
+          ]
+        ],
+        "query_id": "01c7df9c-0001-b38b-0000-d29500046c6a",
+        "seconds": 0.3
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "For recorded 2025 orders denominated in INR, the recorded sales amount reconciles to SUBTOTAL − DISCOUNT + DELIVERY_FEE + GST for every order in each reported status. The signed difference is defined as SALES_AMOUNT − (SUBTOTAL − DISCOUNT + DELIVERY_FEE + GST); neither side is treated as the corrected amount.\n\n| Order status | Orders with non-zero difference (count) | Signed sum of differences (INR) |\n|---|---:|---:|\n| Cancelled | 0 | 0.00 |\n| Delivered | 0 | 0.00 |\n| Refunded | 0 | 0.00 |",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.62,
+        "prompt_tokens": 2539,
+        "completion_tokens": 260
+      }
+    }
+  ],
+  "final_answer": "For recorded 2025 orders denominated in INR, the recorded sales amount reconciles to SUBTOTAL − DISCOUNT + DELIVERY_FEE + GST for every order in each reported status. The signed difference is defined as SALES_AMOUNT − (SUBTOTAL − DISCOUNT + DELIVERY_FEE + GST); neither side is treated as the corrected amount.\n\n| Order status | Orders with non-zero difference (count) | Signed sum of differences (INR) |\n|---|---:|---:|\n| Cancelled | 0 | 0.00 |\n| Delivered | 0 | 0.00 |\n| Refunded | 0 | 0.00 |",
+  "outcome": "answer",
+  "total_seconds": 9.15,
+  "finished_utc": "2026-10-21T07:24:35.218301+00:00"
+}

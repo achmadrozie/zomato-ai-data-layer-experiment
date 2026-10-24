@@ -1,0 +1,67 @@
+{
+  "id": "A-Q01-r1",
+  "arm": "A",
+  "question_id": "Q01",
+  "stratum": "data",
+  "question": "How many orders were placed during 2025? Use the recorded order date and report a count.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "26a8123001af6a9345ad0cf4c1e3b09eec0ec006c7e9ec43b587c5e59377b8a4",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:18:59.917355+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT COUNT(*) AS order_count\nFROM ZOMATO_DLR.SOURCES.ORDERS\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'",
+        "metrics": "order count",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 0.98,
+        "prompt_tokens": 1298,
+        "completion_tokens": 85
+      },
+      "result": {
+        "columns": [
+          "ORDER_COUNT"
+        ],
+        "rows": [
+          [
+            "4359773"
+          ]
+        ],
+        "query_id": "01c7de2f-0001-b38b-0000-d295000460ba",
+        "seconds": 0.07
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "order count: 4,359,773",
+        "group_by": "none",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "A total of 4,359,773 orders were placed during 2025, based on the recorded order date. This count represents all orders in the dataset with ORDER_DATE between 2025-01-01 and 2025-12-31 (exclusive of 2026).",
+        "reason": "The SQL query directly counted all orders with a recorded order date in 2025, as requested."
+      },
+      "model_stats": {
+        "seconds": 1.45,
+        "prompt_tokens": 1474,
+        "completion_tokens": 128
+      }
+    }
+  ],
+  "final_answer": "A total of 4,359,773 orders were placed during 2025, based on the recorded order date. This count represents all orders in the dataset with ORDER_DATE between 2025-01-01 and 2025-12-31 (exclusive of 2026).",
+  "outcome": "answer",
+  "total_seconds": 2.51,
+  "finished_utc": "2026-10-21T01:19:02.423072+00:00"
+}

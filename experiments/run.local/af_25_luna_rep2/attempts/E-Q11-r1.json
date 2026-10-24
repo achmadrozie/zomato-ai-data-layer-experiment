@@ -1,0 +1,90 @@
+{
+  "id": "E-Q11-r1",
+  "arm": "E",
+  "question_id": "Q11",
+  "stratum": "data",
+  "question": "For each recorded order status in 2025, report total orders, the share with a non-null customer rating, and average customer rating among rated orders. What population does each average describe?",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "a99a688c8b74f2d1acf86ffb095d4085e198af8d169bb3f0b5cd089f5752e8ce",
+  "question_sha256": "5862dd0c5f141a397d30a274573ca261508f56f6b704cb4c138b381e3db1ebd5",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T06:01:39.296771+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT ORDER_STATUS, COUNT(*) AS TOTAL_ORDERS, COUNT(CUSTOMER_RATING) AS RATED_ORDERS, COUNT(CUSTOMER_RATING) / NULLIF(COUNT(*), 0)::FLOAT AS RATING_SHARE, AVG(CUSTOMER_RATING) AS AVG_CUSTOMER_RATING_AMONG_RATED_ORDERS FROM ZOMATO_DLR.CORE.FACT_ORDER WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01' GROUP BY ORDER_STATUS ORDER BY ORDER_STATUS",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.52,
+        "prompt_tokens": 3074,
+        "completion_tokens": 248
+      },
+      "result": {
+        "columns": [
+          "ORDER_STATUS",
+          "TOTAL_ORDERS",
+          "RATED_ORDERS",
+          "RATING_SHARE",
+          "AVG_CUSTOMER_RATING_AMONG_RATED_ORDERS"
+        ],
+        "rows": [
+          [
+            "Cancelled",
+            "261456",
+            "0",
+            "0.0",
+            null
+          ],
+          [
+            "Delivered",
+            "3989077",
+            "2793569",
+            "0.7003046068050328",
+            "4.14547985"
+          ],
+          [
+            "Refunded",
+            "109240",
+            "0",
+            "0.0",
+            null
+          ]
+        ],
+        "query_id": "01c7df49-0001-b442-0000-d295000484a2",
+        "seconds": 0.22
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "For orders with recorded ORDER_DATE in 2025, by recorded order status:\n\n| Recorded status | Total orders | Orders with non-null rating | Share rated | Average rating among rated orders |\n|---|---:|---:|---:|---:|\n| Cancelled | 261,456 | 0 | 0.000000 | N/A (no rated orders) |\n| Delivered | 3,989,077 | 2,793,569 | 0.700305 (70.030461%) | 4.145480 |\n| Refunded | 109,240 | 0 | 0.000000 | N/A (no rated orders) |\n\nThe share is rated orders divided by all orders in that recorded status. Each average is calculated only over orders in that status that have a non-null CUSTOMER_RATING. Thus the delivered average describes rated delivered orders, not all delivered orders; cancelled and refunded statuses have no rated-order population, so their averages are undefined.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.71,
+        "prompt_tokens": 3394,
+        "completion_tokens": 317
+      }
+    }
+  ],
+  "final_answer": "For orders with recorded ORDER_DATE in 2025, by recorded order status:\n\n| Recorded status | Total orders | Orders with non-null rating | Share rated | Average rating among rated orders |\n|---|---:|---:|---:|---:|\n| Cancelled | 261,456 | 0 | 0.000000 | N/A (no rated orders) |\n| Delivered | 3,989,077 | 2,793,569 | 0.700305 (70.030461%) | 4.145480 |\n| Refunded | 109,240 | 0 | 0.000000 | N/A (no rated orders) |\n\nThe share is rated orders divided by all orders in that recorded status. Each average is calculated only over orders in that status that have a non-null CUSTOMER_RATING. Thus the delivered average describes rated delivered orders, not all delivered orders; cancelled and refunded statuses have no rated-order population, so their averages are undefined.",
+  "outcome": "answer",
+  "total_seconds": 7.45,
+  "finished_utc": "2026-10-21T06:01:46.750541+00:00"
+}

@@ -1,0 +1,65 @@
+{
+  "id": "A-Q17-r1",
+  "arm": "A",
+  "question_id": "Q17",
+  "stratum": "data",
+  "question": "Does recorded order sales amount reconcile to subtotal minus discount plus delivery fee plus GST for 2025? For each order status, give the count of non-zero differences and their signed sum in INR; do not assume one side is the corrected amount.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "3864edaa78738362e14d70dc187d33a6baf9e596378a324e96b60e5b6c2d0ad6",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:41:26.627358+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT ORDER_STATUS, COUNT(*) AS nonzero_diff_count, SUM(diff) AS signed_diff_sum_inr\nFROM (\n  SELECT ORDER_STATUS,\n         SALES_AMOUNT,\n         SUBTOTAL,\n         DISCOUNT,\n         DELIVERY_FEE,\n         GST,\n         CURRENCY,\n         (SALES_AMOUNT - (SUBTOTAL - DISCOUNT + DELIVERY_FEE + GST)) AS diff\n  FROM ZOMATO_DLR.SOURCES.ORDERS\n  WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n    AND CURRENCY = 'INR'\n) t\nWHERE diff != 0\nGROUP BY ORDER_STATUS\nORDER BY ORDER_STATUS;",
+        "metrics": "count of nonzero differences, signed sum of differences (INR)",
+        "group_by": "ORDER_STATUS",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.86,
+        "prompt_tokens": 1327,
+        "completion_tokens": 208
+      },
+      "result": {
+        "columns": [
+          "ORDER_STATUS",
+          "NONZERO_DIFF_COUNT",
+          "SIGNED_DIFF_SUM_INR"
+        ],
+        "rows": [],
+        "query_id": "01c7de45-0001-b442-0000-d29500040b9e",
+        "seconds": 0.5
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "count of nonzero differences, signed sum of differences (INR)",
+        "group_by": "ORDER_STATUS",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "For all 2025 orders in INR, there are no orders with a non-zero difference between the recorded SALES_AMOUNT and the calculated value (SUBTOTAL - DISCOUNT + DELIVERY_FEE + GST) for any order status. This means the recorded sales amount fully reconciles to the formula for every order status in 2025. No discrepancies were found.",
+        "reason": "The query returned zero rows, indicating no non-zero differences for any order status in the specified period and currency."
+      },
+      "model_stats": {
+        "seconds": 1.42,
+        "prompt_tokens": 1634,
+        "completion_tokens": 148
+      }
+    }
+  ],
+  "final_answer": "For all 2025 orders in INR, there are no orders with a non-zero difference between the recorded SALES_AMOUNT and the calculated value (SUBTOTAL - DISCOUNT + DELIVERY_FEE + GST) for any order status. This means the recorded sales amount fully reconciles to the formula for every order status in 2025. No discrepancies were found.",
+  "outcome": "answer",
+  "total_seconds": 3.79,
+  "finished_utc": "2026-10-21T01:41:30.418126+00:00"
+}

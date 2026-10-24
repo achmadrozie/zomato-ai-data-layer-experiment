@@ -1,0 +1,157 @@
+{
+  "id": "C-Q09-r1",
+  "arm": "C",
+  "question_id": "Q09",
+  "stratum": "data",
+  "question": "Among order-recorded cities with at least 50,000 total orders in 2025, which had the highest cancellation rate? Give its order count, cancellation rate, and gap versus the overall 2025 cancellation rate in percentage points.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "6e0a1cd1cbada372d52c245b3fa84cdc25c7a0c50ae89b3d0d2e75a314024446",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:07:42.658702+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT CITY, COUNT(*) AS ORDER_COUNT, SUM(CASE WHEN IS_CANCELLED THEN 1 ELSE 0 END) AS CANCELLED_COUNT\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\nGROUP BY CITY\nHAVING COUNT(*) >= 50000",
+        "metrics": "order count, cancelled count",
+        "group_by": "city",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "First, identify cities with at least 50,000 orders in 2025 and their cancellation counts to compute rates."
+      },
+      "model_stats": {
+        "seconds": 1.8,
+        "prompt_tokens": 2200,
+        "completion_tokens": 148
+      },
+      "result": {
+        "columns": [
+          "CITY",
+          "ORDER_COUNT",
+          "CANCELLED_COUNT"
+        ],
+        "rows": [
+          [
+            "Chennai",
+            "339941",
+            "20442"
+          ],
+          [
+            "Bangalore",
+            "481626",
+            "28831"
+          ],
+          [
+            "Lucknow",
+            "72434",
+            "4337"
+          ],
+          [
+            "Hyderabad",
+            "319122",
+            "19236"
+          ],
+          [
+            "Gurgaon",
+            "65124",
+            "3836"
+          ],
+          [
+            "Ahmedabad",
+            "94888",
+            "5596"
+          ],
+          [
+            "Delhi",
+            "371060",
+            "22361"
+          ],
+          [
+            "Mumbai",
+            "168304",
+            "10117"
+          ],
+          [
+            "Kolkata",
+            "244602",
+            "14600"
+          ],
+          [
+            "Bikaner",
+            "53571",
+            "3193"
+          ],
+          [
+            "Pune",
+            "320367",
+            "19093"
+          ],
+          [
+            "Chandigarh",
+            "93754",
+            "5490"
+          ]
+        ],
+        "query_id": "01c7de23-0001-b442-0000-d29500040932",
+        "seconds": 0.09
+      }
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT COUNT(*) AS TOTAL_ORDERS, SUM(CASE WHEN IS_CANCELLED THEN 1 ELSE 0 END) AS TOTAL_CANCELLED\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'",
+        "metrics": "total orders, total cancelled",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "Now calculate the overall 2025 cancellation rate for all cities to compare with the highest city rate."
+      },
+      "model_stats": {
+        "seconds": 1.25,
+        "prompt_tokens": 2587,
+        "completion_tokens": 129
+      },
+      "result": {
+        "columns": [
+          "TOTAL_ORDERS",
+          "TOTAL_CANCELLED"
+        ],
+        "rows": [
+          [
+            "4359773",
+            "261456"
+          ]
+        ],
+        "query_id": "01c7de23-0001-b38b-0000-d29500044f5a",
+        "seconds": 0.23
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "order count, cancellation rate, gap to overall cancellation rate (percentage points)",
+        "group_by": "city",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "Among cities with at least 50,000 total orders in 2025, Bangalore had the highest cancellation rate.\n\n- City: Bangalore\n- Order count: 481,626\n- Cancellation rate: 0.059857 (5.9857%)\n\nThe overall 2025 cancellation rate across all cities was 0.059991 (5.9991%).\n\n- Gap versus overall: -0.0134 percentage points (Bangalore's rate is 0.0134 points lower than the overall rate)\n\nInterpretation: While Bangalore had the highest cancellation rate among large cities, its rate was actually slightly below the overall average for 2025. All rates are based on order-level cancellation status, and the population is all orders recorded in 2025.",
+        "reason": "All requested values are calculated: city with highest rate among those with ≥50,000 orders, its order count, cancellation rate, and the gap to the overall rate in percentage points."
+      },
+      "model_stats": {
+        "seconds": 2.17,
+        "prompt_tokens": 2819,
+        "completion_tokens": 256
+      }
+    }
+  ],
+  "final_answer": "Among cities with at least 50,000 total orders in 2025, Bangalore had the highest cancellation rate.\n\n- City: Bangalore\n- Order count: 481,626\n- Cancellation rate: 0.059857 (5.9857%)\n\nThe overall 2025 cancellation rate across all cities was 0.059991 (5.9991%).\n\n- Gap versus overall: -0.0134 percentage points (Bangalore's rate is 0.0134 points lower than the overall rate)\n\nInterpretation: While Bangalore had the highest cancellation rate among large cities, its rate was actually slightly below the overall average for 2025. All rates are based on order-level cancellation status, and the population is all orders recorded in 2025.",
+  "outcome": "answer",
+  "total_seconds": 5.54,
+  "finished_utc": "2026-10-21T01:07:48.200682+00:00"
+}

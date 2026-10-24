@@ -1,0 +1,78 @@
+{
+  "id": "C-Q10-r1",
+  "arm": "C",
+  "question_id": "Q10",
+  "stratum": "data",
+  "question": "For Delivered orders in 2025 with a recorded delivery duration, compare the average delivery time in order-recorded Bangalore and Delhi. Which city was slower, and by how many minutes?",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "a5ab611d5fcdfe1de5ae276f83652dbfb9eb7150fb423aacb910c78cbf03a38c",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T04:17:18.842400+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH city_avgs AS (\n  SELECT CITY, COUNT(*) AS DELIVERED_ORDERS_WITH_RECORDED_DURATION, AVG(DELIVERY_TIME_MIN) AS AVG_DELIVERY_TIME_MIN\n  FROM ZOMATO_DLR.CORE.FACT_ORDER\n  WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n    AND IS_DELIVERED = TRUE\n    AND DELIVERY_TIME_MIN IS NOT NULL\n    AND CITY IN ('Bangalore', 'Delhi')\n  GROUP BY CITY\n)\nSELECT\n  MAX(IFF(CITY = 'Bangalore', DELIVERED_ORDERS_WITH_RECORDED_DURATION, NULL)) AS BANGALORE_ORDERS,\n  MAX(IFF(CITY = 'Bangalore', AVG_DELIVERY_TIME_MIN, NULL)) AS BANGALORE_AVG_MINUTES,\n  MAX(IFF(CITY = 'Delhi', DELIVERED_ORDERS_WITH_RECORDED_DURATION, NULL)) AS DELHI_ORDERS,\n  MAX(IFF(CITY = 'Delhi', AVG_DELIVERY_TIME_MIN, NULL)) AS DELHI_AVG_MINUTES,\n  CASE\n    WHEN MAX(IFF(CITY = 'Bangalore', AVG_DELIVERY_TIME_MIN, NULL)) > MAX(IFF(CITY = 'Delhi', AVG_DELIVERY_TIME_MIN, NULL)) THEN 'Bangalore'\n    WHEN MAX(IFF(CITY = 'Delhi', AVG_DELIVERY_TIME_MIN, NULL)) > MAX(IFF(CITY = 'Bangalore', AVG_DELIVERY_TIME_MIN, NULL)) THEN 'Delhi'\n    ELSE 'Tie'\n  END AS SLOWER_CITY,\n  ABS(MAX(IFF(CITY = 'Bangalore', AVG_DELIVERY_TIME_MIN, NULL)) - MAX(IFF(CITY = 'Delhi', AVG_DELIVERY_TIME_MIN, NULL))) AS DIFFERENCE_MINUTES\nFROM city_avgs",
+        "metrics": "Average DELIVERY_TIME_MIN and order counts by order-recorded city; difference in city averages",
+        "group_by": "CITY (Bangalore, Delhi)",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 6.75,
+        "prompt_tokens": 2187,
+        "completion_tokens": 639
+      },
+      "result": {
+        "columns": [
+          "BANGALORE_ORDERS",
+          "BANGALORE_AVG_MINUTES",
+          "DELHI_ORDERS",
+          "DELHI_AVG_MINUTES",
+          "SLOWER_CITY",
+          "DIFFERENCE_MINUTES"
+        ],
+        "rows": [
+          [
+            "440743",
+            "31.0560894",
+            "339384",
+            "31.0484820",
+            "Bangalore",
+            "0.0076074"
+          ]
+        ],
+        "query_id": "01c7dee1-0001-b442-0000-d29500048292",
+        "seconds": 0.29
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "Among 2025 delivered orders with a recorded delivery duration, using order-recorded city: Bangalore averaged 31.056089 minutes (440,743 orders) and Delhi averaged 31.048482 minutes (339,384 orders). Bangalore was slower by 0.007607 minutes on average (about 0.456444 seconds).",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.78,
+        "prompt_tokens": 2810,
+        "completion_tokens": 148
+      }
+    }
+  ],
+  "final_answer": "Among 2025 delivered orders with a recorded delivery duration, using order-recorded city: Bangalore averaged 31.056089 minutes (440,743 orders) and Delhi averaged 31.048482 minutes (339,384 orders). Bangalore was slower by 0.007607 minutes on average (about 0.456444 seconds).",
+  "outcome": "answer",
+  "total_seconds": 9.83,
+  "finished_utc": "2026-10-21T04:17:28.671057+00:00"
+}

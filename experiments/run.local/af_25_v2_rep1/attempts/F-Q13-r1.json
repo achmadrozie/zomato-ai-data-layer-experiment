@@ -1,0 +1,121 @@
+{
+  "id": "F-Q13-r1",
+  "arm": "F",
+  "question_id": "Q13",
+  "stratum": "data",
+  "question": "Which three exact cuisine labels had the highest 2025 Delivered-order GMV in INR? For each label, also give total order count and cancellation rate. Do not split comma-separated cuisine labels.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "5a3ce21426ab9c55f11a602608b374b91fb0a9a7a62404be1ef55a222df3ccea",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T01:06:33.565211+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "gmv,count_order_total,cancellation_rate",
+        "group_by": "restaurant_id__cuisine,order_id__currency",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31 23:59:59.999",
+        "answer": "",
+        "reason": "I will use metricflow to get GMV, total order count, and cancellation rate by cuisine and currency for 2025, then filter for INR and rank by GMV."
+      },
+      "model_stats": {
+        "seconds": 1.47,
+        "prompt_tokens": 3462,
+        "completion_tokens": 102
+      },
+      "tool_error": "ValueError: Invalid isoformat string: '2025-12-31 23:59:59.999'"
+    },
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "gmv,count_order_total,cancellation_rate",
+        "group_by": "restaurant_id__cuisine,order_id__currency",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "I am correcting the end_time format to '2025-12-31' to match the required ISO format for metricflow."
+      },
+      "model_stats": {
+        "seconds": 1.18,
+        "prompt_tokens": 3631,
+        "completion_tokens": 84
+      },
+      "tool_error": "ValueError: MetricFlow result exceeds 40 rows; use SQL or coarser grain"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT CUISINE, SUM(DELIVERED_SALES_AMOUNT) AS GMV_INR, COUNT(*) AS ORDER_COUNT, SUM(CASE WHEN IS_CANCELLED THEN 1 ELSE 0 END) * 1.0 / COUNT(*) AS CANCELLATION_RATE\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n  AND CURRENCY = 'INR'\nGROUP BY CUISINE\nORDER BY GMV_INR DESC\nLIMIT 3;",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "MetricFlow returned too many rows. I am using SQL to aggregate by exact cuisine label (not splitting comma-separated values), filtering for INR and 2025, and returning the top 3 by delivered GMV with order count and cancellation rate."
+      },
+      "model_stats": {
+        "seconds": 1.71,
+        "prompt_tokens": 3776,
+        "completion_tokens": 194
+      },
+      "result": {
+        "columns": [
+          "CUISINE",
+          "GMV_INR",
+          "ORDER_COUNT",
+          "CANCELLATION_RATE"
+        ],
+        "rows": [
+          [
+            "North Indian,Chinese",
+            "97195380.00",
+            "202651",
+            "0.058801"
+          ],
+          [
+            "Indian,Chinese",
+            "60447386.00",
+            "126766",
+            "0.059819"
+          ],
+          [
+            "Indian",
+            "58362786.00",
+            "148932",
+            "0.060001"
+          ]
+        ],
+        "query_id": "01c7de22-0001-b442-0000-d29500040912",
+        "seconds": 0.09
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "gmv,count_order_total,cancellation_rate",
+        "group_by": "cuisine label (not split), INR currency, 2025",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "The three exact cuisine labels with the highest 2025 Delivered-order GMV in INR are:\n\n1. \"North Indian,Chinese\":\n   - Delivered-order GMV: 97,195,380.00 INR\n   - Total order count: 202,651\n   - Cancellation rate: 0.058801 (5.8801%)\n\n2. \"Indian,Chinese\":\n   - Delivered-order GMV: 60,447,386.00 INR\n   - Total order count: 126,766\n   - Cancellation rate: 0.059819 (5.9819%)\n\n3. \"Indian\":\n   - Delivered-order GMV: 58,362,786.00 INR\n   - Total order count: 148,932\n   - Cancellation rate: 0.060001 (6.0001%)\n\nPopulation: All 2025 orders with INR currency, grouped by exact cuisine label (not splitting comma-separated values). Units: GMV in INR, order count as integer, cancellation rate as a decimal. Interpretation: These cuisine labels generated the highest delivered GMV in INR for 2025, with cancellation rates between 5.88% and 6.00%.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.02,
+        "prompt_tokens": 4169,
+        "completion_tokens": 324
+      }
+    }
+  ],
+  "final_answer": "The three exact cuisine labels with the highest 2025 Delivered-order GMV in INR are:\n\n1. \"North Indian,Chinese\":\n   - Delivered-order GMV: 97,195,380.00 INR\n   - Total order count: 202,651\n   - Cancellation rate: 0.058801 (5.8801%)\n\n2. \"Indian,Chinese\":\n   - Delivered-order GMV: 60,447,386.00 INR\n   - Total order count: 126,766\n   - Cancellation rate: 0.059819 (5.9819%)\n\n3. \"Indian\":\n   - Delivered-order GMV: 58,362,786.00 INR\n   - Total order count: 148,932\n   - Cancellation rate: 0.060001 (6.0001%)\n\nPopulation: All 2025 orders with INR currency, grouped by exact cuisine label (not splitting comma-separated values). Units: GMV in INR, order count as integer, cancellation rate as a decimal. Interpretation: These cuisine labels generated the highest delivered GMV in INR for 2025, with cancellation rates between 5.88% and 6.00%.",
+  "outcome": "answer",
+  "total_seconds": 15.12,
+  "finished_utc": "2026-10-21T01:06:48.685039+00:00"
+}

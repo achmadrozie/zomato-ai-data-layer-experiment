@@ -1,0 +1,71 @@
+{
+  "id": "C-Q22-r1",
+  "arm": "C",
+  "question_id": "Q22",
+  "stratum": "context",
+  "question": "For the standard market report covering 2025, what were Delivered-order GMV in INR, Delivered order count, and AOV? Apply the standard market eligibility rule consistently to all three.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "0b4050774275381d90e71ce6a53187fa1bc3bc3555976a96ef9d759f720db807",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:15:54.004283+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT \n  SUM(DELIVERED_SALES_AMOUNT) AS delivered_gmv_inr,\n  COUNT(DISTINCT ORDER_ID) AS delivered_order_count,\n  CASE WHEN COUNT(DISTINCT ORDER_ID) > 0 THEN SUM(DELIVERED_SALES_AMOUNT) / COUNT(DISTINCT ORDER_ID) ELSE NULL END AS aov_inr\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n  AND IS_DELIVERED = TRUE\n  AND CURRENCY = 'INR'",
+        "metrics": "Delivered-order GMV in INR, Delivered order count, AOV (INR)",
+        "group_by": "none",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "This query applies the standard market eligibility rule (delivered orders in INR) to all three metrics for 2025."
+      },
+      "model_stats": {
+        "seconds": 1.55,
+        "prompt_tokens": 2190,
+        "completion_tokens": 212
+      },
+      "result": {
+        "columns": [
+          "DELIVERED_GMV_INR",
+          "DELIVERED_ORDER_COUNT",
+          "AOV_INR"
+        ],
+        "rows": [
+          [
+            "1926466048.00",
+            "3989077",
+            "482.93528754"
+          ]
+        ],
+        "query_id": "01c7de2b-0001-b38b-0000-d29500046062",
+        "seconds": 0.24
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "Delivered-order GMV in INR, Delivered order count, AOV (INR)",
+        "group_by": "none",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "For the standard market report covering 2025, applying the standard market eligibility rule (delivered orders in INR) to all metrics:\n- Delivered-order GMV in INR: 1,926,466,048.00 INR\n- Delivered order count: 3,989,077 orders\n- AOV (Average Order Value): 482.935288 INR per order\n\nPopulation: All delivered orders in INR currency during 2025. Units are INR for GMV and AOV, count for orders. Interpretation: The average delivered order in 2025 was worth approximately 482.935288 INR.",
+        "reason": "All requested values are provided, using the standard market eligibility rule for consistency."
+      },
+      "model_stats": {
+        "seconds": 1.51,
+        "prompt_tokens": 2526,
+        "completion_tokens": 198
+      }
+    }
+  ],
+  "final_answer": "For the standard market report covering 2025, applying the standard market eligibility rule (delivered orders in INR) to all metrics:\n- Delivered-order GMV in INR: 1,926,466,048.00 INR\n- Delivered order count: 3,989,077 orders\n- AOV (Average Order Value): 482.935288 INR per order\n\nPopulation: All delivered orders in INR currency during 2025. Units are INR for GMV and AOV, count for orders. Interpretation: The average delivered order in 2025 was worth approximately 482.935288 INR.",
+  "outcome": "answer",
+  "total_seconds": 3.29,
+  "finished_utc": "2026-10-21T01:15:57.296912+00:00"
+}

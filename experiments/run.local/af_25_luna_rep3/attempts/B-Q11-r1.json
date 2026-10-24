@@ -1,0 +1,90 @@
+{
+  "id": "B-Q11-r1",
+  "arm": "B",
+  "question_id": "Q11",
+  "stratum": "data",
+  "question": "For each recorded order status in 2025, report total orders, the share with a non-null customer rating, and average customer rating among rated orders. What population does each average describe?",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "968aad7d611f901a7d8dfa1d40ac00ed82254c5407f1175667aee50fc5949a8c",
+  "question_sha256": "5862dd0c5f141a397d30a274573ca261508f56f6b704cb4c138b381e3db1ebd5",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T07:18:48.946496+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT f.ORDER_STATUS, COUNT(*) AS TOTAL_ORDERS, COUNT(f.CUSTOMER_RATING) AS RATED_ORDERS, COUNT(f.CUSTOMER_RATING) / NULLIF(COUNT(*), 0)::FLOAT AS SHARE_WITH_RATING, AVG(f.CUSTOMER_RATING) AS AVG_RATING_AMONG_RATED FROM ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE b JOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FULFILLMENT f ON b.ORDER_ID = f.ORDER_ID WHERE b.ORDER_DATE >= '2025-01-01' AND b.ORDER_DATE < '2026-01-01' GROUP BY f.ORDER_STATUS ORDER BY f.ORDER_STATUS",
+        "metrics": "total orders; rated-order count and share; average customer rating",
+        "group_by": "recorded order status, including NULL if present",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 5.82,
+        "prompt_tokens": 1685,
+        "completion_tokens": 411
+      },
+      "result": {
+        "columns": [
+          "ORDER_STATUS",
+          "TOTAL_ORDERS",
+          "RATED_ORDERS",
+          "SHARE_WITH_RATING",
+          "AVG_RATING_AMONG_RATED"
+        ],
+        "rows": [
+          [
+            "Cancelled",
+            "261456",
+            "0",
+            "0.0",
+            null
+          ],
+          [
+            "Delivered",
+            "3989077",
+            "2793569",
+            "0.7003046068050328",
+            "4.14547985"
+          ],
+          [
+            "Refunded",
+            "109240",
+            "0",
+            "0.0",
+            null
+          ]
+        ],
+        "query_id": "01c7df96-0001-b38b-0000-d29500046c2e",
+        "seconds": 0.88
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "For orders with recorded ORDER_DATE from 2025-01-01 through 2025-12-31:\n\n- Cancelled: 261456 total orders; 0.000000% had a non-null customer rating; average rating among rated orders: N/A (no rated orders).\n- Delivered: 3989077 total orders; 70.030461% had a non-null customer rating; average rating among rated orders: 4.145480.\n- Refunded: 109240 total orders; 0.000000% had a non-null customer rating; average rating among rated orders: N/A (no rated orders).\n\nEach average is over only the orders in that recorded status with a non-null customer rating—not all orders in the status. Ratings are in the source rating scale; the data does not specify its bounds.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.94,
+        "prompt_tokens": 2070,
+        "completion_tokens": 296
+      }
+    }
+  ],
+  "final_answer": "For orders with recorded ORDER_DATE from 2025-01-01 through 2025-12-31:\n\n- Cancelled: 261456 total orders; 0.000000% had a non-null customer rating; average rating among rated orders: N/A (no rated orders).\n- Delivered: 3989077 total orders; 70.030461% had a non-null customer rating; average rating among rated orders: 4.145480.\n- Refunded: 109240 total orders; 0.000000% had a non-null customer rating; average rating among rated orders: N/A (no rated orders).\n\nEach average is over only the orders in that recorded status with a non-null customer rating—not all orders in the status. Ratings are in the source rating scale; the data does not specify its bounds.",
+  "outcome": "answer",
+  "total_seconds": 10.65,
+  "finished_utc": "2026-10-21T07:18:59.591737+00:00"
+}

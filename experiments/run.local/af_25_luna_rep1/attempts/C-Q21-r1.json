@@ -1,0 +1,70 @@
+{
+  "id": "C-Q21-r1",
+  "arm": "C",
+  "question_id": "Q21",
+  "stratum": "data",
+  "question": "Across the twelve calendar months of 2025, compute the Pearson correlation between monthly cancellation rate and average Delivered-order delivery time using SQL's CORR() function. Monthly cancellation rate = cancelled orders divided by all orders. Average delivery time = mean of delivery_time_min for Delivered orders with a non-null delivery duration only. Report the correlation coefficient, the number of months used, and whether that correlation alone supports a causal claim.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "43968c3cf736550a6edfb6bc71c34af46d6463670472144a22383f4bd85d921c",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T03:43:09.204736+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH months AS (\n  SELECT DATE_TRUNC('MONTH', DATE_DAY)::DATE AS month_start\n  FROM ZOMATO_DLR.CORE.DIM_DATE\n  WHERE DATE_DAY >= '2025-01-01' AND DATE_DAY < '2026-01-01'\n  GROUP BY 1\n), monthly_orders AS (\n  SELECT\n    DATE_TRUNC('MONTH', ORDER_DATE)::DATE AS month_start,\n    COUNT(*) AS all_orders,\n    COUNT_IF(IS_CANCELLED) AS cancelled_orders,\n    AVG(IFF(ORDER_STATUS = 'Delivered' AND DELIVERY_TIME_MIN IS NOT NULL, DELIVERY_TIME_MIN, NULL)) AS avg_delivered_time_min\n  FROM ZOMATO_DLR.CORE.FACT_ORDER\n  WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n  GROUP BY 1\n), monthly_metrics AS (\n  SELECT\n    m.month_start,\n    o.cancelled_orders / NULLIF(o.all_orders, 0)::FLOAT AS cancellation_rate,\n    o.avg_delivered_time_min\n  FROM months m\n  LEFT JOIN monthly_orders o ON m.month_start = o.month_start\n)\nSELECT\n  CORR(cancellation_rate, avg_delivered_time_min) AS pearson_correlation,\n  COUNT_IF(cancellation_rate IS NOT NULL AND avg_delivered_time_min IS NOT NULL) AS months_used\nFROM monthly_metrics",
+        "metrics": "Pearson correlation of monthly cancellation rate and mean delivery_time_min for Delivered orders; count of paired calendar months used",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 10.14,
+        "prompt_tokens": 2234,
+        "completion_tokens": 889
+      },
+      "result": {
+        "columns": [
+          "PEARSON_CORRELATION",
+          "MONTHS_USED"
+        ],
+        "rows": [
+          [
+            "-0.02003284034392569",
+            "12"
+          ]
+        ],
+        "query_id": "01c7debf-0001-b38b-0000-d295000467d2",
+        "seconds": 0.92
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "Pearson correlation: -0.020033 across 12 calendar months in 2025. The paired monthly measures are cancellation rate (cancelled orders divided by all orders) and average delivery duration in minutes among Delivered orders with non-null delivery_time_min. This is a near-zero negative linear association; correlation alone does not support a causal claim.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.73,
+        "prompt_tokens": 2709,
+        "completion_tokens": 172
+      }
+    }
+  ],
+  "final_answer": "Pearson correlation: -0.020033 across 12 calendar months in 2025. The paired monthly measures are cancellation rate (cancelled orders divided by all orders) and average delivery duration in minutes among Delivered orders with non-null delivery_time_min. This is a near-zero negative linear association; correlation alone does not support a causal claim.",
+  "outcome": "answer",
+  "total_seconds": 13.79,
+  "finished_utc": "2026-10-21T03:43:22.986470+00:00"
+}

@@ -1,0 +1,72 @@
+{
+  "id": "F-Q03-r1",
+  "arm": "F",
+  "question_id": "Q03",
+  "stratum": "data",
+  "question": "What was AOV in INR for Delivered orders in the full year 2025? Use the recorded order date for the 2025 scope.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "57beaba4b4339db13b7043c2a2928cf39d5baa511836db3dbde6518945b0b963",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T06:08:25.725849+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT SUM(IFF(ORDER_STATUS = 'Delivered', SALES_AMOUNT, 0)) / NULLIF(COUNT_IF(IS_DELIVERED), 0) AS AOV_INR, SUM(IFF(ORDER_STATUS = 'Delivered', SALES_AMOUNT, 0)) AS DELIVERED_GMV_INR, COUNT_IF(IS_DELIVERED) AS DELIVERED_ORDER_COUNT FROM ZOMATO_DLR.CORE.FACT_ORDER WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01' AND CURRENCY = 'INR'",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 4.69,
+        "prompt_tokens": 3450,
+        "completion_tokens": 407
+      },
+      "result": {
+        "columns": [
+          "AOV_INR",
+          "DELIVERED_GMV_INR",
+          "DELIVERED_ORDER_COUNT"
+        ],
+        "rows": [
+          [
+            "482.93528754",
+            "1926466048.00",
+            "3989077"
+          ]
+        ],
+        "query_id": "01c7df50-0001-b442-0000-d295000484d2",
+        "seconds": 0.14
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "AOV was INR 482.935288 per Delivered order for orders recorded from 2025-01-01 through 2025-12-31. This is delivered GMV of INR 1,926,466,048.00 divided by 3,989,077 delivered orders; amounts are in source currency (INR).",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.53,
+        "prompt_tokens": 3718,
+        "completion_tokens": 220
+      }
+    }
+  ],
+  "final_answer": "AOV was INR 482.935288 per Delivered order for orders recorded from 2025-01-01 through 2025-12-31. This is delivered GMV of INR 1,926,466,048.00 divided by 3,989,077 delivered orders; amounts are in source currency (INR).",
+  "outcome": "answer",
+  "total_seconds": 8.36,
+  "finished_utc": "2026-10-21T06:08:34.082351+00:00"
+}

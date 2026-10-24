@@ -1,0 +1,117 @@
+{
+  "id": "B-Q17-r1",
+  "arm": "B",
+  "question_id": "Q17",
+  "stratum": "data",
+  "question": "Does recorded order sales amount reconcile to subtotal minus discount plus delivery fee plus GST for 2025? For each order status, give the count of non-zero differences and their signed sum in INR; do not assume one side is the corrected amount.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "968aad7d611f901a7d8dfa1d40ac00ed82254c5407f1175667aee50fc5949a8c",
+  "question_sha256": "3864edaa78738362e14d70dc187d33a6baf9e596378a324e96b60e5b6c2d0ad6",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:12:01.887956+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT \n  ob.ORDER_STATUS,\n  COUNT(CASE WHEN ABS(of.SALES_AMOUNT - (of.SUBTOTAL - of.DISCOUNT + of.DELIVERY_FEE + of.GST)) > 0 THEN 1 END) AS nonzero_difference_count,\n  SUM(CASE WHEN ABS(of.SALES_AMOUNT - (of.SUBTOTAL - of.DISCOUNT + of.DELIVERY_FEE + of.GST)) > 0 THEN (of.SALES_AMOUNT - (of.SUBTOTAL - of.DISCOUNT + of.DELIVERY_FEE + of.GST)) ELSE 0 END) AS signed_difference_sum_inr\nFROM ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE ob\nJOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FINANCIALS of ON ob.ORDER_ID = of.ORDER_ID\nWHERE ob.ORDER_DATE >= '2025-01-01' AND ob.ORDER_DATE < '2026-01-01' AND ob.CURRENCY = 'INR'\nGROUP BY ob.ORDER_STATUS\nORDER BY ob.ORDER_STATUS;",
+        "metrics": "nonzero_difference_count, signed_difference_sum_inr",
+        "group_by": "ORDER_STATUS",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.9,
+        "prompt_tokens": 1698,
+        "completion_tokens": 266
+      },
+      "tool_error": "ProgrammingError: 001003 (42000): SQL compilation error:\nsyntax error line 3 at position 22 unexpected 'of'.\nsyntax error line 3 at position 22 unexpected 'of'.\nsyntax error line 3 at position 41 unexpected 'of'.\nsyntax error line 3 at position 53 unexpected '-'. (request_id=f5e2eeed-c03d-45e7-82ae-600e3014699b, sfqid=01c7de28-0001-b442-0000-d295000409c2)"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT \n  ob.ORDER_STATUS,\n  COUNT(CASE WHEN ABS(f.SALES_AMOUNT - (f.SUBTOTAL - f.DISCOUNT + f.DELIVERY_FEE + f.GST)) > 0 THEN 1 END) AS nonzero_difference_count,\n  SUM(CASE WHEN ABS(f.SALES_AMOUNT - (f.SUBTOTAL - f.DISCOUNT + f.DELIVERY_FEE + f.GST)) > 0 THEN (f.SALES_AMOUNT - (f.SUBTOTAL - f.DISCOUNT + f.DELIVERY_FEE + f.GST)) ELSE 0 END) AS signed_difference_sum_inr\nFROM ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE ob\nJOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FINANCIALS f ON ob.ORDER_ID = f.ORDER_ID\nWHERE ob.ORDER_DATE >= '2025-01-01' AND ob.ORDER_DATE < '2026-01-01' AND ob.CURRENCY = 'INR'\nGROUP BY ob.ORDER_STATUS\nORDER BY ob.ORDER_STATUS;",
+        "metrics": "nonzero_difference_count, signed_difference_sum_inr",
+        "group_by": "ORDER_STATUS",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.87,
+        "prompt_tokens": 2129,
+        "completion_tokens": 266
+      },
+      "tool_error": "ProgrammingError: 000904 (42000): SQL compilation error: error line 2 at position 2\ninvalid identifier 'OB.ORDER_STATUS' (request_id=999ba53c-96f9-408b-979c-e60d68e8ed18, sfqid=01c7de28-0001-b442-0000-d295000409c6)"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT \n  f.ORDER_STATUS,\n  COUNT(CASE WHEN ABS(f.SALES_AMOUNT - (f.SUBTOTAL - f.DISCOUNT + f.DELIVERY_FEE + f.GST)) > 0 THEN 1 END) AS nonzero_difference_count,\n  SUM(CASE WHEN ABS(f.SALES_AMOUNT - (f.SUBTOTAL - f.DISCOUNT + f.DELIVERY_FEE + f.GST)) > 0 THEN (f.SALES_AMOUNT - (f.SUBTOTAL - f.DISCOUNT + f.DELIVERY_FEE + f.GST)) ELSE 0 END) AS signed_difference_sum_inr\nFROM ZOMATO_DLR.SOURCES.ORDERS f\nWHERE f.ORDER_DATE >= '2025-01-01' AND f.ORDER_DATE < '2026-01-01' AND f.CURRENCY = 'INR'\nGROUP BY f.ORDER_STATUS\nORDER BY f.ORDER_STATUS;",
+        "metrics": "nonzero_difference_count, signed_difference_sum_inr",
+        "group_by": "ORDER_STATUS",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.69,
+        "prompt_tokens": 2518,
+        "completion_tokens": 242
+      },
+      "result": {
+        "columns": [
+          "ORDER_STATUS",
+          "NONZERO_DIFFERENCE_COUNT",
+          "SIGNED_DIFFERENCE_SUM_INR"
+        ],
+        "rows": [
+          [
+            "Cancelled",
+            "0",
+            "0.0"
+          ],
+          [
+            "Delivered",
+            "0",
+            "0.0"
+          ],
+          [
+            "Refunded",
+            "0",
+            "0.0"
+          ]
+        ],
+        "query_id": "01c7de28-0001-b442-0000-d295000409ca",
+        "seconds": 0.46
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "nonzero_difference_count, signed_difference_sum_inr",
+        "group_by": "ORDER_STATUS",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "For all 2025 orders in INR, the recorded sales amount exactly matches subtotal minus discount plus delivery fee plus GST for every order status. There are zero non-zero differences for each status (Cancelled, Delivered, Refunded), and the signed sum of differences is 0.0 INR in all cases. This indicates full reconciliation between the recorded sales amount and the calculated formula for all orders in the population.",
+        "reason": "The query found no discrepancies for any order status, so the amounts reconcile as requested."
+      },
+      "model_stats": {
+        "seconds": 1.42,
+        "prompt_tokens": 2927,
+        "completion_tokens": 149
+      }
+    }
+  ],
+  "final_answer": "For all 2025 orders in INR, the recorded sales amount exactly matches subtotal minus discount plus delivery fee plus GST for every order status. There are zero non-zero differences for each status (Cancelled, Delivered, Refunded), and the signed sum of differences is 0.0 INR in all cases. This indicates full reconciliation between the recorded sales amount and the calculated formula for all orders in the population.",
+  "outcome": "answer",
+  "total_seconds": 7.66,
+  "finished_utc": "2026-10-21T01:12:09.545284+00:00"
+}

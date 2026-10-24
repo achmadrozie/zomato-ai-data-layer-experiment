@@ -1,0 +1,106 @@
+{
+  "id": "C-Q09-r1",
+  "arm": "C",
+  "question_id": "Q09",
+  "stratum": "data",
+  "question": "Among order-recorded cities with at least 50,000 total orders in 2025, which had the highest cancellation rate? Give its order count, cancellation rate, and gap versus the overall 2025 cancellation rate in percentage points.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "6e0a1cd1cbada372d52c245b3fa84cdc25c7a0c50ae89b3d0d2e75a314024446",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:44:02.909911+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT\n  CITY,\n  COUNT(*) AS ORDER_COUNT,\n  SUM(CASE WHEN IS_CANCELLED THEN 1 ELSE 0 END) AS CANCELLED_COUNT,\n  AVG(CASE WHEN IS_CANCELLED THEN 1 ELSE 0 END) AS CANCELLATION_RATE\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\nGROUP BY CITY\nHAVING COUNT(*) >= 50000\nORDER BY CANCELLATION_RATE DESC\nLIMIT 1;",
+        "metrics": "ORDER_COUNT, CANCELLATION_RATE",
+        "group_by": "CITY",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.56,
+        "prompt_tokens": 2200,
+        "completion_tokens": 172
+      },
+      "result": {
+        "columns": [
+          "CITY",
+          "ORDER_COUNT",
+          "CANCELLED_COUNT",
+          "CANCELLATION_RATE"
+        ],
+        "rows": [
+          [
+            "Hyderabad",
+            "319122",
+            "19236",
+            "0.060278"
+          ]
+        ],
+        "query_id": "01c7de48-0001-b442-0000-d29500040bd6",
+        "seconds": 0.16
+      }
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT\n  COUNT(*) AS TOTAL_ORDERS,\n  SUM(CASE WHEN IS_CANCELLED THEN 1 ELSE 0 END) AS TOTAL_CANCELLED,\n  AVG(CASE WHEN IS_CANCELLED THEN 1 ELSE 0 END) AS OVERALL_CANCELLATION_RATE\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01';",
+        "metrics": "OVERALL_CANCELLATION_RATE",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "Need overall 2025 cancellation rate to compute the gap."
+      },
+      "model_stats": {
+        "seconds": 1.25,
+        "prompt_tokens": 2491,
+        "completion_tokens": 153
+      },
+      "result": {
+        "columns": [
+          "TOTAL_ORDERS",
+          "TOTAL_CANCELLED",
+          "OVERALL_CANCELLATION_RATE"
+        ],
+        "rows": [
+          [
+            "4359773",
+            "261456",
+            "0.059970"
+          ]
+        ],
+        "query_id": "01c7de48-0001-b38b-0000-d2950004621a",
+        "seconds": 0.15
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "Order count, cancellation rate, gap vs overall cancellation rate (percentage points)",
+        "group_by": "City (with >=50,000 orders in 2025)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "Among cities with at least 50,000 total orders recorded in 2025, Hyderabad had the highest cancellation rate. Hyderabad had 319,122 orders, with a cancellation rate of 0.060278 (6.0278%). The overall 2025 cancellation rate was 0.059970 (5.9970%). The gap between Hyderabad's cancellation rate and the overall rate is 0.0308 percentage points (6.0278% - 5.9970%).",
+        "reason": "All requested values are calculated: Hyderabad is the city with the highest cancellation rate among those with >=50,000 orders in 2025; its order count, cancellation rate, and the gap versus the overall rate are provided, with rates expressed to six decimals and the gap in percentage points."
+      },
+      "model_stats": {
+        "seconds": 1.8,
+        "prompt_tokens": 2761,
+        "completion_tokens": 225
+      }
+    }
+  ],
+  "final_answer": "Among cities with at least 50,000 total orders recorded in 2025, Hyderabad had the highest cancellation rate. Hyderabad had 319,122 orders, with a cancellation rate of 0.060278 (6.0278%). The overall 2025 cancellation rate was 0.059970 (5.9970%). The gap between Hyderabad's cancellation rate and the overall rate is 0.0308 percentage points (6.0278% - 5.9970%).",
+  "outcome": "answer",
+  "total_seconds": 4.93,
+  "finished_utc": "2026-10-21T01:44:07.840465+00:00"
+}

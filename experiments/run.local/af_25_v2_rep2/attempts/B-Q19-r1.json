@@ -1,0 +1,93 @@
+{
+  "id": "B-Q19-r1",
+  "arm": "B",
+  "question_id": "Q19",
+  "stratum": "data",
+  "question": "Across every calendar date in 2025, including dates with zero Delivered orders, what was the average number of Delivered orders for each weekday? Which weekday had the highest average?",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "968aad7d611f901a7d8dfa1d40ac00ed82254c5407f1175667aee50fc5949a8c",
+  "question_sha256": "e1eaf3ef9b54696d69a4f4b213fbccf78b1cb1bfd78e3388cce48b93e7dfc197",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:40:36.093321+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT d.DAY_NAME, AVG(COALESCE(o.delivered_orders, 0)) AS avg_delivered_orders\nFROM ZOMATO_DLR.INTERMEDIATE.INT_DATE_FEATURES d\nLEFT JOIN (\n    SELECT ORDER_DATE, COUNT(*) AS delivered_orders\n    FROM ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE b\n    JOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FULFILLMENT f ON b.ORDER_ID = f.ORDER_ID\n    WHERE b.ORDER_DATE >= '2025-01-01' AND b.ORDER_DATE < '2026-01-01' AND f.IS_DELIVERED = TRUE\n    GROUP BY ORDER_DATE\n) o ON d.DATE_DAY = o.ORDER_DATE\nWHERE d.YEAR = 2025\nGROUP BY d.DAY_NAME\nORDER BY avg_delivered_orders DESC;",
+        "metrics": "Average number of Delivered orders per weekday in 2025",
+        "group_by": "DAY_NAME (weekday)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.71,
+        "prompt_tokens": 1684,
+        "completion_tokens": 225
+      },
+      "result": {
+        "columns": [
+          "DAY_NAME",
+          "AVG_DELIVERED_ORDERS"
+        ],
+        "rows": [
+          [
+            "Sat",
+            "14486.211538"
+          ],
+          [
+            "Sun",
+            "13119.134615"
+          ],
+          [
+            "Fri",
+            "12228.980769"
+          ],
+          [
+            "Thu",
+            "9473.653846"
+          ],
+          [
+            "Mon",
+            "9094.365385"
+          ],
+          [
+            "Tue",
+            "9082.788462"
+          ],
+          [
+            "Wed",
+            "9053.773585"
+          ]
+        ],
+        "query_id": "01c7de44-0001-b38b-0000-d295000461b2",
+        "seconds": 1.02
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "Average number of Delivered orders per weekday in 2025",
+        "group_by": "DAY_NAME (weekday)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "Across every calendar date in 2025 (including dates with zero Delivered orders), the average number of Delivered orders for each weekday was:\n- Saturday: 14,486.211538\n- Sunday: 13,119.134615\n- Friday: 12,228.980769\n- Thursday: 9,473.653846\n- Monday: 9,094.365385\n- Tuesday: 9,082.788462\n- Wednesday: 9,053.773585\n\nThe weekday with the highest average number of Delivered orders was Saturday (14,486.211538 orders per Saturday). Population: all calendar dates in 2025. Unit: Delivered orders per day. Interpretation: Saturdays saw the highest average Delivered order volume, while midweek days had lower averages.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.89,
+        "prompt_tokens": 2074,
+        "completion_tokens": 221
+      }
+    }
+  ],
+  "final_answer": "Across every calendar date in 2025 (including dates with zero Delivered orders), the average number of Delivered orders for each weekday was:\n- Saturday: 14,486.211538\n- Sunday: 13,119.134615\n- Friday: 12,228.980769\n- Thursday: 9,473.653846\n- Monday: 9,094.365385\n- Tuesday: 9,082.788462\n- Wednesday: 9,053.773585\n\nThe weekday with the highest average number of Delivered orders was Saturday (14,486.211538 orders per Saturday). Population: all calendar dates in 2025. Unit: Delivered orders per day. Interpretation: Saturdays saw the highest average Delivered order volume, while midweek days had lower averages.",
+  "outcome": "answer",
+  "total_seconds": 4.62,
+  "finished_utc": "2026-10-21T01:40:40.712166+00:00"
+}

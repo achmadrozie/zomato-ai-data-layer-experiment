@@ -1,0 +1,81 @@
+{
+  "id": "F-Q14-r1",
+  "arm": "F",
+  "question_id": "Q14",
+  "stratum": "data",
+  "question": "For item lines belonging to 2025 orders, compare Veg, Non-Veg, and unknown food classifications: item-line count, ordered units, and each group's share of all ordered units. What is the difference between line count and units here?",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "c11ec1608564053982627416721eff48a6033c2ab87d4840ffa0848b942a739d",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-20T23:36:23.540924+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT f.veg_or_non_veg AS food_classification,\n       COUNT(*) AS item_line_count,\n       SUM(foi.quantity) AS ordered_units\nFROM ZOMATO_DLR.CORE.FACT_ORDER_ITEM foi\nJOIN ZOMATO_DLR.CORE.FACT_ORDER fo ON foi.order_id = fo.order_id\nLEFT JOIN ZOMATO_DLR.CORE.DIM_FOOD f ON foi.food_id = f.food_id\nWHERE fo.order_date >= '2025-01-01' AND fo.order_date < '2026-01-01'\nGROUP BY f.veg_or_non_veg\nORDER BY item_line_count DESC;",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.78,
+        "prompt_tokens": 3472,
+        "completion_tokens": 165
+      },
+      "result": {
+        "columns": [
+          "FOOD_CLASSIFICATION",
+          "ITEM_LINE_COUNT",
+          "ORDERED_UNITS"
+        ],
+        "rows": [
+          [
+            "Veg",
+            "7277939",
+            "8877759"
+          ],
+          [
+            "Non-Veg",
+            "2749222",
+            "3353105"
+          ],
+          [
+            null,
+            "12",
+            "13"
+          ]
+        ],
+        "query_id": "01c7ddc8-0001-b38b-0000-d29500044b9e",
+        "seconds": 1.07
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "For item lines belonging to 2025 orders, the comparison by food classification is as follows:\n\n- Veg: 7,277,939 item lines, 8,877,759 ordered units, representing 72.626857% of all ordered units.\n- Non-Veg: 2,749,222 item lines, 3,353,105 ordered units, representing 27.426964% of all ordered units.\n- Unknown classification: 12 item lines, 13 ordered units, representing 0.000106% of all ordered units.\n\nTotal ordered units across all groups: 12,230,877.\n\n**Difference between line count and units:**\n- Item-line count is the number of distinct order item rows (each row may represent one or more units of a food item in an order).\n- Ordered units is the sum of the quantities across all item lines (i.e., the total number of individual food items ordered, regardless of how they are grouped into lines).\n\nInterpretation: Each item line can represent multiple units of a food item. For example, a customer may order 3 units of the same dish in one line, contributing 1 to the line count and 3 to the ordered units. Thus, ordered units will always be greater than or equal to the item-line count.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.82,
+        "prompt_tokens": 3771,
+        "completion_tokens": 301
+      }
+    }
+  ],
+  "final_answer": "For item lines belonging to 2025 orders, the comparison by food classification is as follows:\n\n- Veg: 7,277,939 item lines, 8,877,759 ordered units, representing 72.626857% of all ordered units.\n- Non-Veg: 2,749,222 item lines, 3,353,105 ordered units, representing 27.426964% of all ordered units.\n- Unknown classification: 12 item lines, 13 ordered units, representing 0.000106% of all ordered units.\n\nTotal ordered units across all groups: 12,230,877.\n\n**Difference between line count and units:**\n- Item-line count is the number of distinct order item rows (each row may represent one or more units of a food item in an order).\n- Ordered units is the sum of the quantities across all item lines (i.e., the total number of individual food items ordered, regardless of how they are grouped into lines).\n\nInterpretation: Each item line can represent multiple units of a food item. For example, a customer may order 3 units of the same dish in one line, contributing 1 to the line count and 3 to the ordered units. Thus, ordered units will always be greater than or equal to the item-line count.",
+  "outcome": "answer",
+  "total_seconds": 5.68,
+  "finished_utc": "2026-10-20T23:36:29.224681+00:00"
+}

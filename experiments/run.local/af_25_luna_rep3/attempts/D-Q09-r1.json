@@ -1,0 +1,377 @@
+{
+  "id": "D-Q09-r1",
+  "arm": "D",
+  "question_id": "Q09",
+  "stratum": "data",
+  "question": "Among order-recorded cities with at least 50,000 total orders in 2025, which had the highest cancellation rate? Give its order count, cancellation rate, and gap versus the overall 2025 cancellation rate in percentage points.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "b1f6e14c773bd842d58a660b709e48a10852a27a37faa316466d6e5582ae5f7b",
+  "question_sha256": "6e0a1cd1cbada372d52c245b3fa84cdc25c7a0c50ae89b3d0d2e75a314024446",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T07:21:27.272634+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH city_rates AS (\n  SELECT CITY,\n         COUNT(*) AS ORDER_COUNT,\n         SUM(IFF(IS_CANCELLED, 1, 0)) AS CANCELLED_ORDER_COUNT,\n         SUM(IFF(IS_CANCELLED, 1, 0)) / COUNT(*)::FLOAT AS CANCELLATION_RATE\n  FROM ZOMATO_DLR.CORE.FACT_ORDER\n  WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n    AND CITY IS NOT NULL\n  GROUP BY CITY\n  HAVING COUNT(*) >= 50000\n), overall AS (\n  SELECT SUM(IFF(IS_CANCELLED, 1, 0)) / COUNT(*)::FLOAT AS OVERALL_CANCELLATION_RATE\n  FROM ZOMATO_DLR.CORE.FACT_ORDER\n  WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n)\nSELECT c.CITY,\n       c.ORDER_COUNT,\n       c.CANCELLED_ORDER_COUNT,\n       c.CANCELLATION_RATE * 100 AS CANCELLATION_RATE_PERCENT,\n       (c.CANCELLATION_RATE - o.OVERALL_CANCELLATION_RATE) * 100 AS GAP_VS_OVERALL_PERCENTAGE_POINTS,\n       o.OVERALL_CANCELLATION_RATE * 100 AS OVERALL_CANCELLATION_RATE_PERCENT\nFROM city_rates c CROSS JOIN overall o\nWHERE c.CANCELLATION_RATE = (SELECT MAX(CANCELLATION_RATE) FROM city_rates)\nORDER BY c.CITY\nLIMIT 40",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 7.44,
+        "prompt_tokens": 2540,
+        "completion_tokens": 658
+      },
+      "result": {
+        "columns": [
+          "CITY",
+          "ORDER_COUNT",
+          "CANCELLED_ORDER_COUNT",
+          "CANCELLATION_RATE_PERCENT",
+          "GAP_VS_OVERALL_PERCENTAGE_POINTS",
+          "OVERALL_CANCELLATION_RATE_PERCENT"
+        ],
+        "rows": [],
+        "query_id": "01c7df99-0001-b38b-0000-d29500046c4e",
+        "seconds": 0.54
+      }
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT CITY, COUNT(*) AS ORDER_COUNT,\n       SUM(IFF(IS_CANCELLED, 1, 0)) AS CANCELLED_ORDER_COUNT,\n       SUM(IFF(IS_CANCELLED, 1, 0)) / COUNT(*)::FLOAT * 100 AS CANCELLATION_RATE_PERCENT\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\nGROUP BY CITY\nORDER BY ORDER_COUNT DESC\nLIMIT 40",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.8,
+        "prompt_tokens": 3031,
+        "completion_tokens": 206
+      },
+      "result": {
+        "columns": [
+          "CITY",
+          "ORDER_COUNT",
+          "CANCELLED_ORDER_COUNT",
+          "CANCELLATION_RATE_PERCENT"
+        ],
+        "rows": [
+          [
+            "Bangalore",
+            "481626",
+            "28831",
+            "5.986180148081707"
+          ],
+          [
+            "Delhi",
+            "371060",
+            "22361",
+            "6.026249124130868"
+          ],
+          [
+            "Chennai",
+            "339941",
+            "20442",
+            "6.013396442323815"
+          ],
+          [
+            "Pune",
+            "320367",
+            "19093",
+            "5.959727437595008"
+          ],
+          [
+            "Hyderabad",
+            "319122",
+            "19236",
+            "6.027788745370109"
+          ],
+          [
+            "Kolkata",
+            "244602",
+            "14600",
+            "5.968880058217022"
+          ],
+          [
+            "Mumbai",
+            "168304",
+            "10117",
+            "6.011146496815287"
+          ],
+          [
+            "Ahmedabad",
+            "94888",
+            "5596",
+            "5.897479133293989"
+          ],
+          [
+            "Chandigarh",
+            "93754",
+            "5490",
+            "5.855750154660068"
+          ],
+          [
+            "Lucknow",
+            "72434",
+            "4337",
+            "5.987519673081701"
+          ],
+          [
+            "Gurgaon",
+            "65124",
+            "3836",
+            "5.890301578527118"
+          ],
+          [
+            "Bikaner",
+            "53571",
+            "3193",
+            "5.96031434918146"
+          ],
+          [
+            "Nagpur",
+            "46662",
+            "2777",
+            "5.951309416655951"
+          ],
+          [
+            "Coimbatore",
+            "43340",
+            "2667",
+            "6.153668666359022"
+          ],
+          [
+            "Indore",
+            "42798",
+            "2594",
+            "6.061030889293892"
+          ],
+          [
+            "Surat",
+            "41834",
+            "2584",
+            "6.176793995314815"
+          ],
+          [
+            "Noida-1",
+            "39384",
+            "2282",
+            "5.794231159861873"
+          ],
+          [
+            "Vizag",
+            "39174",
+            "2364",
+            "6.034614795527646"
+          ],
+          [
+            "Vijayawada",
+            "35112",
+            "2149",
+            "6.120414673046252"
+          ],
+          [
+            "Kochi",
+            "24378",
+            "1436",
+            "5.890557059643941"
+          ],
+          [
+            "Guwahati",
+            "24340",
+            "1510",
+            "6.203779786359902"
+          ],
+          [
+            "Patna",
+            "23864",
+            "1487",
+            "6.231143144485418"
+          ],
+          [
+            "Mysore",
+            "22288",
+            "1296",
+            "5.8147882268485285"
+          ],
+          [
+            "Kanpur",
+            "21386",
+            "1304",
+            "6.097446927896755"
+          ],
+          [
+            "Dehradun",
+            "20405",
+            "1229",
+            "6.023033570203381"
+          ],
+          [
+            "Noida",
+            "20182",
+            "1135",
+            "5.62382320879992"
+          ],
+          [
+            "Varanasi",
+            "18578",
+            "1048",
+            "5.6410808483152115"
+          ],
+          [
+            "Bhopal",
+            "17787",
+            "1040",
+            "5.846966885927925"
+          ],
+          [
+            "Madurai",
+            "17312",
+            "1075",
+            "6.20956561922366"
+          ],
+          [
+            "Vadodara",
+            "17008",
+            "1015",
+            "5.967779868297272"
+          ],
+          [
+            "Faridabad",
+            "16923",
+            "1091",
+            "6.44684748567039"
+          ],
+          [
+            "Udaipur",
+            "16285",
+            "1018",
+            "6.251151366287995"
+          ],
+          [
+            "Thiruvananthapuram",
+            "15660",
+            "976",
+            "6.232439335887611"
+          ],
+          [
+            "Bhubaneswar",
+            "15030",
+            "924",
+            "6.147704590818363"
+          ],
+          [
+            "Ranchi",
+            "14623",
+            "877",
+            "5.997401354031321"
+          ],
+          [
+            "Allahabad",
+            "14587",
+            "888",
+            "6.087612257489545"
+          ],
+          [
+            "Central-goa",
+            "14521",
+            "871",
+            "5.998209489704566"
+          ],
+          [
+            "Raipur",
+            "14092",
+            "822",
+            "5.833096792506386"
+          ],
+          [
+            "Gondal",
+            "13646",
+            "809",
+            "5.928477209438664"
+          ],
+          [
+            "Pondicherry",
+            "13561",
+            "803",
+            "5.921392227711821"
+          ]
+        ],
+        "query_id": "01c7df99-0001-b38b-0000-d29500046c52",
+        "seconds": 0.22
+      }
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH city AS (\n  SELECT CITY, COUNT(*) AS ORDER_COUNT,\n         SUM(IFF(IS_CANCELLED, 1, 0)) AS CANCELLED_ORDER_COUNT,\n         SUM(IFF(IS_CANCELLED, 1, 0)) / COUNT(*)::FLOAT AS CANCELLATION_RATE\n  FROM ZOMATO_DLR.CORE.FACT_ORDER\n  WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n  GROUP BY CITY\n  HAVING COUNT(*) >= 50000\n), overall AS (\n  SELECT SUM(IFF(IS_CANCELLED, 1, 0)) / COUNT(*)::FLOAT AS CANCELLATION_RATE\n  FROM ZOMATO_DLR.CORE.FACT_ORDER\n  WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n)\nSELECT c.CITY, c.ORDER_COUNT, c.CANCELLED_ORDER_COUNT,\n       c.CANCELLATION_RATE * 100 AS CANCELLATION_RATE_PERCENT,\n       o.CANCELLATION_RATE * 100 AS OVERALL_CANCELLATION_RATE_PERCENT,\n       (c.CANCELLATION_RATE - o.CANCELLATION_RATE) * 100 AS GAP_PERCENTAGE_POINTS\nFROM city c CROSS JOIN overall o\nQUALIFY ROW_NUMBER() OVER (ORDER BY c.CANCELLATION_RATE DESC, c.CITY) = 1",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 4.59,
+        "prompt_tokens": 4136,
+        "completion_tokens": 437
+      },
+      "result": {
+        "columns": [
+          "CITY",
+          "ORDER_COUNT",
+          "CANCELLED_ORDER_COUNT",
+          "CANCELLATION_RATE_PERCENT",
+          "OVERALL_CANCELLATION_RATE_PERCENT",
+          "GAP_PERCENTAGE_POINTS"
+        ],
+        "rows": [
+          [
+            "Hyderabad",
+            "319122",
+            "19236",
+            "6.027788745370109",
+            "5.997009477328292",
+            "0.030779268041817437"
+          ]
+        ],
+        "query_id": "01c7df99-0001-b38b-0000-d29500046c56",
+        "seconds": 0.27
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "Among cities with at least 50,000 recorded orders in 2025, Hyderabad had the highest cancellation rate. It had 319,122 orders and a cancellation rate of 6.027789%. This was 0.030779 percentage points above the overall 2025 cancellation rate of 5.997009%.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.76,
+        "prompt_tokens": 4660,
+        "completion_tokens": 185
+      }
+    }
+  ],
+  "final_answer": "Among cities with at least 50,000 recorded orders in 2025, Hyderabad had the highest cancellation rate. It had 319,122 orders and a cancellation rate of 6.027789%. This was 0.030779 percentage points above the overall 2025 cancellation rate of 5.997009%.",
+  "outcome": "answer",
+  "total_seconds": 18.63,
+  "finished_utc": "2026-10-21T07:21:45.906956+00:00"
+}

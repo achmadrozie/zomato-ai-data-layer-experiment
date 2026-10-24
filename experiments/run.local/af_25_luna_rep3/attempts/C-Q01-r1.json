@@ -1,0 +1,68 @@
+{
+  "id": "C-Q01-r1",
+  "arm": "C",
+  "question_id": "Q01",
+  "stratum": "data",
+  "question": "How many orders were placed during 2025? Use the recorded order date and report a count.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "26a8123001af6a9345ad0cf4c1e3b09eec0ec006c7e9ec43b587c5e59377b8a4",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T07:14:35.312347+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT COUNT(*) AS ORDER_COUNT\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'",
+        "metrics": "count of orders",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.15,
+        "prompt_tokens": 2170,
+        "completion_tokens": 124
+      },
+      "result": {
+        "columns": [
+          "ORDER_COUNT"
+        ],
+        "rows": [
+          [
+            "4359773"
+          ]
+        ],
+        "query_id": "01c7df92-0001-b442-0000-d29500048602",
+        "seconds": 0.82
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "Order count",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "4,359,773 orders were placed in 2025, counting records in FACT_ORDER with recorded ORDER_DATE from 2025-01-01 through 2025-12-31.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.22,
+        "prompt_tokens": 2347,
+        "completion_tokens": 87
+      }
+    }
+  ],
+  "final_answer": "4,359,773 orders were placed in 2025, counting records in FACT_ORDER with recorded ORDER_DATE from 2025-01-01 through 2025-12-31.",
+  "outcome": "answer",
+  "total_seconds": 5.19,
+  "finished_utc": "2026-10-21T07:14:40.503076+00:00"
+}

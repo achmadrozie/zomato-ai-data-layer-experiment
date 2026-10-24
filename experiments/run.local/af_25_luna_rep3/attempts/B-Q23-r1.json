@@ -1,0 +1,82 @@
+{
+  "id": "B-Q23-r1",
+  "arm": "B",
+  "question_id": "Q23",
+  "stratum": "context",
+  "question": "In the 2025 standard market report, which three cities led by Delivered-order GMV in INR? Give each city's GMV and share of standard market GMV, using the reporting geography default.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "968aad7d611f901a7d8dfa1d40ac00ed82254c5407f1175667aee50fc5949a8c",
+  "question_sha256": "8e9d0cfb7f28a61c23e09bf8b8fb7f4025382414d411dc6f612c4c213a65cd6e",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T07:03:23.776835+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH delivered_orders AS (\n  SELECT b.CITY, f.DELIVERED_SALES_AMOUNT\n  FROM ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE b\n  JOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FINANCIALS f ON b.ORDER_ID = f.ORDER_ID\n  JOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FULFILLMENT u ON b.ORDER_ID = u.ORDER_ID\n  WHERE b.ORDER_DATE >= '2025-01-01' AND b.ORDER_DATE < '2026-01-01'\n    AND b.CURRENCY = 'INR'\n    AND u.IS_DELIVERED = TRUE\n), city_gmv AS (\n  SELECT CITY, SUM(DELIVERED_SALES_AMOUNT) AS GMV_INR\n  FROM delivered_orders\n  GROUP BY CITY\n), market_gmv AS (\n  SELECT SUM(GMV_INR) AS TOTAL_GMV_INR FROM city_gmv\n)\nSELECT c.CITY, c.GMV_INR, c.GMV_INR / NULLIF(m.TOTAL_GMV_INR, 0) AS GMV_SHARE\nFROM city_gmv c CROSS JOIN market_gmv m\nORDER BY c.GMV_INR DESC\nLIMIT 3",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 61.53,
+        "prompt_tokens": 1687,
+        "completion_tokens": 591
+      },
+      "result": {
+        "columns": [
+          "CITY",
+          "GMV_INR",
+          "GMV_SHARE"
+        ],
+        "rows": [
+          [
+            "Bangalore",
+            "233341258.00",
+            "0.12112399"
+          ],
+          [
+            "Delhi",
+            "177702873.00",
+            "0.09224293"
+          ],
+          [
+            "Chennai",
+            "155055243.00",
+            "0.08048688"
+          ]
+        ],
+        "query_id": "01c7df88-0001-b38b-0000-d29500046bd6",
+        "seconds": 5.6
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "Using order-level CITY as the reporting geography, the top three cities by delivered-order GMV are:\n1. Bangalore — INR 233,341,258.00; 12.112399% of standard-market GMV.\n2. Delhi — INR 177,702,873.00; 9.224293%.\n3. Chennai — INR 155,055,243.00; 8.048688%.\nPopulation: orders with recorded ORDER_DATE in 2025, CURRENCY = INR, and IS_DELIVERED = TRUE. Shares use total 2025 INR delivered-order GMV as the denominator; no currency conversion was applied.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 20.13,
+        "prompt_tokens": 2121,
+        "completion_tokens": 1718
+      }
+    }
+  ],
+  "final_answer": "Using order-level CITY as the reporting geography, the top three cities by delivered-order GMV are:\n1. Bangalore — INR 233,341,258.00; 12.112399% of standard-market GMV.\n2. Delhi — INR 177,702,873.00; 9.224293%.\n3. Chennai — INR 155,055,243.00; 8.048688%.\nPopulation: orders with recorded ORDER_DATE in 2025, CURRENCY = INR, and IS_DELIVERED = TRUE. Shares use total 2025 INR delivered-order GMV as the denominator; no currency conversion was applied.",
+  "outcome": "answer",
+  "total_seconds": 87.27,
+  "finished_utc": "2026-10-21T07:04:51.046430+00:00"
+}

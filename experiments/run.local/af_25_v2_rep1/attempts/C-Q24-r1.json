@@ -1,0 +1,69 @@
+{
+  "id": "C-Q24-r1",
+  "arm": "C",
+  "question_id": "Q24",
+  "stratum": "context",
+  "question": "How many repeat customers were there in January–June 2025 and in July–December 2025? Evaluate repeat status separately within each reporting period, then say which half had more.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "47aaa7d55358153cbbba418ac8794c3771f8644e5bb9851213b684c61f0a1372",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:11:18.032688+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH jan_jun_orders AS (\n    SELECT CUSTOMER_ID\n    FROM ZOMATO_DLR.CORE.FACT_ORDER\n    WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2025-07-01'\n      AND IS_CANCELLED = FALSE\n),\njul_dec_orders AS (\n    SELECT CUSTOMER_ID\n    FROM ZOMATO_DLR.CORE.FACT_ORDER\n    WHERE ORDER_DATE >= '2025-07-01' AND ORDER_DATE < '2026-01-01'\n      AND IS_CANCELLED = FALSE\n),\njan_jun_repeat AS (\n    SELECT CUSTOMER_ID\n    FROM jan_jun_orders\n    GROUP BY CUSTOMER_ID\n    HAVING COUNT(*) > 1\n),\njul_dec_repeat AS (\n    SELECT CUSTOMER_ID\n    FROM jul_dec_orders\n    GROUP BY CUSTOMER_ID\n    HAVING COUNT(*) > 1\n)\nSELECT \n    (SELECT COUNT(*) FROM jan_jun_repeat) AS repeat_customers_jan_jun,\n    (SELECT COUNT(*) FROM jul_dec_repeat) AS repeat_customers_jul_dec;",
+        "metrics": "repeat customers in Jan–Jun 2025, repeat customers in Jul–Dec 2025",
+        "group_by": "period (Jan–Jun, Jul–Dec)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "This query counts customers with more than one order in each half of 2025, excluding cancelled orders, to determine repeat customers per period."
+      },
+      "model_stats": {
+        "seconds": 2.24,
+        "prompt_tokens": 2190,
+        "completion_tokens": 334
+      },
+      "result": {
+        "columns": [
+          "REPEAT_CUSTOMERS_JAN_JUN",
+          "REPEAT_CUSTOMERS_JUL_DEC"
+        ],
+        "rows": [
+          [
+            "94512",
+            "96095"
+          ]
+        ],
+        "query_id": "01c7de27-0001-b442-0000-d295000409aa",
+        "seconds": 0.17
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "repeat customers in Jan–Jun 2025, repeat customers in Jul–Dec 2025",
+        "group_by": "period (Jan–Jun, Jul–Dec)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "In January–June 2025, there were 94,512 repeat customers (customers with more than one non-cancelled order in that period). In July–December 2025, there were 96,095 repeat customers (using the same definition for that half). July–December 2025 had more repeat customers than January–June 2025. Population: all customers with more than one non-cancelled order in each respective half of 2025. Unit: customers. Interpretation: The number of repeat customers increased in the second half of 2025 compared to the first half.",
+        "reason": "Both halves were evaluated independently for repeat status, and the counts compared directly as requested."
+      },
+      "model_stats": {
+        "seconds": 1.79,
+        "prompt_tokens": 2631,
+        "completion_tokens": 207
+      }
+    }
+  ],
+  "final_answer": "In January–June 2025, there were 94,512 repeat customers (customers with more than one non-cancelled order in that period). In July–December 2025, there were 96,095 repeat customers (using the same definition for that half). July–December 2025 had more repeat customers than January–June 2025. Population: all customers with more than one non-cancelled order in each respective half of 2025. Unit: customers. Interpretation: The number of repeat customers increased in the second half of 2025 compared to the first half.",
+  "outcome": "answer",
+  "total_seconds": 4.2,
+  "finished_utc": "2026-10-21T01:11:22.234663+00:00"
+}

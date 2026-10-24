@@ -1,0 +1,90 @@
+{
+  "id": "A-Q11-r1",
+  "arm": "A",
+  "question_id": "Q11",
+  "stratum": "data",
+  "question": "For each recorded order status in 2025, report total orders, the share with a non-null customer rating, and average customer rating among rated orders. What population does each average describe?",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "5862dd0c5f141a397d30a274573ca261508f56f6b704cb4c138b381e3db1ebd5",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T07:15:27.535532+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT\n  COALESCE(ORDER_STATUS, '(NULL)') AS ORDER_STATUS,\n  COUNT(*) AS TOTAL_ORDERS,\n  COUNT_IF(CUSTOMER_RATING IS NOT NULL) AS RATED_ORDERS,\n  COUNT_IF(CUSTOMER_RATING IS NOT NULL) / NULLIF(COUNT(*), 0)::FLOAT AS SHARE_WITH_RATING,\n  AVG(CUSTOMER_RATING) AS AVG_CUSTOMER_RATING_AMONG_RATED\nFROM ZOMATO_DLR.STAGING.STG_ZOMATO__ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\nGROUP BY COALESCE(ORDER_STATUS, '(NULL)')\nORDER BY ORDER_STATUS",
+        "metrics": "For each status in 2025: total order count, rated-order count, rated-order share of total orders, and average customer rating among non-null ratings.",
+        "group_by": "ORDER_STATUS; order-level population, recorded order date in calendar year 2025.",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 4.75,
+        "prompt_tokens": 1314,
+        "completion_tokens": 401
+      },
+      "result": {
+        "columns": [
+          "ORDER_STATUS",
+          "TOTAL_ORDERS",
+          "RATED_ORDERS",
+          "SHARE_WITH_RATING",
+          "AVG_CUSTOMER_RATING_AMONG_RATED"
+        ],
+        "rows": [
+          [
+            "Cancelled",
+            "261456",
+            "0",
+            "0.0",
+            null
+          ],
+          [
+            "Delivered",
+            "3989077",
+            "2793569",
+            "0.7003046068050328",
+            "4.14547985"
+          ],
+          [
+            "Refunded",
+            "109240",
+            "0",
+            "0.0",
+            null
+          ]
+        ],
+        "query_id": "01c7df93-0001-b38b-0000-d29500046c16",
+        "seconds": 0.39
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "For orders with recorded ORDER_DATE from 2025-01-01 through 2025-12-31:\n\n| Recorded status | Total orders | With non-null rating | Share with rating | Average rating among rated orders |\n|---|---:|---:|---:|---:|\n| Cancelled | 261,456 | 0 | 0.000000 | N/A (no rated orders) |\n| Delivered | 3,989,077 | 2,793,569 | 0.700305 (70.030461%) | 4.145480 |\n| Refunded | 109,240 | 0 | 0.000000 | N/A (no rated orders) |\n\nEach average describes only the orders in that status and date population that have a non-null customer rating—not all orders in the status. Thus, the delivered average is over 2,793,569 rated delivered orders; cancelled and refunded averages are undefined because none of those orders had a rating.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.86,
+        "prompt_tokens": 1743,
+        "completion_tokens": 323
+      }
+    }
+  ],
+  "final_answer": "For orders with recorded ORDER_DATE from 2025-01-01 through 2025-12-31:\n\n| Recorded status | Total orders | With non-null rating | Share with rating | Average rating among rated orders |\n|---|---:|---:|---:|---:|\n| Cancelled | 261,456 | 0 | 0.000000 | N/A (no rated orders) |\n| Delivered | 3,989,077 | 2,793,569 | 0.700305 (70.030461%) | 4.145480 |\n| Refunded | 109,240 | 0 | 0.000000 | N/A (no rated orders) |\n\nEach average describes only the orders in that status and date population that have a non-null customer rating—not all orders in the status. Thus, the delivered average is over 2,793,569 rated delivered orders; cancelled and refunded averages are undefined because none of those orders had a rating.",
+  "outcome": "answer",
+  "total_seconds": 9.01,
+  "finished_utc": "2026-10-21T07:15:36.548337+00:00"
+}

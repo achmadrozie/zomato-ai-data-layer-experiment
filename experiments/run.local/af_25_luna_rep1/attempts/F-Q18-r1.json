@@ -1,0 +1,80 @@
+{
+  "id": "F-Q18-r1",
+  "arm": "F",
+  "question_id": "Q18",
+  "stratum": "data",
+  "question": "For 2025 Delivered orders in INR, show up to three customer age segments ranked by Delivered order count. Include Delivered order count, GMV, and AOV, using the existing customer dimension's segment labels. If fewer than three segments occur, report only those present.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "43755eab8a5718c24234f6fa409f14df3e4447edee255e17edc7340b37ed9afe",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T03:43:43.290879+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT c.AGE_SEGMENT, COUNT(*) AS DELIVERED_ORDER_COUNT, SUM(o.SALES_AMOUNT) AS GMV_INR, SUM(o.SALES_AMOUNT) / NULLIF(COUNT(*), 0) AS AOV_INR FROM ZOMATO_DLR.CORE.FACT_ORDER o JOIN ZOMATO_DLR.CORE.DIM_CUSTOMER c ON o.CUSTOMER_ID = c.CUSTOMER_ID WHERE o.ORDER_DATE >= '2025-01-01' AND o.ORDER_DATE < '2026-01-01' AND o.ORDER_STATUS = 'Delivered' AND o.CURRENCY = 'INR' AND c.AGE_SEGMENT IS NOT NULL GROUP BY c.AGE_SEGMENT ORDER BY DELIVERED_ORDER_COUNT DESC, c.AGE_SEGMENT LIMIT 3;",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 6.04,
+        "prompt_tokens": 3476,
+        "completion_tokens": 369
+      },
+      "result": {
+        "columns": [
+          "AGE_SEGMENT",
+          "DELIVERED_ORDER_COUNT",
+          "GMV_INR",
+          "AOV_INR"
+        ],
+        "rows": [
+          [
+            "Gen Z",
+            "2222349",
+            "1073372395.00",
+            "482.99002317"
+          ],
+          [
+            "Millennial",
+            "1766728",
+            "853093653.00",
+            "482.86643615"
+          ]
+        ],
+        "query_id": "01c7debf-0001-b442-0000-d29500048192",
+        "seconds": 0.71
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "For orders recorded from 2025-01-01 through 2025-12-31 with status Delivered and currency INR, the existing customer age-segment labels yield two segments (ranked by Delivered order count):\n\n| Rank | Age segment | Delivered orders (orders) | GMV (INR) | AOV (INR per Delivered order) |\n|---:|---|---:|---:|---:|\n| 1 | Gen Z | 2,222,349 | 1,073,372,395.00 | 482.990023 |\n| 2 | Millennial | 1,766,728 | 853,093,653.00 | 482.866436 |\n\nOnly these two segments occurred in the query results. GMV is the sum of recorded sales amounts for these Delivered orders; AOV is GMV divided by Delivered order count.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 4.29,
+        "prompt_tokens": 3817,
+        "completion_tokens": 346
+      }
+    }
+  ],
+  "final_answer": "For orders recorded from 2025-01-01 through 2025-12-31 with status Delivered and currency INR, the existing customer age-segment labels yield two segments (ranked by Delivered order count):\n\n| Rank | Age segment | Delivered orders (orders) | GMV (INR) | AOV (INR per Delivered order) |\n|---:|---|---:|---:|---:|\n| 1 | Gen Z | 2,222,349 | 1,073,372,395.00 | 482.990023 |\n| 2 | Millennial | 1,766,728 | 853,093,653.00 | 482.866436 |\n\nOnly these two segments occurred in the query results. GMV is the sum of recorded sales amounts for these Delivered orders; AOV is GMV divided by Delivered order count.",
+  "outcome": "answer",
+  "total_seconds": 11.05,
+  "finished_utc": "2026-10-21T03:43:54.337114+00:00"
+}

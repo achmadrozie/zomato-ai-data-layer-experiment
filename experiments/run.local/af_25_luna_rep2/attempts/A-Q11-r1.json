@@ -1,0 +1,86 @@
+{
+  "id": "A-Q11-r1",
+  "arm": "A",
+  "question_id": "Q11",
+  "stratum": "data",
+  "question": "For each recorded order status in 2025, report total orders, the share with a non-null customer rating, and average customer rating among rated orders. What population does each average describe?",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "5862dd0c5f141a397d30a274573ca261508f56f6b704cb4c138b381e3db1ebd5",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T06:04:17.163077+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT ORDER_STATUS, COUNT(*) AS TOTAL_ORDERS, COUNT_IF(CUSTOMER_RATING IS NOT NULL) / NULLIF(COUNT(*), 0)::FLOAT AS RATED_ORDER_SHARE, AVG(CUSTOMER_RATING) AS AVG_RATING_AMONG_RATED_ORDERS FROM ZOMATO_DLR.STAGING.STG_ZOMATO__ORDER WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01' AND ORDER_STATUS IS NOT NULL GROUP BY ORDER_STATUS ORDER BY ORDER_STATUS",
+        "metrics": "Total orders, share with non-null customer rating, and average customer rating among rated orders, by status",
+        "group_by": "ORDER_STATUS",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 5.35,
+        "prompt_tokens": 1314,
+        "completion_tokens": 408
+      },
+      "result": {
+        "columns": [
+          "ORDER_STATUS",
+          "TOTAL_ORDERS",
+          "RATED_ORDER_SHARE",
+          "AVG_RATING_AMONG_RATED_ORDERS"
+        ],
+        "rows": [
+          [
+            "Cancelled",
+            "261456",
+            "0.0",
+            null
+          ],
+          [
+            "Delivered",
+            "3989077",
+            "0.7003046068050328",
+            "4.14547985"
+          ],
+          [
+            "Refunded",
+            "109240",
+            "0.0",
+            null
+          ]
+        ],
+        "query_id": "01c7df4c-0001-b38b-0000-d29500046b16",
+        "seconds": 0.31
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "For orders with a recorded ORDER_DATE in 2025, grouped by recorded ORDER_STATUS:\n\n- Cancelled: 261,456 orders; rated-order share 0.000000 (0.000000%); average customer rating unavailable (no rated orders).\n- Delivered: 3,989,077 orders; rated-order share 0.700305 (70.030461%); average customer rating 4.145480 rating points.\n- Refunded: 109,240 orders; rated-order share 0.000000 (0.000000%); average customer rating unavailable (no rated orders).\n\nEach average describes only orders in that status and date population with a non-null customer rating—not all orders in the status. Cancelled and refunded averages are undefined because those groups have no non-null ratings.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 4.88,
+        "prompt_tokens": 1654,
+        "completion_tokens": 344
+      }
+    }
+  ],
+  "final_answer": "For orders with a recorded ORDER_DATE in 2025, grouped by recorded ORDER_STATUS:\n\n- Cancelled: 261,456 orders; rated-order share 0.000000 (0.000000%); average customer rating unavailable (no rated orders).\n- Delivered: 3,989,077 orders; rated-order share 0.700305 (70.030461%); average customer rating 4.145480 rating points.\n- Refunded: 109,240 orders; rated-order share 0.000000 (0.000000%); average customer rating unavailable (no rated orders).\n\nEach average describes only orders in that status and date population with a non-null customer rating—not all orders in the status. Cancelled and refunded averages are undefined because those groups have no non-null ratings.",
+  "outcome": "answer",
+  "total_seconds": 10.55,
+  "finished_utc": "2026-10-21T06:04:27.711695+00:00"
+}

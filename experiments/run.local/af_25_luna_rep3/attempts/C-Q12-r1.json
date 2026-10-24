@@ -1,0 +1,72 @@
+{
+  "id": "C-Q12-r1",
+  "arm": "C",
+  "question_id": "Q12",
+  "stratum": "data",
+  "question": "What share of 2025 Delivered-order GMV in INR came from the top ten restaurants ranked by that same GMV? Rank by restaurant ID when GMV ties, and report both top-ten and total GMV.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "c2475835703a3609660f193d2e6779203e85920e3664ab2e57228f4f411840e5",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T06:29:53.341954+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH restaurant_gmv AS (\n    SELECT RESTAURANT_ID, SUM(DELIVERED_SALES_AMOUNT) AS GMV_INR\n    FROM ZOMATO_DLR.CORE.FACT_ORDER\n    WHERE ORDER_DATE >= '2025-01-01'\n      AND ORDER_DATE < '2026-01-01'\n      AND IS_DELIVERED = TRUE\n      AND CURRENCY = 'INR'\n    GROUP BY RESTAURANT_ID\n), ranked AS (\n    SELECT RESTAURANT_ID, GMV_INR\n    FROM restaurant_gmv\n    QUALIFY ROW_NUMBER() OVER (ORDER BY GMV_INR DESC, RESTAURANT_ID ASC) <= 10\n), totals AS (\n    SELECT SUM(GMV_INR) AS TOTAL_GMV_INR FROM restaurant_gmv\n), top_ten AS (\n    SELECT SUM(GMV_INR) AS TOP_TEN_GMV_INR FROM ranked\n)\nSELECT TOP_TEN_GMV_INR,\n       TOTAL_GMV_INR,\n       TOP_TEN_GMV_INR / NULLIF(TOTAL_GMV_INR, 0) AS TOP_TEN_SHARE\nFROM totals CROSS JOIN top_ten",
+        "metrics": "Top-ten GMV, total GMV, and top-ten share",
+        "group_by": "",
+        "start_time": "2025 recorded order date range; inclusive 2025-01-01, exclusive 2026-01-01",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 10.3,
+        "prompt_tokens": 2194,
+        "completion_tokens": 520
+      },
+      "result": {
+        "columns": [
+          "TOP_TEN_GMV_INR",
+          "TOTAL_GMV_INR",
+          "TOP_TEN_SHARE"
+        ],
+        "rows": [
+          [
+            "3552103.00",
+            "1926466048.00",
+            "0.00184384"
+          ]
+        ],
+        "query_id": "01c7df66-0001-b442-0000-d29500048552",
+        "seconds": 0.52
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "For delivered orders with recorded order dates in 2025 and currency INR, the top ten restaurants contributed GMV of INR 3,552,103.00 out of total GMV of INR 1,926,466,048.00. That is a share of 0.00184384 (0.184384%). Restaurants were ranked by this same GMV, with restaurant ID ascending as the tie-breaker.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 5.19,
+        "prompt_tokens": 2638,
+        "completion_tokens": 217
+      }
+    }
+  ],
+  "final_answer": "For delivered orders with recorded order dates in 2025 and currency INR, the top ten restaurants contributed GMV of INR 3,552,103.00 out of total GMV of INR 1,926,466,048.00. That is a share of 0.00184384 (0.184384%). Restaurants were ranked by this same GMV, with restaurant ID ascending as the tie-breaker.",
+  "outcome": "answer",
+  "total_seconds": 16.02,
+  "finished_utc": "2026-10-21T06:30:09.366380+00:00"
+}

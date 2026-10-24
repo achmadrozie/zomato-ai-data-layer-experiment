@@ -1,0 +1,139 @@
+{
+  "id": "F-Q22-r1",
+  "arm": "F",
+  "question_id": "Q22",
+  "stratum": "context",
+  "question": "For the standard market report covering 2025, what were Delivered-order GMV in INR, Delivered order count, and AOV? Apply the standard market eligibility rule consistently to all three.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "0b4050774275381d90e71ce6a53187fa1bc3bc3555976a96ef9d759f720db807",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T01:14:17.232618+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "gmv,count_order_delivered,aov",
+        "group_by": "order_id__currency",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "The standard market report requires filtering to eligible restaurants (rating_count >= 100) and reporting by currency. The metricflow tool can provide GMV, delivered order count, and AOV by currency for 2025, but I will need to filter to eligible restaurants using SQL if metricflow cannot apply this eligibility rule."
+      },
+      "model_stats": {
+        "seconds": 1.39,
+        "prompt_tokens": 3461,
+        "completion_tokens": 116
+      },
+      "result": {
+        "columns": [
+          "ORDER_ID__CURRENCY",
+          "GMV",
+          "COUNT_ORDER_DELIVERED",
+          "AOV"
+        ],
+        "rows": [
+          [
+            "INR",
+            "1926466048.0",
+            "3989077",
+            "482.9352875364401"
+          ]
+        ],
+        "metric_definitions": {
+          "gmv": "Sum of `sales_amount` for orders whose `order_status` is `Delivered`.",
+          "count_order_delivered": "Number of orders marked as delivered. Each order contributes one when `is_delivered` is true and zero otherwise.",
+          "aov": "Average sales amount per delivered order, calculated as GMV divided by the number of delivered orders."
+        },
+        "seconds": 8.97
+      }
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT COUNT(*) AS eligible_restaurant_count FROM ZOMATO_DLR.CORE.DIM_RESTAURANT WHERE RATING_COUNT >= 100;",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "Before answering, I need to confirm whether there are any eligible restaurants (rating_count >= 100) in the data. If there are none, the previous metricflow result is not valid for the standard market report."
+      },
+      "model_stats": {
+        "seconds": 1.63,
+        "prompt_tokens": 3764,
+        "completion_tokens": 97
+      },
+      "result": {
+        "columns": [
+          "ELIGIBLE_RESTAURANT_COUNT"
+        ],
+        "rows": [
+          [
+            "24944"
+          ]
+        ],
+        "query_id": "01c7de2a-0001-b38b-0000-d2950004603e",
+        "seconds": 0.17
+      }
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT COUNT(DISTINCT f.ORDER_ID) AS delivered_order_count, SUM(f.SALES_AMOUNT) AS gmv_inr, AVG(f.SALES_AMOUNT) AS aov_inr\nFROM ZOMATO_DLR.CORE.FACT_ORDER f\nJOIN ZOMATO_DLR.CORE.DIM_RESTAURANT r ON f.RESTAURANT_ID = r.RESTAURANT_ID\nWHERE f.ORDER_DATE >= '2025-01-01' AND f.ORDER_DATE < '2026-01-01'\n  AND f.ORDER_STATUS = 'Delivered'\n  AND f.CURRENCY = 'INR'\n  AND r.RATING_COUNT >= 100;",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "Now that I have confirmed there are eligible restaurants, I need to recalculate the metrics (GMV, delivered order count, and AOV) for 2025, filtered to only those restaurants with rating_count >= 100, as required by the standard market report policy."
+      },
+      "model_stats": {
+        "seconds": 1.87,
+        "prompt_tokens": 3958,
+        "completion_tokens": 218
+      },
+      "result": {
+        "columns": [
+          "DELIVERED_ORDER_COUNT",
+          "GMV_INR",
+          "AOV_INR"
+        ],
+        "rows": [
+          [
+            "1848107",
+            "927955016.00",
+            "502.11108772"
+          ]
+        ],
+        "query_id": "01c7de2a-0001-b442-0000-d29500040a12",
+        "seconds": 0.37
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "gmv,count_order_delivered,aov",
+        "group_by": "order_id__currency (INR, eligible restaurants only)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "For the standard market report in 2025 (applying the eligibility rule: only restaurants with at least 100 recorded ratings), the results for Delivered orders in INR are as follows: \n- Delivered-order GMV: 927,955,016.00 INR\n- Delivered order count: 1,848,107\n- AOV (Average Order Value): 502.11108772 INR\n\nPopulation: Delivered orders at eligible restaurants (rating_count >= 100), currency INR, order date in 2025. Units: INR for GMV and AOV, count for orders. Interpretation: These metrics reflect only the eligible segment of the market as defined by the standard policy, not the full platform.",
+        "reason": "All requested metrics are provided, filtered to the eligible restaurant population as required by the standard market report policy."
+      },
+      "model_stats": {
+        "seconds": 1.78,
+        "prompt_tokens": 4328,
+        "completion_tokens": 226
+      }
+    }
+  ],
+  "final_answer": "For the standard market report in 2025 (applying the eligibility rule: only restaurants with at least 100 recorded ratings), the results for Delivered orders in INR are as follows: \n- Delivered-order GMV: 927,955,016.00 INR\n- Delivered order count: 1,848,107\n- AOV (Average Order Value): 502.11108772 INR\n\nPopulation: Delivered orders at eligible restaurants (rating_count >= 100), currency INR, order date in 2025. Units: INR for GMV and AOV, count for orders. Interpretation: These metrics reflect only the eligible segment of the market as defined by the standard policy, not the full platform.",
+  "outcome": "answer",
+  "total_seconds": 16.19,
+  "finished_utc": "2026-10-21T01:14:33.419442+00:00"
+}

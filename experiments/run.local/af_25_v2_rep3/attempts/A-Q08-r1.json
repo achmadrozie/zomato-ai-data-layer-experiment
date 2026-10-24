@@ -1,0 +1,85 @@
+{
+  "id": "A-Q08-r1",
+  "arm": "A",
+  "question_id": "Q08",
+  "stratum": "data",
+  "question": "For 2025, list the top three order-recorded cities by Delivered-order GMV in INR. For each city, also show Delivered order count and AOV. Treat each exact city label as one city.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "88b3e1ffc60ed7e564ccdf820987cc82a3ff0e5dce15f6f2fe18ac3ab2472cfd",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T02:46:02.735333+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT \n  RESTAURANT_CITY AS CITY,\n  SUM(SALES_AMOUNT) AS DELIVERED_GMV_INR,\n  COUNT(*) AS DELIVERED_ORDER_COUNT,\n  AVG(SALES_AMOUNT) AS DELIVERED_AOV_INR\nFROM ZOMATO_DLR.SOURCES.ORDERS\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n  AND ORDER_STATUS = 'Delivered'\n  AND CURRENCY = 'INR'\nGROUP BY RESTAURANT_CITY\nORDER BY DELIVERED_GMV_INR DESC\nLIMIT 3;",
+        "metrics": "SUM(SALES_AMOUNT) as GMV, COUNT(*) as order count, AVG(SALES_AMOUNT) as AOV",
+        "group_by": "RESTAURANT_CITY",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.5,
+        "prompt_tokens": 1321,
+        "completion_tokens": 203
+      },
+      "result": {
+        "columns": [
+          "CITY",
+          "DELIVERED_GMV_INR",
+          "DELIVERED_ORDER_COUNT",
+          "DELIVERED_AOV_INR"
+        ],
+        "rows": [
+          [
+            "Bikaner",
+            "29030997.0",
+            "49057",
+            "591.7809283078867"
+          ],
+          [
+            "Indiranagar,Bangalore",
+            "22092650.0",
+            "36998",
+            "597.1309259959997"
+          ],
+          [
+            "Koramangala,Bangalore",
+            "18686823.0",
+            "30450",
+            "613.6887684729064"
+          ]
+        ],
+        "query_id": "01c7de86-0001-b38b-0000-d295000466da",
+        "seconds": 0.12
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "Delivered GMV (INR), Delivered order count, Delivered AOV (INR)",
+        "group_by": "City (exact label)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "For 2025, the top three order-recorded cities by Delivered-order GMV in INR are:\n\n1. Bikaner: Delivered GMV = 29,030,997 INR, Delivered order count = 49,057, Delivered AOV = 591.780928 INR\n2. Indiranagar,Bangalore: Delivered GMV = 22,092,650 INR, Delivered order count = 36,998, Delivered AOV = 597.130926 INR\n3. Koramangala,Bangalore: Delivered GMV = 18,686,823 INR, Delivered order count = 30,450, Delivered AOV = 613.688768 INR\n\nEach city is treated as a distinct label. GMV and AOV are in INR. AOV is the average order value for delivered orders in each city. Population: all delivered orders in 2025 with currency INR. Interpretation: Bikaner had the highest delivered GMV, followed by Indiranagar,Bangalore and Koramangala,Bangalore.",
+        "reason": "All requested metrics and breakdowns are present in the query result, with correct population and units."
+      },
+      "model_stats": {
+        "seconds": 1.99,
+        "prompt_tokens": 1712,
+        "completion_tokens": 294
+      }
+    }
+  ],
+  "final_answer": "For 2025, the top three order-recorded cities by Delivered-order GMV in INR are:\n\n1. Bikaner: Delivered GMV = 29,030,997 INR, Delivered order count = 49,057, Delivered AOV = 591.780928 INR\n2. Indiranagar,Bangalore: Delivered GMV = 22,092,650 INR, Delivered order count = 36,998, Delivered AOV = 597.130926 INR\n3. Koramangala,Bangalore: Delivered GMV = 18,686,823 INR, Delivered order count = 30,450, Delivered AOV = 613.688768 INR\n\nEach city is treated as a distinct label. GMV and AOV are in INR. AOV is the average order value for delivered orders in each city. Population: all delivered orders in 2025 with currency INR. Interpretation: Bikaner had the highest delivered GMV, followed by Indiranagar,Bangalore and Koramangala,Bangalore.",
+  "outcome": "answer",
+  "total_seconds": 3.61,
+  "finished_utc": "2026-10-21T02:46:06.343066+00:00"
+}

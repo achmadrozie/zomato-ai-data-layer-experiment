@@ -1,0 +1,72 @@
+{
+  "id": "F-Q05-r1",
+  "arm": "F",
+  "question_id": "Q05",
+  "stratum": "data",
+  "question": "What was ordered quantity per order for the full year 2025? Use the recorded order date for the 2025 scope.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "ea883bbd9440eaafaff5343a59ff8dcbd1aa4f1afa8c0d1e08ce4956a43b2a3e",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T07:10:06.472676+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT SUM(ITEM_QUANTITY) / NULLIF(COUNT(*), 0) AS ORDERED_QUANTITY_PER_ORDER, SUM(ITEM_QUANTITY) AS TOTAL_ORDERED_QUANTITY, COUNT(*) AS ORDER_COUNT FROM ZOMATO_DLR.CORE.FACT_ORDER WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 5.13,
+        "prompt_tokens": 3447,
+        "completion_tokens": 374
+      },
+      "result": {
+        "columns": [
+          "ORDERED_QUANTITY_PER_ORDER",
+          "TOTAL_ORDERED_QUANTITY",
+          "ORDER_COUNT"
+        ],
+        "rows": [
+          [
+            "2.805393",
+            "12230877",
+            "4359773"
+          ]
+        ],
+        "query_id": "01c7df8e-0001-b442-0000-d295000485ea",
+        "seconds": 0.08
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "For orders with recorded ORDER_DATE from 2025-01-01 through 2025-12-31, ordered quantity per order was 2.805393 units per order (12,230,877 total ordered units ÷ 4,359,773 orders). This includes all orders, regardless of status.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.04,
+        "prompt_tokens": 3668,
+        "completion_tokens": 194
+      }
+    }
+  ],
+  "final_answer": "For orders with recorded ORDER_DATE from 2025-01-01 through 2025-12-31, ordered quantity per order was 2.805393 units per order (12,230,877 total ordered units ÷ 4,359,773 orders). This includes all orders, regardless of status.",
+  "outcome": "answer",
+  "total_seconds": 8.26,
+  "finished_utc": "2026-10-21T07:10:14.732013+00:00"
+}

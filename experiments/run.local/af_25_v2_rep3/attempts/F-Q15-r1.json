@@ -1,0 +1,134 @@
+{
+  "id": "F-Q15-r1",
+  "arm": "F",
+  "question_id": "Q15",
+  "stratum": "data",
+  "question": "In 2025, what share of orders contained more than one item line? Compare average ordered units per order for one-line and multi-line orders; also report orders with no item line separately.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "597a068c5b5f4f3b488102e5fb6ff26da6762c24c56b9a012f2123b3304db3dc",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T02:48:28.604712+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH order_item_counts AS (\n    SELECT \n        o.ORDER_ID,\n        COALESCE(oi.ITEM_LINE_COUNT, 0) AS ITEM_LINE_COUNT,\n        COALESCE(oi.ITEM_QUANTITY, 0) AS ITEM_QUANTITY\n    FROM ZOMATO_DLR.CORE.FACT_ORDER o\n    LEFT JOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_ITEM_ROLLUP oi\n        ON o.ORDER_ID = oi.ORDER_ID\n    WHERE o.ORDER_DATE >= '2025-01-01' AND o.ORDER_DATE < '2026-01-01'\n)\nSELECT \n    CASE \n        WHEN ITEM_LINE_COUNT = 0 THEN 'No item line'\n        WHEN ITEM_LINE_COUNT = 1 THEN 'One item line'\n        ELSE 'Multi-line order'\n    END AS ORDER_TYPE,\n    COUNT(*) AS ORDER_COUNT,\n    AVG(ITEM_QUANTITY) AS AVG_ORDERED_UNITS\nFROM order_item_counts\nGROUP BY ORDER_TYPE\nORDER BY \n    CASE ORDER_TYPE \n        WHEN 'No item line' THEN 0\n        WHEN 'One item line' THEN 1\n        ELSE 2\n    END;",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.08,
+        "prompt_tokens": 3462,
+        "completion_tokens": 279
+      },
+      "result": {
+        "columns": [
+          "ORDER_TYPE",
+          "ORDER_COUNT",
+          "AVG_ORDERED_UNITS"
+        ],
+        "rows": [
+          [
+            "One item line",
+            "1307684",
+            "1.219753"
+          ],
+          [
+            "Multi-line order",
+            "3052089",
+            "3.484769"
+          ]
+        ],
+        "query_id": "01c7de88-0001-b38b-0000-d29500046776",
+        "seconds": 1.01
+      }
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT COUNT(*) AS TOTAL_ORDERS\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01';",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "We need the total number of 2025 orders to calculate the share of each order type, including those with no item line (which did not appear in the previous result)."
+      },
+      "model_stats": {
+        "seconds": 1.27,
+        "prompt_tokens": 3865,
+        "completion_tokens": 104
+      },
+      "result": {
+        "columns": [
+          "TOTAL_ORDERS"
+        ],
+        "rows": [
+          [
+            "4359773"
+          ]
+        ],
+        "query_id": "01c7de88-0001-b38b-0000-d2950004677a",
+        "seconds": 0.14
+      }
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT COUNT(*) AS NO_ITEM_LINE_ORDERS\nFROM ZOMATO_DLR.CORE.FACT_ORDER o\nLEFT JOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_ITEM_ROLLUP oi\n    ON o.ORDER_ID = oi.ORDER_ID\nWHERE o.ORDER_DATE >= '2025-01-01' AND o.ORDER_DATE < '2026-01-01'\n  AND (oi.ITEM_LINE_COUNT IS NULL OR oi.ITEM_LINE_COUNT = 0);",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "The previous grouped result did not include any 'No item line' orders, but the total order count suggests there may be some. This query will confirm the count of orders with no item line in 2025."
+      },
+      "model_stats": {
+        "seconds": 1.43,
+        "prompt_tokens": 4062,
+        "completion_tokens": 163
+      },
+      "result": {
+        "columns": [
+          "NO_ITEM_LINE_ORDERS"
+        ],
+        "rows": [
+          [
+            "0"
+          ]
+        ],
+        "query_id": "01c7de88-0001-b38b-0000-d2950004677e",
+        "seconds": 0.89
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "Share of orders with more than one item line, average ordered units per order for one-line and multi-line orders, count of orders with no item line",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "In 2025, there were 4,359,773 total orders. Of these, 3,052,089 orders (70.025857%) contained more than one item line (multi-line orders), while 1,307,684 orders (29.974143%) had exactly one item line. There were no orders with zero item lines recorded. The average ordered units per order was 1.219753 for one-line orders and 3.484769 for multi-line orders. Interpretation: Multi-line orders made up the majority of orders and had a significantly higher average number of ordered units per order compared to one-line orders. No orders were found with zero item lines in the data.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.63,
+        "prompt_tokens": 4350,
+        "completion_tokens": 196
+      }
+    }
+  ],
+  "final_answer": "In 2025, there were 4,359,773 total orders. Of these, 3,052,089 orders (70.025857%) contained more than one item line (multi-line orders), while 1,307,684 orders (29.974143%) had exactly one item line. There were no orders with zero item lines recorded. The average ordered units per order was 1.219753 for one-line orders and 3.484769 for multi-line orders. Interpretation: Multi-line orders made up the majority of orders and had a significantly higher average number of ordered units per order compared to one-line orders. No orders were found with zero item lines in the data.",
+  "outcome": "answer",
+  "total_seconds": 8.47,
+  "finished_utc": "2026-10-21T02:48:37.073736+00:00"
+}

@@ -1,0 +1,86 @@
+{
+  "id": "A-Q08-r1",
+  "arm": "A",
+  "question_id": "Q08",
+  "stratum": "data",
+  "question": "For 2025, list the top three order-recorded cities by Delivered-order GMV in INR. For each city, also show Delivered order count and AOV. Treat each exact city label as one city.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "88b3e1ffc60ed7e564ccdf820987cc82a3ff0e5dce15f6f2fe18ac3ab2472cfd",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T06:17:32.527832+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT CITY, SUM(SALES_AMOUNT) AS DELIVERED_GMV_INR, COUNT(*) AS DELIVERED_ORDER_COUNT, AVG(SALES_AMOUNT) AS AOV_INR FROM ZOMATO_DLR.STAGING.STG_ZOMATO__ORDER WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01' AND IS_DELIVERED = TRUE AND CURRENCY = 'INR' GROUP BY CITY ORDER BY DELIVERED_GMV_INR DESC LIMIT 3",
+        "metrics": "Delivered-order GMV (sum of order SALES_AMOUNT), delivered order count, and AOV (average order SALES_AMOUNT); INR orders only.",
+        "group_by": "Exact CITY label",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 4.63,
+        "prompt_tokens": 1319,
+        "completion_tokens": 319
+      },
+      "result": {
+        "columns": [
+          "CITY",
+          "DELIVERED_GMV_INR",
+          "DELIVERED_ORDER_COUNT",
+          "AOV_INR"
+        ],
+        "rows": [
+          [
+            "Bangalore",
+            "233341258.00",
+            "440743",
+            "529.42703117"
+          ],
+          [
+            "Delhi",
+            "177702873.00",
+            "339384",
+            "523.60415635"
+          ],
+          [
+            "Chennai",
+            "155055243.00",
+            "310963",
+            "498.62923563"
+          ]
+        ],
+        "query_id": "01c7df59-0001-b442-0000-d295000484e6",
+        "seconds": 0.5
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "Top three exact order-recorded city labels by 2025 Delivered-order GMV, using delivered orders with INR currency and summing order-level SALES_AMOUNT (no currency conversion):\n1. Bangalore — GMV: INR 233,341,258.00; delivered orders: 440,743; AOV: INR 529.427031 per delivered order.\n2. Delhi — GMV: INR 177,702,873.00; delivered orders: 339,384; AOV: INR 523.604156 per delivered order.\n3. Chennai — GMV: INR 155,055,243.00; delivered orders: 310,963; AOV: INR 498.629236 per delivered order.\nPopulation: orders with ORDER_DATE from 2025-01-01 (inclusive) to 2026-01-01 (exclusive), IS_DELIVERED = TRUE, and CURRENCY = 'INR'.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 5.03,
+        "prompt_tokens": 1669,
+        "completion_tokens": 300
+      }
+    }
+  ],
+  "final_answer": "Top three exact order-recorded city labels by 2025 Delivered-order GMV, using delivered orders with INR currency and summing order-level SALES_AMOUNT (no currency conversion):\n1. Bangalore — GMV: INR 233,341,258.00; delivered orders: 440,743; AOV: INR 529.427031 per delivered order.\n2. Delhi — GMV: INR 177,702,873.00; delivered orders: 339,384; AOV: INR 523.604156 per delivered order.\n3. Chennai — GMV: INR 155,055,243.00; delivered orders: 310,963; AOV: INR 498.629236 per delivered order.\nPopulation: orders with ORDER_DATE from 2025-01-01 (inclusive) to 2026-01-01 (exclusive), IS_DELIVERED = TRUE, and CURRENCY = 'INR'.",
+  "outcome": "answer",
+  "total_seconds": 10.16,
+  "finished_utc": "2026-10-21T06:17:42.690189+00:00"
+}

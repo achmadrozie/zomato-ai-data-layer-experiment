@@ -1,0 +1,89 @@
+{
+  "id": "C-Q16-r1",
+  "arm": "C",
+  "question_id": "Q16",
+  "stratum": "data",
+  "question": "Among item lines belonging to 2025 orders, how many have a non-zero difference between recorded line amount and price times quantity? Give the signed sum and absolute sum of those differences in INR. Do positive and negative differences offset in this snapshot?",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "d4310ebc93888372b312428966d5cfa8110633e1b0bfb33194130115e28af54c",
+  "context_sha256": null,
+  "started_utc": "2026-10-20T23:43:41.178428+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT COUNT(*) AS item_line_count,\n       SUM(LINE_AMOUNT - (PRICE * QUANTITY)) AS signed_sum_inr,\n       SUM(ABS(LINE_AMOUNT - (PRICE * QUANTITY))) AS absolute_sum_inr\nFROM ZOMATO_DLR.CORE.FACT_ORDER_ITEM\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n  AND (LINE_AMOUNT - (PRICE * QUANTITY)) != 0\n  AND CITY = 'INR' OR CURRENCY = 'INR'",
+        "metrics": "item_line_count, signed_sum_inr, absolute_sum_inr",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.03,
+        "prompt_tokens": 2201,
+        "completion_tokens": 171
+      },
+      "tool_error": "ProgrammingError: 000904 (42000): SQL compilation error: error line 7 at position 22\ninvalid identifier 'CURRENCY' (request_id=3ebe47d7-8f09-4db7-b473-4132b27e5d90, sfqid=01c7ddcf-0001-b38b-0000-d29500044c0e)"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT COUNT(*) AS item_line_count,\n       SUM(LINE_AMOUNT - (PRICE * QUANTITY)) AS signed_sum_inr,\n       SUM(ABS(LINE_AMOUNT - (PRICE * QUANTITY))) AS absolute_sum_inr\nFROM ZOMATO_DLR.CORE.FACT_ORDER_ITEM\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n  AND (LINE_AMOUNT - (PRICE * QUANTITY)) != 0",
+        "metrics": "item_line_count, signed_sum_inr, absolute_sum_inr",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.48,
+        "prompt_tokens": 2498,
+        "completion_tokens": 154
+      },
+      "result": {
+        "columns": [
+          "ITEM_LINE_COUNT",
+          "SIGNED_SUM_INR",
+          "ABSOLUTE_SUM_INR"
+        ],
+        "rows": [
+          [
+            "21466",
+            "23791.00",
+            "23791.00"
+          ]
+        ],
+        "query_id": "01c7ddcf-0001-b38b-0000-d29500044c12",
+        "seconds": 0.34
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "item_line_count, signed_sum_inr, absolute_sum_inr",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "Among item lines belonging to 2025 orders, there are 21,466 item lines with a non-zero difference between the recorded line amount and price times quantity. The signed sum of those differences is 23,791.00 INR, and the absolute sum is also 23,791.00 INR. Since the signed sum and absolute sum are equal, all differences are positive and there is no offset between positive and negative differences in this snapshot.",
+        "reason": "The signed and absolute sums being equal indicates that all differences are in the same direction (positive), so there is no offsetting between positive and negative differences."
+      },
+      "model_stats": {
+        "seconds": 1.43,
+        "prompt_tokens": 2769,
+        "completion_tokens": 172
+      }
+    }
+  ],
+  "final_answer": "Among item lines belonging to 2025 orders, there are 21,466 item lines with a non-zero difference between the recorded line amount and price times quantity. The signed sum of those differences is 23,791.00 INR, and the absolute sum is also 23,791.00 INR. Since the signed sum and absolute sum are equal, all differences are positive and there is no offset between positive and negative differences in this snapshot.",
+  "outcome": "answer",
+  "total_seconds": 5.83,
+  "finished_utc": "2026-10-20T23:43:47.006025+00:00"
+}

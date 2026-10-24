@@ -1,0 +1,1052 @@
+{
+  "A-Q01": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "A-Q02": {
+    "luna_rep1": 0,
+    "luna_rep2": 0,
+    "luna_rep3": 1,
+    "luna_mean": 0.333333,
+    "luna_std": 0.471405
+  },
+  "A-Q03": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "A-Q04": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "A-Q05": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "A-Q06": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "A-Q07": {
+    "luna_rep1": 1,
+    "luna_rep2": 0,
+    "luna_rep3": 1,
+    "luna_mean": 0.666667,
+    "luna_std": 0.471405
+  },
+  "A-Q08": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 0,
+    "luna_mean": 0.666667,
+    "luna_std": 0.471405
+  },
+  "A-Q09": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "A-Q10": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "A-Q11": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "A-Q12": {
+    "luna_rep1": 0,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 0.666667,
+    "luna_std": 0.471405
+  },
+  "A-Q13": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "A-Q14": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "A-Q15": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "A-Q16": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "A-Q17": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "A-Q18": {
+    "luna_rep1": 0,
+    "luna_rep2": 0,
+    "luna_rep3": 0,
+    "luna_mean": 0.0,
+    "luna_std": 0.0
+  },
+  "A-Q19": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "A-Q20": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "A-Q21": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "A-Q22": {
+    "luna_rep1": 0,
+    "luna_rep2": 0,
+    "luna_rep3": 0,
+    "luna_mean": 0.0,
+    "luna_std": 0.0
+  },
+  "A-Q23": {
+    "luna_rep1": 0,
+    "luna_rep2": 0,
+    "luna_rep3": 0,
+    "luna_mean": 0.0,
+    "luna_std": 0.0
+  },
+  "A-Q24": {
+    "luna_rep1": 0,
+    "luna_rep2": 0,
+    "luna_rep3": 0,
+    "luna_mean": 0.0,
+    "luna_std": 0.0
+  },
+  "A-Q25": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "B-Q01": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "B-Q02": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "B-Q03": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "B-Q04": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "B-Q05": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "B-Q06": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "B-Q07": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "B-Q08": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "B-Q09": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "B-Q10": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "B-Q11": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "B-Q12": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "B-Q13": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "B-Q14": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "B-Q15": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "B-Q16": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "B-Q17": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "B-Q18": {
+    "luna_rep1": 0,
+    "luna_rep2": 0,
+    "luna_rep3": 0,
+    "luna_mean": 0.0,
+    "luna_std": 0.0
+  },
+  "B-Q19": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "B-Q20": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "B-Q21": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "B-Q22": {
+    "luna_rep1": 0,
+    "luna_rep2": 0,
+    "luna_rep3": 0,
+    "luna_mean": 0.0,
+    "luna_std": 0.0
+  },
+  "B-Q23": {
+    "luna_rep1": 0,
+    "luna_rep2": 0,
+    "luna_rep3": 0,
+    "luna_mean": 0.0,
+    "luna_std": 0.0
+  },
+  "B-Q24": {
+    "luna_rep1": 0,
+    "luna_rep2": 0,
+    "luna_rep3": 0,
+    "luna_mean": 0.0,
+    "luna_std": 0.0
+  },
+  "B-Q25": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "C-Q01": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "C-Q02": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "C-Q03": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "C-Q04": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "C-Q05": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "C-Q06": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "C-Q07": {
+    "luna_rep1": 0,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 0.666667,
+    "luna_std": 0.471405
+  },
+  "C-Q08": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "C-Q09": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "C-Q10": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "C-Q11": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "C-Q12": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "C-Q13": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "C-Q14": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "C-Q15": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "C-Q16": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "C-Q17": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "C-Q18": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "C-Q19": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "C-Q20": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "C-Q21": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "C-Q22": {
+    "luna_rep1": 0,
+    "luna_rep2": 0,
+    "luna_rep3": 0,
+    "luna_mean": 0.0,
+    "luna_std": 0.0
+  },
+  "C-Q23": {
+    "luna_rep1": 0,
+    "luna_rep2": 0,
+    "luna_rep3": 0,
+    "luna_mean": 0.0,
+    "luna_std": 0.0
+  },
+  "C-Q24": {
+    "luna_rep1": 0,
+    "luna_rep2": 0,
+    "luna_rep3": 0,
+    "luna_mean": 0.0,
+    "luna_std": 0.0
+  },
+  "C-Q25": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "D-Q01": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "D-Q02": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "D-Q03": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "D-Q04": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "D-Q05": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "D-Q06": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "D-Q07": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "D-Q08": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "D-Q09": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "D-Q10": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "D-Q11": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "D-Q12": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "D-Q13": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "D-Q14": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "D-Q15": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "D-Q16": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "D-Q17": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "D-Q18": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "D-Q19": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "D-Q20": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "D-Q21": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "D-Q22": {
+    "luna_rep1": 0,
+    "luna_rep2": 0,
+    "luna_rep3": 0,
+    "luna_mean": 0.0,
+    "luna_std": 0.0
+  },
+  "D-Q23": {
+    "luna_rep1": 0,
+    "luna_rep2": 0,
+    "luna_rep3": 0,
+    "luna_mean": 0.0,
+    "luna_std": 0.0
+  },
+  "D-Q24": {
+    "luna_rep1": 0,
+    "luna_rep2": 0,
+    "luna_rep3": 0,
+    "luna_mean": 0.0,
+    "luna_std": 0.0
+  },
+  "D-Q25": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 0,
+    "luna_mean": 0.666667,
+    "luna_std": 0.471405
+  },
+  "E-Q01": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "E-Q02": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "E-Q03": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "E-Q04": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "E-Q05": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "E-Q06": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "E-Q07": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "E-Q08": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "E-Q09": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "E-Q10": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "E-Q11": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "E-Q12": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "E-Q13": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "E-Q14": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "E-Q15": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "E-Q16": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "E-Q17": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "E-Q18": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "E-Q19": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "E-Q20": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "E-Q21": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "E-Q22": {
+    "luna_rep1": 0,
+    "luna_rep2": 0,
+    "luna_rep3": 0,
+    "luna_mean": 0.0,
+    "luna_std": 0.0
+  },
+  "E-Q23": {
+    "luna_rep1": 0,
+    "luna_rep2": 0,
+    "luna_rep3": 0,
+    "luna_mean": 0.0,
+    "luna_std": 0.0
+  },
+  "E-Q24": {
+    "luna_rep1": 0,
+    "luna_rep2": 0,
+    "luna_rep3": 0,
+    "luna_mean": 0.0,
+    "luna_std": 0.0
+  },
+  "E-Q25": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "F-Q01": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "F-Q02": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "F-Q03": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "F-Q04": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "F-Q05": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "F-Q06": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "F-Q07": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "F-Q08": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "F-Q09": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "F-Q10": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "F-Q11": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "F-Q12": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "F-Q13": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "F-Q14": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "F-Q15": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "F-Q16": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "F-Q17": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "F-Q18": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "F-Q19": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "F-Q20": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "F-Q21": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "F-Q22": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "F-Q23": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "F-Q24": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  },
+  "F-Q25": {
+    "luna_rep1": 1,
+    "luna_rep2": 1,
+    "luna_rep3": 1,
+    "luna_mean": 1.0,
+    "luna_std": 0.0
+  }
+}

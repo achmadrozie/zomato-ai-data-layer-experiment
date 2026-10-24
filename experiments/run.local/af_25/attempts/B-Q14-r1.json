@@ -1,0 +1,81 @@
+{
+  "id": "B-Q14-r1",
+  "arm": "B",
+  "question_id": "Q14",
+  "stratum": "data",
+  "question": "For item lines belonging to 2025 orders, compare Veg, Non-Veg, and unknown food classifications: item-line count, ordered units, and each group's share of all ordered units. What is the difference between line count and units here?",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "968aad7d611f901a7d8dfa1d40ac00ed82254c5407f1175667aee50fc5949a8c",
+  "question_sha256": "c11ec1608564053982627416721eff48a6033c2ab87d4840ffa0848b942a739d",
+  "context_sha256": null,
+  "started_utc": "2026-10-20T23:54:24.495449+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT\n  f.VEG_OR_NON_VEG AS FOOD_CLASSIFICATION,\n  COUNT(*) AS ITEM_LINE_COUNT,\n  SUM(oi.QUANTITY) AS ORDERED_UNITS\nFROM ZOMATO_DLR.SOURCES.ORDER_ITEMS oi\nJOIN ZOMATO_DLR.SOURCES.ORDERS o ON oi.ORDER_ID = o.ORDER_ID\nLEFT JOIN ZOMATO_DLR.SOURCES.FOOD f ON oi.F_ID = f.F_ID\nWHERE o.ORDER_DATE >= '2025-01-01' AND o.ORDER_DATE < '2026-01-01'\nGROUP BY f.VEG_OR_NON_VEG\nORDER BY ITEM_LINE_COUNT DESC\nLIMIT 40;",
+        "metrics": "item-line count, ordered units by food classification",
+        "group_by": "food classification (Veg, Non-Veg, unknown)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.87,
+        "prompt_tokens": 1698,
+        "completion_tokens": 202
+      },
+      "result": {
+        "columns": [
+          "FOOD_CLASSIFICATION",
+          "ITEM_LINE_COUNT",
+          "ORDERED_UNITS"
+        ],
+        "rows": [
+          [
+            "Veg",
+            "7277939",
+            "8877759.0"
+          ],
+          [
+            "Non-veg",
+            "2749222",
+            "3353105.0"
+          ],
+          [
+            null,
+            "12",
+            "13.0"
+          ]
+        ],
+        "query_id": "01c7ddda-0001-b442-0000-d29500040656",
+        "seconds": 1.29
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "item-line count, ordered units, share of all ordered units by food classification (Veg, Non-Veg, unknown)",
+        "group_by": "food classification (Veg, Non-Veg, unknown)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "For item lines in 2025 orders:\n\n- Veg: 7,277,939 item lines, 8,877,759 ordered units, 72.626964 share of all units\n- Non-Veg: 2,749,222 item lines, 3,353,105 ordered units, 27.441964 share of all units\n- Unknown: 12 item lines, 13 ordered units, 0.000106 share of all units\n\nShares are calculated as each group's ordered units divided by the total (Veg + Non-Veg + Unknown = 12,230,877 units).\n\nDifference between line count and units: 'Item-line count' is the number of distinct item lines (each line is a menu item in an order, regardless of quantity). 'Ordered units' is the sum of quantities ordered across all lines (so if a line is for 3 units of an item, it counts as 1 line but 3 units). Thus, units can exceed lines if customers order multiples of the same item per line.",
+        "reason": "All requested values are included: item-line count, ordered units, and share of units for each food classification. The difference between line count and units is explained."
+      },
+      "model_stats": {
+        "seconds": 2.52,
+        "prompt_tokens": 2040,
+        "completion_tokens": 325
+      }
+    }
+  ],
+  "final_answer": "For item lines in 2025 orders:\n\n- Veg: 7,277,939 item lines, 8,877,759 ordered units, 72.626964 share of all units\n- Non-Veg: 2,749,222 item lines, 3,353,105 ordered units, 27.441964 share of all units\n- Unknown: 12 item lines, 13 ordered units, 0.000106 share of all units\n\nShares are calculated as each group's ordered units divided by the total (Veg + Non-Veg + Unknown = 12,230,877 units).\n\nDifference between line count and units: 'Item-line count' is the number of distinct item lines (each line is a menu item in an order, regardless of quantity). 'Ordered units' is the sum of quantities ordered across all lines (so if a line is for 3 units of an item, it counts as 1 line but 3 units). Thus, units can exceed lines if customers order multiples of the same item per line.",
+  "outcome": "answer",
+  "total_seconds": 5.67,
+  "finished_utc": "2026-10-20T23:54:30.164575+00:00"
+}

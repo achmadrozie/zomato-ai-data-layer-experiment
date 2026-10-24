@@ -1,0 +1,94 @@
+{
+  "id": "C-Q06-r1",
+  "arm": "C",
+  "question_id": "Q06",
+  "stratum": "data",
+  "question": "In 2025, which month had the highest Delivered-order GMV in INR? Give that month's GMV, the runner-up month's GMV, and the gap between them.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "4acf2281f3c70a54cd1b5548e8bf681e9cb90b7906d0b054d53e1083d674c16e",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:08:34.930853+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT MONTH, MONTH_NAME, SUM(DELIVERED_SALES_AMOUNT) AS DELIVERED_GMV_INR\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n  AND IS_DELIVERED = TRUE\n  AND CURRENCY = 'INR'\nGROUP BY MONTH, MONTH_NAME\nORDER BY DELIVERED_GMV_INR DESC\nLIMIT 2;",
+        "metrics": "DELIVERED_GMV_INR (sum of delivered sales amount in INR)",
+        "group_by": "MONTH, MONTH_NAME",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "This query will identify the top two months by delivered GMV in INR for 2025, allowing calculation of the gap between them."
+      },
+      "model_stats": {
+        "seconds": 1.62,
+        "prompt_tokens": 2188,
+        "completion_tokens": 189
+      },
+      "tool_error": "ProgrammingError: 000904 (42000): SQL compilation error: error line 1 at position 7\ninvalid identifier 'MONTH' (request_id=0d4b5b50-6257-4f97-839e-55076f8b6ff3, sfqid=01c7de24-0001-b442-0000-d29500040952)"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT d.MONTH, d.MONTH_NAME, SUM(f.DELIVERED_SALES_AMOUNT) AS DELIVERED_GMV_INR\nFROM ZOMATO_DLR.CORE.FACT_ORDER f\nJOIN ZOMATO_DLR.CORE.DIM_DATE d ON f.ORDER_DATE = d.DATE_DAY\nWHERE f.ORDER_DATE >= '2025-01-01' AND f.ORDER_DATE < '2026-01-01'\n  AND f.IS_DELIVERED = TRUE\n  AND f.CURRENCY = 'INR'\nGROUP BY d.MONTH, d.MONTH_NAME\nORDER BY DELIVERED_GMV_INR DESC\nLIMIT 2;",
+        "metrics": "DELIVERED_GMV_INR (sum of delivered sales amount in INR)",
+        "group_by": "MONTH, MONTH_NAME",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "The previous error was due to missing month fields in FACT_ORDER. Joining to DIM_DATE provides month information for grouping."
+      },
+      "model_stats": {
+        "seconds": 1.88,
+        "prompt_tokens": 2501,
+        "completion_tokens": 216
+      },
+      "result": {
+        "columns": [
+          "MONTH",
+          "MONTH_NAME",
+          "DELIVERED_GMV_INR"
+        ],
+        "rows": [
+          [
+            "12",
+            "Dec",
+            "185263071.00"
+          ],
+          [
+            "11",
+            "Nov",
+            "180239871.00"
+          ]
+        ],
+        "query_id": "01c7de24-0001-b38b-0000-d29500044f6e",
+        "seconds": 0.25
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "DELIVERED_GMV_INR (sum of delivered sales amount in INR)",
+        "group_by": "MONTH, MONTH_NAME",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "In 2025, December had the highest Delivered-order GMV in INR, with a GMV of 185,263,071.00 INR. The runner-up month was November, with a GMV of 180,239,871.00 INR. The gap between them was 5,023,200.00 INR. Population: all delivered orders in INR in 2025. Unit: INR. Interpretation: December outperformed November by 5,023,200.00 INR in delivered GMV.",
+        "reason": "The query identified the top two months by delivered GMV in INR for 2025, allowing direct calculation of the gap."
+      },
+      "model_stats": {
+        "seconds": 1.6,
+        "prompt_tokens": 2842,
+        "completion_tokens": 189
+      }
+    }
+  ],
+  "final_answer": "In 2025, December had the highest Delivered-order GMV in INR, with a GMV of 185,263,071.00 INR. The runner-up month was November, with a GMV of 180,239,871.00 INR. The gap between them was 5,023,200.00 INR. Population: all delivered orders in INR in 2025. Unit: INR. Interpretation: December outperformed November by 5,023,200.00 INR in delivered GMV.",
+  "outcome": "answer",
+  "total_seconds": 5.43,
+  "finished_utc": "2026-10-21T01:08:40.363879+00:00"
+}

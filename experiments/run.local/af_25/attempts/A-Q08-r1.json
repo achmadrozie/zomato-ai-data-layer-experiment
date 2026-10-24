@@ -1,0 +1,85 @@
+{
+  "id": "A-Q08-r1",
+  "arm": "A",
+  "question_id": "Q08",
+  "stratum": "data",
+  "question": "For 2025, list the top three order-recorded cities by Delivered-order GMV in INR. For each city, also show Delivered order count and AOV. Treat each exact city label as one city.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "88b3e1ffc60ed7e564ccdf820987cc82a3ff0e5dce15f6f2fe18ac3ab2472cfd",
+  "context_sha256": null,
+  "started_utc": "2026-10-20T23:57:15.271132+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT \n  RESTAURANT_CITY AS CITY,\n  COUNT(*) AS DELIVERED_ORDER_COUNT,\n  SUM(SALES_AMOUNT) AS DELIVERED_GMV_INR,\n  AVG(SALES_AMOUNT) AS AOV_INR\nFROM ZOMATO_DLR.SOURCES.ORDERS\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n  AND ORDER_STATUS = 'Delivered'\n  AND CURRENCY = 'INR'\nGROUP BY RESTAURANT_CITY\nORDER BY DELIVERED_GMV_INR DESC\nLIMIT 3;",
+        "metrics": "Delivered-order GMV in INR, Delivered order count, AOV (average order value) in INR",
+        "group_by": "RESTAURANT_CITY (exact label)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.93,
+        "prompt_tokens": 1321,
+        "completion_tokens": 201
+      },
+      "result": {
+        "columns": [
+          "CITY",
+          "DELIVERED_ORDER_COUNT",
+          "DELIVERED_GMV_INR",
+          "AOV_INR"
+        ],
+        "rows": [
+          [
+            "Bikaner",
+            "49057",
+            "29030997.0",
+            "591.7809283078867"
+          ],
+          [
+            "Indiranagar,Bangalore",
+            "36998",
+            "22092650.0",
+            "597.1309259959997"
+          ],
+          [
+            "Koramangala,Bangalore",
+            "30450",
+            "18686823.0",
+            "613.6887684729064"
+          ]
+        ],
+        "query_id": "01c7dddd-0001-b38b-0000-d29500044d26",
+        "seconds": 0.27
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "Delivered-order GMV in INR, Delivered order count, AOV (average order value) in INR",
+        "group_by": "RESTAURANT_CITY (exact label)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "For 2025, the top three order-recorded cities by Delivered-order GMV in INR are:\n\n1. Bikaner: Delivered GMV = 29,030,997 INR, Delivered order count = 49,057, AOV = 591.780928 INR\n2. Indiranagar,Bangalore: Delivered GMV = 22,092,650 INR, Delivered order count = 36,998, AOV = 597.130926 INR\n3. Koramangala,Bangalore: Delivered GMV = 18,686,823 INR, Delivered order count = 30,450, AOV = 613.688768 INR\n\nPopulation: All orders recorded in 2025 with ORDER_STATUS = 'Delivered' and CURRENCY = 'INR', grouped by exact city label. Units: GMV and AOV in INR, order count as integer. Interpretation: These cities had the highest delivered order sales volume in INR for 2025, with AOV representing the average value per delivered order in each city.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.39,
+        "prompt_tokens": 1707,
+        "completion_tokens": 285
+      }
+    }
+  ],
+  "final_answer": "For 2025, the top three order-recorded cities by Delivered-order GMV in INR are:\n\n1. Bikaner: Delivered GMV = 29,030,997 INR, Delivered order count = 49,057, AOV = 591.780928 INR\n2. Indiranagar,Bangalore: Delivered GMV = 22,092,650 INR, Delivered order count = 36,998, AOV = 597.130926 INR\n3. Koramangala,Bangalore: Delivered GMV = 18,686,823 INR, Delivered order count = 30,450, AOV = 613.688768 INR\n\nPopulation: All orders recorded in 2025 with ORDER_STATUS = 'Delivered' and CURRENCY = 'INR', grouped by exact city label. Units: GMV and AOV in INR, order count as integer. Interpretation: These cities had the highest delivered order sales volume in INR for 2025, with AOV representing the average value per delivered order in each city.",
+  "outcome": "answer",
+  "total_seconds": 4.6,
+  "finished_utc": "2026-10-20T23:57:19.867232+00:00"
+}

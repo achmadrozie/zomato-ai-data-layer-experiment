@@ -1,0 +1,85 @@
+{
+  "id": "E-Q04-r1",
+  "arm": "E",
+  "question_id": "Q04",
+  "stratum": "data",
+  "question": "What was the cancellation rate as a percentage for the full year 2025? Use the recorded order date for the 2025 scope.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "a99a688c8b74f2d1acf86ffb095d4085e198af8d169bb3f0b5cd089f5752e8ce",
+  "question_sha256": "c78053dc8b040d814fe60448b43cd930654dd067b593ed4f86d73191b907169a",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T02:48:03.329332+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "cancellation_rate",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.29,
+        "prompt_tokens": 3066,
+        "completion_tokens": 43
+      },
+      "tool_error": "RuntimeError: MetricFlow query failed: ERROR: Database Error\n  250003: Hit non-retryable SSL error, HTTPSConnectionPool(host='clyqnlt-ew90521.snowflakecomputing.com', port=443): Max retries exceeded with url: /session/v1/login-request?request_id=fa4f8598-2c33-44f7-b464-ade0c978dec4&databaseName=ZOMATO_DLR&schemaName=STAGING&warehouse=ZOMATO_WH&roleName=DBT_LAYER_REFACTOR_ROLE&request_guid=207b9e8b-6b15-48ed-9907-b7cc6d719c53 (Caused by SSLError(SSLError(\"bad handshake: SysCallError(32, 'EPIPE')\"))).\n  Verify that the hostnames and port numbers in SYSTEM$ALLOWLIST are added to your firewall's allowed list.\n  To further troubleshoot your connection you may reference the following article: https://docs.snowflake.com/en/user-guide/client-connectivity-troubleshooting/overview.\n\nLog File:: /Users/achmadrozie/Workstation/zomato-dbt-layer-refactor/dbt_zomato/logs/metricflow.log\nArtifact Path: /Users/achmadrozie/Workstation/zomato-dbt-layer-refactor/dbt_zomato/target/semantic_manifest.json\nArtifact Modified Time: 2026-10-20T17:28:57.630760\n\nIf you think you found a bug, please report it here:\n    https://github.com/dbt-labs/metricflow/issues"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT \n  100.0 * SUM(CASE WHEN IS_CANCELLED THEN 1 ELSE 0 END) / COUNT(*) AS CANCELLATION_RATE_PERCENT\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "Metricflow failed; switching to SQL to calculate cancellation rate for 2025 using recorded order date."
+      },
+      "model_stats": {
+        "seconds": 1.47,
+        "prompt_tokens": 3500,
+        "completion_tokens": 115
+      },
+      "result": {
+        "columns": [
+          "CANCELLATION_RATE_PERCENT"
+        ],
+        "rows": [
+          [
+            "5.997009"
+          ]
+        ],
+        "query_id": "01c7de88-0001-b442-0000-d29500048162",
+        "seconds": 0.16
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "cancellation_rate",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "The cancellation rate for all recorded orders in 2025 was 5.997009%. This means that out of all orders placed in 2025 (using the recorded order date), approximately 6 out of every 100 orders were cancelled.",
+        "reason": "Calculation used all orders with a recorded order date in 2025, dividing the number of cancelled orders by the total number of orders and expressing the result as a percentage."
+      },
+      "model_stats": {
+        "seconds": 1.47,
+        "prompt_tokens": 3709,
+        "completion_tokens": 124
+      }
+    }
+  ],
+  "final_answer": "The cancellation rate for all recorded orders in 2025 was 5.997009%. This means that out of all orders placed in 2025 (using the recorded order date), approximately 6 out of every 100 orders were cancelled.",
+  "outcome": "answer",
+  "total_seconds": 13.54,
+  "finished_utc": "2026-10-21T02:48:16.866553+00:00"
+}

@@ -1,0 +1,71 @@
+{
+  "id": "E-Q02-r1",
+  "arm": "E",
+  "question_id": "Q02",
+  "stratum": "data",
+  "question": "What was total Delivered-order GMV in INR for the full year 2025? Use the recorded order date for the 2025 scope.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "a99a688c8b74f2d1acf86ffb095d4085e198af8d169bb3f0b5cd089f5752e8ce",
+  "question_sha256": "a8d4429eb420f786e4e6d78827becd4432eba7892c850d9d79296107d1539459",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T02:02:01.567151+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "gmv",
+        "group_by": "order_id__currency",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "We need to find the total delivered-order GMV for 2025, grouped by currency, and then filter for INR."
+      },
+      "model_stats": {
+        "seconds": 1.16,
+        "prompt_tokens": 3067,
+        "completion_tokens": 71
+      },
+      "result": {
+        "columns": [
+          "ORDER_ID__CURRENCY",
+          "GMV"
+        ],
+        "rows": [
+          [
+            "INR",
+            "1926466048.0"
+          ]
+        ],
+        "metric_definitions": {
+          "gmv": "Sum of `sales_amount` for orders whose `order_status` is `Delivered`."
+        },
+        "seconds": 9.88
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "gmv",
+        "group_by": "order_id__currency",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "The total Delivered-order GMV in INR for the full year 2025, using the recorded order date, was 1,926,466,048.0 INR. This value represents the sum of sales amounts for all orders marked as Delivered within the 2025 calendar year, with the population being all delivered orders in INR currency. Unit: INR. Interpretation: This is the gross merchandise value (GMV) for delivered orders in INR for 2025.",
+        "reason": "The metricflow result directly provides the GMV for delivered orders in INR for the requested period and scope."
+      },
+      "model_stats": {
+        "seconds": 1.8,
+        "prompt_tokens": 3246,
+        "completion_tokens": 160
+      }
+    }
+  ],
+  "final_answer": "The total Delivered-order GMV in INR for the full year 2025, using the recorded order date, was 1,926,466,048.0 INR. This value represents the sum of sales amounts for all orders marked as Delivered within the 2025 calendar year, with the population being all delivered orders in INR currency. Unit: INR. Interpretation: This is the gross merchandise value (GMV) for delivered orders in INR for 2025.",
+  "outcome": "answer",
+  "total_seconds": 12.84,
+  "finished_utc": "2026-10-21T02:02:14.402554+00:00"
+}

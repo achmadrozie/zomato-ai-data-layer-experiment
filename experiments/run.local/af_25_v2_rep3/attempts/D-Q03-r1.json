@@ -1,0 +1,67 @@
+{
+  "id": "D-Q03-r1",
+  "arm": "D",
+  "question_id": "Q03",
+  "stratum": "data",
+  "question": "What was AOV in INR for Delivered orders in the full year 2025? Use the recorded order date for the 2025 scope.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "b1f6e14c773bd842d58a660b709e48a10852a27a37faa316466d6e5582ae5f7b",
+  "question_sha256": "57beaba4b4339db13b7043c2a2928cf39d5baa511836db3dbde6518945b0b963",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T02:00:51.907336+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT ROUND(SUM(DELIVERED_SALES_AMOUNT) / NULLIF(SUM(DELIVERED_ORDER_COUNT), 0), 6) AS AOV_INR_2025\nFROM ZOMATO_DLR.MARTS.MART_ORDER_CITY_CURRENCY_DAY_UTC\nWHERE ORDER_DATE_UTC >= '2025-01-01' AND ORDER_DATE_UTC < '2026-01-01'\n  AND CURRENCY = 'INR'",
+        "metrics": "AOV (Average Order Value) for delivered orders in INR",
+        "group_by": "none",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.34,
+        "prompt_tokens": 2523,
+        "completion_tokens": 150
+      },
+      "result": {
+        "columns": [
+          "AOV_INR_2025"
+        ],
+        "rows": [
+          [
+            "482.935288"
+          ]
+        ],
+        "query_id": "01c7de58-0001-b442-0000-d29500040dea",
+        "seconds": 0.21
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "AOV (Average Order Value) for delivered orders in INR",
+        "group_by": "none",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "The Average Order Value (AOV) for delivered orders in INR for the full year 2025, using the recorded order date, was 482.935288 INR. This value represents the mean delivered sales amount per delivered order across all cities and days in 2025, for orders recorded in Indian Rupees (INR).",
+        "reason": "Calculation used the sum of delivered sales amount divided by the count of delivered orders for all INR orders in 2025, as requested."
+      },
+      "model_stats": {
+        "seconds": 1.43,
+        "prompt_tokens": 2768,
+        "completion_tokens": 147
+      }
+    }
+  ],
+  "final_answer": "The Average Order Value (AOV) for delivered orders in INR for the full year 2025, using the recorded order date, was 482.935288 INR. This value represents the mean delivered sales amount per delivered order across all cities and days in 2025, for orders recorded in Indian Rupees (INR).",
+  "outcome": "answer",
+  "total_seconds": 2.97,
+  "finished_utc": "2026-10-21T02:00:54.879227+00:00"
+}

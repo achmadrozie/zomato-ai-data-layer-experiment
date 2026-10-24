@@ -1,0 +1,79 @@
+{
+  "id": "C-Q15-r1",
+  "arm": "C",
+  "question_id": "Q15",
+  "stratum": "data",
+  "question": "In 2025, what share of orders contained more than one item line? Compare average ordered units per order for one-line and multi-line orders; also report orders with no item line separately.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "597a068c5b5f4f3b488102e5fb6ff26da6762c24c56b9a012f2123b3304db3dc",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:45:34.176488+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT\n  CASE \n    WHEN i.ITEM_LINE_COUNT IS NULL THEN 'No item line'\n    WHEN i.ITEM_LINE_COUNT = 1 THEN 'One item line'\n    WHEN i.ITEM_LINE_COUNT > 1 THEN 'Multiple item lines'\n  END AS order_type,\n  COUNT(o.ORDER_ID) AS order_count,\n  SUM(o.SALES_QTY) AS total_units,\n  AVG(o.SALES_QTY) AS avg_units_per_order\nFROM ZOMATO_DLR.CORE.FACT_ORDER o\nLEFT JOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_ITEM_ROLLUP i\n  ON o.ORDER_ID = i.ORDER_ID\nWHERE o.ORDER_DATE >= '2025-01-01' AND o.ORDER_DATE < '2026-01-01'\nGROUP BY order_type\nORDER BY \n  CASE order_type \n    WHEN 'No item line' THEN 1\n    WHEN 'One item line' THEN 2\n    WHEN 'Multiple item lines' THEN 3\n    ELSE 4 END;",
+        "metrics": "order_count, total_units, avg_units_per_order",
+        "group_by": "order_type",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.47,
+        "prompt_tokens": 2191,
+        "completion_tokens": 272
+      },
+      "result": {
+        "columns": [
+          "ORDER_TYPE",
+          "ORDER_COUNT",
+          "TOTAL_UNITS",
+          "AVG_UNITS_PER_ORDER"
+        ],
+        "rows": [
+          [
+            "One item line",
+            "1307684",
+            "1595051",
+            "1.219753"
+          ],
+          [
+            "Multiple item lines",
+            "3052089",
+            "10635826",
+            "3.484769"
+          ]
+        ],
+        "query_id": "01c7de49-0001-b442-0000-d29500040c06",
+        "seconds": 1.08
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "order_count, total_units, avg_units_per_order",
+        "group_by": "order_type",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "In 2025, there were no orders with zero item lines (none reported in the data). Of all orders:\n- 1,307,684 orders (29.99%) had exactly one item line, with an average of 1.219753 units per order.\n- 3,052,089 orders (70.01%) had multiple item lines, with an average of 3.484769 units per order.\n\nShare of orders with more than one item line: 70.01% (3,052,089 out of 4,359,773 total orders).\n\nInterpretation: Multi-line orders are the majority and have a much higher average number of units per order compared to single-line orders. No orders were found with zero item lines in the 2025 data.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.05,
+        "prompt_tokens": 2606,
+        "completion_tokens": 218
+      }
+    }
+  ],
+  "final_answer": "In 2025, there were no orders with zero item lines (none reported in the data). Of all orders:\n- 1,307,684 orders (29.99%) had exactly one item line, with an average of 1.219753 units per order.\n- 3,052,089 orders (70.01%) had multiple item lines, with an average of 3.484769 units per order.\n\nShare of orders with more than one item line: 70.01% (3,052,089 out of 4,359,773 total orders).\n\nInterpretation: Multi-line orders are the majority and have a much higher average number of units per order compared to single-line orders. No orders were found with zero item lines in the 2025 data.",
+  "outcome": "answer",
+  "total_seconds": 5.6,
+  "finished_utc": "2026-10-21T01:45:39.779828+00:00"
+}

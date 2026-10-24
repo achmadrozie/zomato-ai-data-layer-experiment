@@ -1,0 +1,39 @@
+{
+  "id": "D-Q22-r1",
+  "arm": "D",
+  "question_id": "Q22",
+  "stratum": "context",
+  "question": "For the standard market report covering 2025, what were Delivered-order GMV in INR, Delivered order count, and AOV? Apply the standard market eligibility rule consistently to all three.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "b1f6e14c773bd842d58a660b709e48a10852a27a37faa316466d6e5582ae5f7b",
+  "question_sha256": "0b4050774275381d90e71ce6a53187fa1bc3bc3555976a96ef9d759f720db807",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T05:04:20.492972+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "clarify",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "Please specify the standard market eligibility rule (for example, which markets or cities qualify). It was not provided, and it must be applied consistently to Delivered-order GMV, delivered order count, and AOV."
+      },
+      "model_stats": {
+        "seconds": 4.3,
+        "prompt_tokens": 2530,
+        "completion_tokens": 204
+      }
+    }
+  ],
+  "final_answer": "Please specify the standard market eligibility rule (for example, which markets or cities qualify). It was not provided, and it must be applied consistently to Delivered-order GMV, delivered order count, and AOV.",
+  "outcome": "clarification",
+  "total_seconds": 4.3,
+  "finished_utc": "2026-10-21T05:04:24.791764+00:00"
+}

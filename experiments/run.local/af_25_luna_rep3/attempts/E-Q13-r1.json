@@ -1,0 +1,86 @@
+{
+  "id": "E-Q13-r1",
+  "arm": "E",
+  "question_id": "Q13",
+  "stratum": "data",
+  "question": "Which three exact cuisine labels had the highest 2025 Delivered-order GMV in INR? For each label, also give total order count and cancellation rate. Do not split comma-separated cuisine labels.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "a99a688c8b74f2d1acf86ffb095d4085e198af8d169bb3f0b5cd089f5752e8ce",
+  "question_sha256": "5a3ce21426ab9c55f11a602608b374b91fb0a9a7a62404be1ef55a222df3ccea",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T06:31:36.125240+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT CUISINE AS CUISINE_LABEL, SUM(IFF(ORDER_STATUS = 'Delivered', SALES_AMOUNT, 0)) AS DELIVERED_GMV_INR, COUNT(*) AS TOTAL_ORDER_COUNT, COUNT_IF(IS_CANCELLED) / NULLIF(COUNT(*), 0)::FLOAT AS CANCELLATION_RATE FROM ZOMATO_DLR.CORE.FACT_ORDER WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01' AND CURRENCY = 'INR' AND CUISINE IS NOT NULL GROUP BY CUISINE ORDER BY DELIVERED_GMV_INR DESC, CUISINE_LABEL LIMIT 3",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 4.64,
+        "prompt_tokens": 3075,
+        "completion_tokens": 401
+      },
+      "result": {
+        "columns": [
+          "CUISINE_LABEL",
+          "DELIVERED_GMV_INR",
+          "TOTAL_ORDER_COUNT",
+          "CANCELLATION_RATE"
+        ],
+        "rows": [
+          [
+            "North Indian,Chinese",
+            "97195380.00",
+            "202651",
+            "0.05880059807254837"
+          ],
+          [
+            "Indian,Chinese",
+            "60447386.00",
+            "126766",
+            "0.05981887887919474"
+          ],
+          [
+            "Indian",
+            "58362786.00",
+            "148932",
+            "0.06000053715789756"
+          ]
+        ],
+        "query_id": "01c7df67-0001-b442-0000-d29500048562",
+        "seconds": 0.09
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "For recorded 2025 orders in INR, ranked by GMV from orders with status Delivered (GMV shown in INR), the top three exact cuisine labels are:\n1. North Indian,Chinese — Delivered-order GMV: INR 97,195,380.00; total orders: 202,651; cancellation rate: 0.058801 (5.880060%).\n2. Indian,Chinese — Delivered-order GMV: INR 60,447,386.00; total orders: 126,766; cancellation rate: 0.059819 (5.981888%).\n3. Indian — Delivered-order GMV: INR 58,362,786.00; total orders: 148,932; cancellation rate: 0.060001 (6.000054%).\nCuisine values are retained exactly as labels, including comma-separated labels. Cancellation rate is cancelled orders divided by all orders for that cuisine label in the 2025 INR population.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.31,
+        "prompt_tokens": 3424,
+        "completion_tokens": 310
+      }
+    }
+  ],
+  "final_answer": "For recorded 2025 orders in INR, ranked by GMV from orders with status Delivered (GMV shown in INR), the top three exact cuisine labels are:\n1. North Indian,Chinese — Delivered-order GMV: INR 97,195,380.00; total orders: 202,651; cancellation rate: 0.058801 (5.880060%).\n2. Indian,Chinese — Delivered-order GMV: INR 60,447,386.00; total orders: 126,766; cancellation rate: 0.059819 (5.981888%).\n3. Indian — Delivered-order GMV: INR 58,362,786.00; total orders: 148,932; cancellation rate: 0.060001 (6.000054%).\nCuisine values are retained exactly as labels, including comma-separated labels. Cancellation rate is cancelled orders divided by all orders for that cuisine label in the 2025 INR population.",
+  "outcome": "answer",
+  "total_seconds": 8.05,
+  "finished_utc": "2026-10-21T06:31:44.177265+00:00"
+}

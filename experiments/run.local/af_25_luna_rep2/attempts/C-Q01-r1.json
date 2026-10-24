@@ -1,0 +1,68 @@
+{
+  "id": "C-Q01-r1",
+  "arm": "C",
+  "question_id": "Q01",
+  "stratum": "data",
+  "question": "How many orders were placed during 2025? Use the recorded order date and report a count.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "26a8123001af6a9345ad0cf4c1e3b09eec0ec006c7e9ec43b587c5e59377b8a4",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T06:03:13.909416+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT COUNT(*) AS ORDER_COUNT\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'",
+        "metrics": "order count",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 4.42,
+        "prompt_tokens": 2170,
+        "completion_tokens": 126
+      },
+      "result": {
+        "columns": [
+          "ORDER_COUNT"
+        ],
+        "rows": [
+          [
+            "4359773"
+          ]
+        ],
+        "query_id": "01c7df4b-0001-b38b-0000-d29500046b0a",
+        "seconds": 0.09
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "There were 4,359,773 orders placed in 2025, counted by recorded ORDER_DATE (January 1, 2025 through December 31, 2025).",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.54,
+        "prompt_tokens": 2350,
+        "completion_tokens": 69
+      }
+    }
+  ],
+  "final_answer": "There were 4,359,773 orders placed in 2025, counted by recorded ORDER_DATE (January 1, 2025 through December 31, 2025).",
+  "outcome": "answer",
+  "total_seconds": 7.04,
+  "finished_utc": "2026-10-21T06:03:20.950990+00:00"
+}

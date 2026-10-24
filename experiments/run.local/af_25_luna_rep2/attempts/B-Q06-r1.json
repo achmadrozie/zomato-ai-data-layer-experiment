@@ -1,0 +1,77 @@
+{
+  "id": "B-Q06-r1",
+  "arm": "B",
+  "question_id": "Q06",
+  "stratum": "data",
+  "question": "In 2025, which month had the highest Delivered-order GMV in INR? Give that month's GMV, the runner-up month's GMV, and the gap between them.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "968aad7d611f901a7d8dfa1d40ac00ed82254c5407f1175667aee50fc5949a8c",
+  "question_sha256": "4acf2281f3c70a54cd1b5548e8bf681e9cb90b7906d0b054d53e1083d674c16e",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T06:21:30.704203+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT MONTH(B.ORDER_DATE) AS MONTH_NUMBER, TO_CHAR(B.ORDER_DATE, 'MMMM') AS MONTH_NAME, SUM(F.DELIVERED_SALES_AMOUNT) AS DELIVERED_GMV_INR FROM ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE B JOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FINANCIALS F ON B.ORDER_ID = F.ORDER_ID JOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FULFILLMENT U ON B.ORDER_ID = U.ORDER_ID WHERE B.ORDER_DATE >= '2025-01-01' AND B.ORDER_DATE < '2026-01-01' AND B.CURRENCY = 'INR' AND U.IS_DELIVERED = TRUE GROUP BY MONTH(B.ORDER_DATE), TO_CHAR(B.ORDER_DATE, 'MMMM') ORDER BY DELIVERED_GMV_INR DESC, MONTH_NUMBER ASC LIMIT 2",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 34.79,
+        "prompt_tokens": 1683,
+        "completion_tokens": 363
+      },
+      "result": {
+        "columns": [
+          "MONTH_NUMBER",
+          "MONTH_NAME",
+          "DELIVERED_GMV_INR"
+        ],
+        "rows": [
+          [
+            "12",
+            "December",
+            "185263071.00"
+          ],
+          [
+            "11",
+            "November",
+            "180239871.00"
+          ]
+        ],
+        "query_id": "01c7df5e-0001-b442-0000-d29500048502",
+        "seconds": 1.6
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "December had the highest 2025 delivered-order GMV in INR: ₹185,263,071.00. The runner-up was November at ₹180,239,871.00. The gap was ₹5,023,200.00. Population: orders with recorded order dates in 2025, currency INR, and delivered status; GMV is the sum of delivered sales amount.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 33.29,
+        "prompt_tokens": 2010,
+        "completion_tokens": 200
+      }
+    }
+  ],
+  "final_answer": "December had the highest 2025 delivered-order GMV in INR: ₹185,263,071.00. The runner-up was November at ₹180,239,871.00. The gap was ₹5,023,200.00. Population: orders with recorded order dates in 2025, currency INR, and delivered status; GMV is the sum of delivered sales amount.",
+  "outcome": "answer",
+  "total_seconds": 69.69,
+  "finished_utc": "2026-10-21T06:22:40.392283+00:00"
+}

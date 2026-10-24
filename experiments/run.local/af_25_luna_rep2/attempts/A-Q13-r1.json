@@ -1,0 +1,133 @@
+{
+  "id": "A-Q13-r1",
+  "arm": "A",
+  "question_id": "Q13",
+  "stratum": "data",
+  "question": "Which three exact cuisine labels had the highest 2025 Delivered-order GMV in INR? For each label, also give total order count and cancellation rate. Do not split comma-separated cuisine labels.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "5a3ce21426ab9c55f11a602608b374b91fb0a9a7a62404be1ef55a222df3ccea",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T06:03:54.256719+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH cuisine_totals AS (\n  SELECT\n    CUISINE,\n    SUM(IFF(IS_DELIVERED AND CURRENCY = 'INR', SALES_AMOUNT, 0)) AS DELIVERED_GMV_INR,\n    COUNT(*) AS TOTAL_ORDER_COUNT,\n    COUNT_IF(IS_CANCELLED) AS CANCELLED_ORDER_COUNT\n  FROM ZOMATO_DLR.STAGING.STG_ZOMATO__ORDER\n  WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n    AND CURRENCY = 'INR'\n  GROUP BY CUISINE\n)\nSELECT\n  CUISINE,\n  DELIVERED_GMV_INR,\n  TOTAL_ORDER_COUNT,\n  CANCELLED_ORDER_COUNT / NULLIF(TOTAL_ORDER_COUNT, 0)::FLOAT AS CANCELLATION_RATE\nFROM cuisine_totals\nORDER BY DELIVERED_GMV_INR DESC, CUISINE\nLIMIT 3",
+        "metrics": "Delivered-order GMV (sum of SALES_AMOUNT for delivered INR orders), total INR order count, cancellation rate (cancelled INR orders / all INR orders)",
+        "group_by": "Exact CUISINE label; do not split comma-separated labels",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 8.58,
+        "prompt_tokens": 1315,
+        "completion_tokens": 745
+      },
+      "result": {
+        "columns": [
+          "CUISINE",
+          "DELIVERED_GMV_INR",
+          "TOTAL_ORDER_COUNT",
+          "CANCELLATION_RATE"
+        ],
+        "rows": [
+          [
+            "North Indian,Chinese",
+            "97195380.00",
+            "202651",
+            "0.05880059807254837"
+          ],
+          [
+            "Indian,Chinese",
+            "60447386.00",
+            "126766",
+            "0.05981887887919474"
+          ],
+          [
+            "Indian",
+            "58362786.00",
+            "148932",
+            "0.06000053715789756"
+          ]
+        ],
+        "query_id": "01c7df4c-0001-b38b-0000-d29500046b0e",
+        "seconds": 0.88
+      }
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH cuisine_totals AS (\n  SELECT\n    CUISINE,\n    SUM(IFF(IS_DELIVERED AND CURRENCY = 'INR', SALES_AMOUNT, 0)) AS DELIVERED_GMV_INR,\n    COUNT(*) AS TOTAL_ORDER_COUNT,\n    COUNT_IF(IS_CANCELLED) AS CANCELLED_ORDER_COUNT\n  FROM ZOMATO_DLR.STAGING.STG_ZOMATO__ORDER\n  WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n  GROUP BY CUISINE\n)\nSELECT\n  CUISINE,\n  DELIVERED_GMV_INR,\n  TOTAL_ORDER_COUNT,\n  CANCELLED_ORDER_COUNT / NULLIF(TOTAL_ORDER_COUNT, 0)::FLOAT AS CANCELLATION_RATE\nFROM cuisine_totals\nORDER BY DELIVERED_GMV_INR DESC, CUISINE\nLIMIT 3",
+        "metrics": "Delivered-order GMV in source currency INR; count all 2025 orders and cancellation rate (cancelled orders / all orders) for each exact cuisine label",
+        "group_by": "Exact CUISINE label; comma-separated labels remain unsplit",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 7.01,
+        "prompt_tokens": 1791,
+        "completion_tokens": 609
+      },
+      "result": {
+        "columns": [
+          "CUISINE",
+          "DELIVERED_GMV_INR",
+          "TOTAL_ORDER_COUNT",
+          "CANCELLATION_RATE"
+        ],
+        "rows": [
+          [
+            "North Indian,Chinese",
+            "97195380.00",
+            "202651",
+            "0.05880059807254837"
+          ],
+          [
+            "Indian,Chinese",
+            "60447386.00",
+            "126766",
+            "0.05981887887919474"
+          ],
+          [
+            "Indian",
+            "58362786.00",
+            "148932",
+            "0.06000053715789756"
+          ]
+        ],
+        "query_id": "01c7df4c-0001-b38b-0000-d29500046b12",
+        "seconds": 0.89
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "Top three exact cuisine labels by 2025 Delivered-order GMV in INR (labels kept unsplit):\n\n| Exact cuisine label | Delivered-order GMV (INR) | 2025 order count | Cancellation rate |\n|---|---:|---:|---:|\n| North Indian,Chinese | ₹97,195,380.00 | 202,651 | 0.058801 (5.880060%) |\n| Indian,Chinese | ₹60,447,386.00 | 126,766 | 0.059819 (5.981888%) |\n| Indian | ₹58,362,786.00 | 148,932 | 0.060001 (6.000054%) |\n\nGMV sums SALES_AMOUNT for delivered orders denominated in INR, for recorded order dates in 2025. Order count is all orders for the exact cuisine label in 2025; cancellation rate is cancelled orders divided by all 2025 orders for that label.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 5.53,
+        "prompt_tokens": 2256,
+        "completion_tokens": 413
+      }
+    }
+  ],
+  "final_answer": "Top three exact cuisine labels by 2025 Delivered-order GMV in INR (labels kept unsplit):\n\n| Exact cuisine label | Delivered-order GMV (INR) | 2025 order count | Cancellation rate |\n|---|---:|---:|---:|\n| North Indian,Chinese | ₹97,195,380.00 | 202,651 | 0.058801 (5.880060%) |\n| Indian,Chinese | ₹60,447,386.00 | 126,766 | 0.059819 (5.981888%) |\n| Indian | ₹58,362,786.00 | 148,932 | 0.060001 (6.000054%) |\n\nGMV sums SALES_AMOUNT for delivered orders denominated in INR, for recorded order dates in 2025. Order count is all orders for the exact cuisine label in 2025; cancellation rate is cancelled orders divided by all 2025 orders for that label.",
+  "outcome": "answer",
+  "total_seconds": 22.9,
+  "finished_utc": "2026-10-21T06:04:17.160409+00:00"
+}

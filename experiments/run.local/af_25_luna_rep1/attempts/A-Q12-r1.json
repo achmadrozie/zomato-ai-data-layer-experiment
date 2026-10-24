@@ -1,0 +1,39 @@
+{
+  "id": "A-Q12-r1",
+  "arm": "A",
+  "question_id": "Q12",
+  "stratum": "data",
+  "question": "What share of 2025 Delivered-order GMV in INR came from the top ten restaurants ranked by that same GMV? Rank by restaurant ID when GMV ties, and report both top-ten and total GMV.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "c2475835703a3609660f193d2e6779203e85920e3664ab2e57228f4f411840e5",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T03:51:52.001337+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "clarify",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "Please confirm the GMV definition: should I use SUBTOTAL (merchandise value before discounts, delivery fees, and GST) or SALES_AMOUNT?"
+      },
+      "model_stats": {
+        "seconds": 9.63,
+        "prompt_tokens": 1320,
+        "completion_tokens": 787
+      }
+    }
+  ],
+  "final_answer": "Please confirm the GMV definition: should I use SUBTOTAL (merchandise value before discounts, delivery fees, and GST) or SALES_AMOUNT?",
+  "outcome": "clarification",
+  "total_seconds": 9.63,
+  "finished_utc": "2026-10-21T03:52:01.631902+00:00"
+}

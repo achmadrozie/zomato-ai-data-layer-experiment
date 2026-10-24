@@ -1,0 +1,82 @@
+{
+  "id": "A-Q15-r1",
+  "arm": "A",
+  "question_id": "Q15",
+  "stratum": "data",
+  "question": "In 2025, what share of orders contained more than one item line? Compare average ordered units per order for one-line and multi-line orders; also report orders with no item line separately.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "597a068c5b5f4f3b488102e5fb6ff26da6762c24c56b9a012f2123b3304db3dc",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T04:10:46.237657+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH orders_2025 AS (\n  SELECT ORDER_ID\n  FROM ZOMATO_DLR.STAGING.STG_ZOMATO__ORDER\n  WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n), lines_by_order AS (\n  SELECT ORDER_ID, COUNT(*) AS LINE_COUNT, COALESCE(SUM(QUANTITY), 0) AS ORDERED_UNITS\n  FROM ZOMATO_DLR.STAGING.STG_ZOMATO__ORDER_ITEM\n  GROUP BY ORDER_ID\n), order_line_status AS (\n  SELECT o.ORDER_ID,\n         COALESCE(l.LINE_COUNT, 0) AS LINE_COUNT,\n         COALESCE(l.ORDERED_UNITS, 0) AS ORDERED_UNITS\n  FROM orders_2025 o\n  LEFT JOIN lines_by_order l ON o.ORDER_ID = l.ORDER_ID\n)\nSELECT COUNT(*) AS TOTAL_2025_ORDERS,\n       COUNT_IF(LINE_COUNT > 1) AS MULTI_LINE_ORDERS,\n       COUNT_IF(LINE_COUNT > 1) / NULLIF(COUNT(*), 0)::FLOAT AS SHARE_MULTI_LINE_ORDERS,\n       COUNT_IF(LINE_COUNT = 1) AS ONE_LINE_ORDERS,\n       AVG(IFF(LINE_COUNT = 1, ORDERED_UNITS, NULL)) AS AVG_ORDERED_UNITS_ONE_LINE,\n       COUNT_IF(LINE_COUNT > 1) AS MULTI_LINE_ORDER_COUNT,\n       AVG(IFF(LINE_COUNT > 1, ORDERED_UNITS, NULL)) AS AVG_ORDERED_UNITS_MULTI_LINE,\n       COUNT_IF(LINE_COUNT = 0) AS ORDERS_WITH_NO_ITEM_LINE\nFROM order_line_status",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 10.14,
+        "prompt_tokens": 1315,
+        "completion_tokens": 813
+      },
+      "result": {
+        "columns": [
+          "TOTAL_2025_ORDERS",
+          "MULTI_LINE_ORDERS",
+          "SHARE_MULTI_LINE_ORDERS",
+          "ONE_LINE_ORDERS",
+          "AVG_ORDERED_UNITS_ONE_LINE",
+          "MULTI_LINE_ORDER_COUNT",
+          "AVG_ORDERED_UNITS_MULTI_LINE",
+          "ORDERS_WITH_NO_ITEM_LINE"
+        ],
+        "rows": [
+          [
+            "4359773",
+            "3052089",
+            "0.7000568607585762",
+            "1307684",
+            "1.219753",
+            "3052089",
+            "3.484769",
+            "0"
+          ]
+        ],
+        "query_id": "01c7deda-0001-b38b-0000-d2950004688e",
+        "seconds": 1.53
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "For 2025 recorded orders (4,359,773 total), 3,052,089 had more than one item line: 70.005686% of all orders. Average ordered units per order were 1.219753 for the 1,307,684 one-line orders and 3.484769 for the 3,052,089 multi-line orders. Orders with no item line: 0. Ordered units are summed line quantities; line count is the number of item-line records per order.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.99,
+        "prompt_tokens": 1902,
+        "completion_tokens": 198
+      }
+    }
+  ],
+  "final_answer": "For 2025 recorded orders (4,359,773 total), 3,052,089 had more than one item line: 70.005686% of all orders. Average ordered units per order were 1.219753 for the 1,307,684 one-line orders and 3.484769 for the 3,052,089 multi-line orders. Orders with no item line: 0. Ordered units are summed line quantities; line count is the number of item-line records per order.",
+  "outcome": "answer",
+  "total_seconds": 14.66,
+  "finished_utc": "2026-10-21T04:11:00.896524+00:00"
+}

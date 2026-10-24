@@ -1,0 +1,39 @@
+{
+  "id": "B-Q22-r1",
+  "arm": "B",
+  "question_id": "Q22",
+  "stratum": "context",
+  "question": "For the standard market report covering 2025, what were Delivered-order GMV in INR, Delivered order count, and AOV? Apply the standard market eligibility rule consistently to all three.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "968aad7d611f901a7d8dfa1d40ac00ed82254c5407f1175667aee50fc5949a8c",
+  "question_sha256": "0b4050774275381d90e71ce6a53187fa1bc3bc3555976a96ef9d759f720db807",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T04:08:28.899054+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "clarify",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "The standard market eligibility rule is not defined in the supplied context. Please specify which orders or markets qualify (for example, all 2025 delivered orders recorded in INR, or a particular eligible-market list); I’ll apply that same rule to GMV, order count, and AOV."
+      },
+      "model_stats": {
+        "seconds": 4.05,
+        "prompt_tokens": 1685,
+        "completion_tokens": 236
+      }
+    }
+  ],
+  "final_answer": "The standard market eligibility rule is not defined in the supplied context. Please specify which orders or markets qualify (for example, all 2025 delivered orders recorded in INR, or a particular eligible-market list); I’ll apply that same rule to GMV, order count, and AOV.",
+  "outcome": "clarification",
+  "total_seconds": 4.05,
+  "finished_utc": "2026-10-21T04:08:32.952667+00:00"
+}

@@ -1,0 +1,82 @@
+{
+  "id": "F-Q07-r1",
+  "arm": "F",
+  "question_id": "Q07",
+  "stratum": "data",
+  "question": "Compare January and December 2025: Delivered order count, GMV in INR, and AOV in INR for each month. For both Delivered order count and AOV, calculate the percentage change from January to December as (December value minus January value) divided by January value times 100. Show both percentage changes and state which grew faster.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "ffde7fbebc6e393182946e35173dbc682d761b0a7108ddcb03258f03a9f8ef1e",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T03:47:59.804372+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT\n  COUNT_IF(ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2025-02-01' AND IS_DELIVERED) AS JAN_DELIVERED_ORDER_COUNT,\n  SUM(IFF(ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2025-02-01' AND ORDER_STATUS = 'Delivered', SALES_AMOUNT, 0)) AS JAN_GMV_INR,\n  JAN_GMV_INR / NULLIF(JAN_DELIVERED_ORDER_COUNT, 0) AS JAN_AOV_INR,\n  COUNT_IF(ORDER_DATE >= '2025-12-01' AND ORDER_DATE < '2026-01-01' AND IS_DELIVERED) AS DEC_DELIVERED_ORDER_COUNT,\n  SUM(IFF(ORDER_DATE >= '2025-12-01' AND ORDER_DATE < '2026-01-01' AND ORDER_STATUS = 'Delivered', SALES_AMOUNT, 0)) AS DEC_GMV_INR,\n  DEC_GMV_INR / NULLIF(DEC_DELIVERED_ORDER_COUNT, 0) AS DEC_AOV_INR,\n  (DEC_DELIVERED_ORDER_COUNT - JAN_DELIVERED_ORDER_COUNT) / NULLIF(JAN_DELIVERED_ORDER_COUNT, 0) * 100 AS DELIVERED_ORDER_COUNT_PCT_CHANGE,\n  (DEC_AOV_INR - JAN_AOV_INR) / NULLIF(JAN_AOV_INR, 0) * 100 AS AOV_PCT_CHANGE\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01' AND CURRENCY = 'INR'",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 7.37,
+        "prompt_tokens": 3490,
+        "completion_tokens": 810
+      },
+      "result": {
+        "columns": [
+          "JAN_DELIVERED_ORDER_COUNT",
+          "JAN_GMV_INR",
+          "JAN_AOV_INR",
+          "DEC_DELIVERED_ORDER_COUNT",
+          "DEC_GMV_INR",
+          "DEC_AOV_INR",
+          "DELIVERED_ORDER_COUNT_PCT_CHANGE",
+          "AOV_PCT_CHANGE"
+        ],
+        "rows": [
+          [
+            "286712",
+            "138573283.00",
+            "483.31874145",
+            "383530",
+            "185263071.00",
+            "483.04714364",
+            "33.768400",
+            "-0.056194346900"
+          ]
+        ],
+        "query_id": "01c7dec4-0001-b38b-0000-d295000467fa",
+        "seconds": 0.61
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "For INR orders recorded in 2025, using delivered orders and GMV (sales amount for orders with status Delivered):\n\n| Month | Delivered order count | GMV (INR) | AOV (INR per delivered order) |\n|---|---:|---:|---:|\n| January 2025 | 286,712 | 138,573,283.00 | 483.318741 |\n| December 2025 | 383,530 | 185,263,071.00 | 483.047144 |\n\nJanuary-to-December percentage change, calculated as (December − January) / January × 100:\n- Delivered order count: **+33.768400%**\n- AOV: **−0.056194%**\n\nDelivered order count grew faster; AOV decreased slightly.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.26,
+        "prompt_tokens": 4074,
+        "completion_tokens": 291
+      }
+    }
+  ],
+  "final_answer": "For INR orders recorded in 2025, using delivered orders and GMV (sales amount for orders with status Delivered):\n\n| Month | Delivered order count | GMV (INR) | AOV (INR per delivered order) |\n|---|---:|---:|---:|\n| January 2025 | 286,712 | 138,573,283.00 | 483.318741 |\n| December 2025 | 383,530 | 185,263,071.00 | 483.047144 |\n\nJanuary-to-December percentage change, calculated as (December − January) / January × 100:\n- Delivered order count: **+33.768400%**\n- AOV: **−0.056194%**\n\nDelivered order count grew faster; AOV decreased slightly.",
+  "outcome": "answer",
+  "total_seconds": 11.25,
+  "finished_utc": "2026-10-21T03:48:11.049515+00:00"
+}

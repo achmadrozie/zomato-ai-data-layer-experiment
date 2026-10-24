@@ -1,0 +1,89 @@
+{
+  "id": "D-Q11-r1",
+  "arm": "D",
+  "question_id": "Q11",
+  "stratum": "data",
+  "question": "For each recorded order status in 2025, report total orders, the share with a non-null customer rating, and average customer rating among rated orders. What population does each average describe?",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "b1f6e14c773bd842d58a660b709e48a10852a27a37faa316466d6e5582ae5f7b",
+  "question_sha256": "5862dd0c5f141a397d30a274573ca261508f56f6b704cb4c138b381e3db1ebd5",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T02:04:19.219868+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT ORDER_STATUS, COUNT(*) AS TOTAL_ORDERS, \n       COUNT(CUSTOMER_RATING) AS RATED_ORDERS,\n       COUNT(CUSTOMER_RATING) / COUNT(*) AS SHARE_WITH_RATING,\n       AVG(CASE WHEN CUSTOMER_RATING IS NOT NULL THEN CUSTOMER_RATING END) AS AVG_CUSTOMER_RATING\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\nGROUP BY ORDER_STATUS\nORDER BY TOTAL_ORDERS DESC;",
+        "metrics": "total orders, share with non-null customer rating, average customer rating among rated orders",
+        "group_by": "order status",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.72,
+        "prompt_tokens": 2532,
+        "completion_tokens": 181
+      },
+      "result": {
+        "columns": [
+          "ORDER_STATUS",
+          "TOTAL_ORDERS",
+          "RATED_ORDERS",
+          "SHARE_WITH_RATING",
+          "AVG_CUSTOMER_RATING"
+        ],
+        "rows": [
+          [
+            "Delivered",
+            "3989077",
+            "2793569",
+            "0.700305",
+            "4.14547985"
+          ],
+          [
+            "Cancelled",
+            "261456",
+            "0",
+            "0.000000",
+            null
+          ],
+          [
+            "Refunded",
+            "109240",
+            "0",
+            "0.000000",
+            null
+          ]
+        ],
+        "query_id": "01c7de5c-0001-b442-0000-d29500040e9e",
+        "seconds": 0.21
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "total orders, share with non-null customer rating, average customer rating among rated orders",
+        "group_by": "order status",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "For each recorded order status in 2025:\n\n- Delivered: 3,989,077 total orders; 70.0305% have a non-null customer rating; average customer rating among rated orders is 4.14547985. The average describes only those delivered orders in 2025 where a customer rating was provided (2,793,569 orders).\n- Cancelled: 261,456 total orders; 0% have a customer rating; no average rating (none rated).\n- Refunded: 109,240 total orders; 0% have a customer rating; no average rating (none rated).\n\nPopulation for each average: delivered orders in 2025 with a non-null customer rating (per status).",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.06,
+        "prompt_tokens": 2889,
+        "completion_tokens": 212
+      }
+    }
+  ],
+  "final_answer": "For each recorded order status in 2025:\n\n- Delivered: 3,989,077 total orders; 70.0305% have a non-null customer rating; average customer rating among rated orders is 4.14547985. The average describes only those delivered orders in 2025 where a customer rating was provided (2,793,569 orders).\n- Cancelled: 261,456 total orders; 0% have a customer rating; no average rating (none rated).\n- Refunded: 109,240 total orders; 0% have a customer rating; no average rating (none rated).\n\nPopulation for each average: delivered orders in 2025 with a non-null customer rating (per status).",
+  "outcome": "answer",
+  "total_seconds": 3.99,
+  "finished_utc": "2026-10-21T02:04:23.210190+00:00"
+}

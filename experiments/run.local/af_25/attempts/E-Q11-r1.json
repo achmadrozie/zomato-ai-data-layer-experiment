@@ -1,0 +1,89 @@
+{
+  "id": "E-Q11-r1",
+  "arm": "E",
+  "question_id": "Q11",
+  "stratum": "data",
+  "question": "For each recorded order status in 2025, report total orders, the share with a non-null customer rating, and average customer rating among rated orders. What population does each average describe?",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "a99a688c8b74f2d1acf86ffb095d4085e198af8d169bb3f0b5cd089f5752e8ce",
+  "question_sha256": "5862dd0c5f141a397d30a274573ca261508f56f6b704cb4c138b381e3db1ebd5",
+  "context_sha256": null,
+  "started_utc": "2026-10-20T23:51:56.865951+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "count_order_total,rating_coverage_rate,avg_customer_rating",
+        "group_by": "order_id__order_status",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.2,
+        "prompt_tokens": 3076,
+        "completion_tokens": 58
+      },
+      "result": {
+        "columns": [
+          "ORDER_ID__ORDER_STATUS",
+          "COUNT_ORDER_TOTAL",
+          "AVG_CUSTOMER_RATING",
+          "RATING_COVERAGE_RATE"
+        ],
+        "rows": [
+          [
+            "Delivered",
+            "3989077",
+            "4.14547985",
+            "70.030461"
+          ],
+          [
+            "Refunded",
+            "109240",
+            "",
+            "0.0"
+          ],
+          [
+            "Cancelled",
+            "261456",
+            "",
+            "0.0"
+          ]
+        ],
+        "metric_definitions": {
+          "count_order_total": "Number of orders, regardless of status. Each non-null `order_id` contributes one.",
+          "rating_coverage_rate": "Rated orders as a percentage of all orders.",
+          "avg_customer_rating": "Average numeric customer rating across rated orders."
+        },
+        "seconds": 19.94
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "count_order_total,rating_coverage_rate,avg_customer_rating",
+        "group_by": "order_id__order_status",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "For each recorded order status in 2025:\n\n- Delivered: 3,989,077 total orders. 70.030461% of these had a non-null customer rating. The average customer rating among rated delivered orders was 4.14547985. This average describes only those delivered orders in 2025 that received a numeric customer rating.\n- Refunded: 109,240 total orders. 0.0% had a non-null customer rating. No average rating is reported, as there were no rated refunded orders.\n- Cancelled: 261,456 total orders. 0.0% had a non-null customer rating. No average rating is reported, as there were no rated cancelled orders.\n\nPopulation for each average: For each order status, the average customer rating describes only those orders of that status in 2025 that received a numeric customer rating (if any).",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.98,
+        "prompt_tokens": 3325,
+        "completion_tokens": 244
+      }
+    }
+  ],
+  "final_answer": "For each recorded order status in 2025:\n\n- Delivered: 3,989,077 total orders. 70.030461% of these had a non-null customer rating. The average customer rating among rated delivered orders was 4.14547985. This average describes only those delivered orders in 2025 that received a numeric customer rating.\n- Refunded: 109,240 total orders. 0.0% had a non-null customer rating. No average rating is reported, as there were no rated refunded orders.\n- Cancelled: 261,456 total orders. 0.0% had a non-null customer rating. No average rating is reported, as there were no rated cancelled orders.\n\nPopulation for each average: For each order status, the average customer rating describes only those orders of that status in 2025 that received a numeric customer rating (if any).",
+  "outcome": "answer",
+  "total_seconds": 23.12,
+  "finished_utc": "2026-10-20T23:52:19.987949+00:00"
+}

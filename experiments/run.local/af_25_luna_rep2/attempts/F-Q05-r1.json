@@ -1,0 +1,68 @@
+{
+  "id": "F-Q05-r1",
+  "arm": "F",
+  "question_id": "Q05",
+  "stratum": "data",
+  "question": "What was ordered quantity per order for the full year 2025? Use the recorded order date for the 2025 scope.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "ea883bbd9440eaafaff5343a59ff8dcbd1aa4f1afa8c0d1e08ce4956a43b2a3e",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T06:00:38.835672+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH order_totals AS (\n  SELECT COUNT(*) AS order_count\n  FROM ZOMATO_DLR.CORE.FACT_ORDER\n  WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n), quantity_total AS (\n  SELECT SUM(oi.QUANTITY) AS ordered_quantity\n  FROM ZOMATO_DLR.CORE.FACT_ORDER_ITEM oi\n  JOIN ZOMATO_DLR.CORE.FACT_ORDER o ON o.ORDER_ID = oi.ORDER_ID\n  WHERE o.ORDER_DATE >= '2025-01-01' AND o.ORDER_DATE < '2026-01-01'\n)\nSELECT ordered_quantity / NULLIF(order_count, 0) AS ORDERED_QUANTITY_PER_ORDER\nFROM order_totals CROSS JOIN quantity_total;",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 10.07,
+        "prompt_tokens": 3447,
+        "completion_tokens": 527
+      },
+      "result": {
+        "columns": [
+          "ORDERED_QUANTITY_PER_ORDER"
+        ],
+        "rows": [
+          [
+            "2.805393"
+          ]
+        ],
+        "query_id": "01c7df48-0001-b442-0000-d2950004849e",
+        "seconds": 0.53
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "For orders with recorded ORDER_DATE from 2025-01-01 through 2025-12-31, ordered quantity per order was 2.805393 units per order. This is total item quantity divided by all orders in that period.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 4.49,
+        "prompt_tokens": 3738,
+        "completion_tokens": 140
+      }
+    }
+  ],
+  "final_answer": "For orders with recorded ORDER_DATE from 2025-01-01 through 2025-12-31, ordered quantity per order was 2.805393 units per order. This is total item quantity divided by all orders in that period.",
+  "outcome": "answer",
+  "total_seconds": 15.09,
+  "finished_utc": "2026-10-21T06:00:53.928056+00:00"
+}

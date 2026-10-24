@@ -1,0 +1,243 @@
+{
+  "id": "F-Q03-r1",
+  "arm": "F",
+  "question_id": "Q03",
+  "stratum": "data",
+  "question": "What was AOV in INR during 2025, by recorded order date?",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "72203dd5d7fa1eed43f83704cfc53f067bd13057c6d4fcf5038e989a70335f1c",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-20T23:56:04.919996+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "aov",
+        "group_by": "order_id__order_date,order_id__currency",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "The user requested AOV (average order value) in INR by recorded order date for 2025. Metricflow will be used to group by order date and currency, filtering for INR in the next step if needed."
+      },
+      "model_stats": {
+        "seconds": 1.33,
+        "prompt_tokens": 3439,
+        "completion_tokens": 96
+      },
+      "tool_error": "ValueError: MetricFlow result exceeds 40 rows; use SQL or coarser grain"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT ORDER_DATE, AVG(CALCULATED_SALES_AMOUNT) AS AOV_INR\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n  AND CURRENCY = 'INR'\n  AND IS_DELIVERED = TRUE\nGROUP BY ORDER_DATE\nORDER BY ORDER_DATE\nLIMIT 40;",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "MetricFlow exceeded the row limit. Switching to SQL to calculate daily AOV in INR for delivered orders in 2025, limited to 40 days as per instructions."
+      },
+      "model_stats": {
+        "seconds": 2.04,
+        "prompt_tokens": 3596,
+        "completion_tokens": 147
+      },
+      "result": {
+        "columns": [
+          "ORDER_DATE",
+          "AOV_INR"
+        ],
+        "rows": [
+          [
+            "2025-01-01",
+            "478.89104538"
+          ],
+          [
+            "2025-01-02",
+            "486.63728342"
+          ],
+          [
+            "2025-01-03",
+            "483.14171020"
+          ],
+          [
+            "2025-01-04",
+            "481.65870307"
+          ],
+          [
+            "2025-01-05",
+            "480.93189609"
+          ],
+          [
+            "2025-01-06",
+            "487.27676447"
+          ],
+          [
+            "2025-01-07",
+            "487.10621897"
+          ],
+          [
+            "2025-01-08",
+            "479.79457061"
+          ],
+          [
+            "2025-01-09",
+            "481.66547296"
+          ],
+          [
+            "2025-01-10",
+            "479.17650397"
+          ],
+          [
+            "2025-01-11",
+            "486.58225493"
+          ],
+          [
+            "2025-01-12",
+            "477.34202398"
+          ],
+          [
+            "2025-01-13",
+            "485.15705170"
+          ],
+          [
+            "2025-01-14",
+            "484.91600206"
+          ],
+          [
+            "2025-01-15",
+            "483.85928854"
+          ],
+          [
+            "2025-01-16",
+            "474.96741699"
+          ],
+          [
+            "2025-01-17",
+            "482.85054400"
+          ],
+          [
+            "2025-01-18",
+            "485.60947566"
+          ],
+          [
+            "2025-01-19",
+            "486.97353934"
+          ],
+          [
+            "2025-01-20",
+            "480.25807692"
+          ],
+          [
+            "2025-01-21",
+            "483.06003654"
+          ],
+          [
+            "2025-01-22",
+            "490.37406484"
+          ],
+          [
+            "2025-01-23",
+            "487.73171343"
+          ],
+          [
+            "2025-01-24",
+            "478.13403931"
+          ],
+          [
+            "2025-01-25",
+            "488.87555982"
+          ],
+          [
+            "2025-01-26",
+            "485.43474836"
+          ],
+          [
+            "2025-01-27",
+            "480.07430182"
+          ],
+          [
+            "2025-01-28",
+            "475.23566714"
+          ],
+          [
+            "2025-01-29",
+            "479.62654169"
+          ],
+          [
+            "2025-01-30",
+            "487.56035007"
+          ],
+          [
+            "2025-01-31",
+            "488.85012332"
+          ],
+          [
+            "2025-02-01",
+            "484.80402132"
+          ],
+          [
+            "2025-02-02",
+            "483.84469530"
+          ],
+          [
+            "2025-02-03",
+            "489.09465745"
+          ],
+          [
+            "2025-02-04",
+            "486.01218274"
+          ],
+          [
+            "2025-02-05",
+            "482.32475925"
+          ],
+          [
+            "2025-02-06",
+            "481.61750306"
+          ],
+          [
+            "2025-02-07",
+            "473.44466648"
+          ],
+          [
+            "2025-02-08",
+            "478.26594569"
+          ],
+          [
+            "2025-02-09",
+            "484.59720768"
+          ]
+        ],
+        "query_id": "01c7dddc-0001-b38b-0000-d29500044d16",
+        "seconds": 0.25
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "SELECT ORDER_DATE, AVG(CALCULATED_SALES_AMOUNT) AS AOV_INR FROM ZOMATO_DLR.CORE.FACT_ORDER WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01' AND CURRENCY = 'INR' AND IS_DELIVERED = TRUE GROUP BY ORDER_DATE ORDER BY ORDER_DATE LIMIT 40;",
+        "metrics": "AOV (average order value) in INR, by recorded order date, for delivered orders in 2025.",
+        "group_by": "ORDER_DATE",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "For delivered orders in 2025 with currency INR, the average order value (AOV) by recorded order date ranged from approximately 473.444666 to 490.374065 INR per delivered order (first 40 days shown). For example, on 2025-01-01, AOV was 478.891045 INR; on 2025-01-15, it was 483.859289 INR; and on 2025-02-09, it was 484.597208 INR. Each value represents the mean sales amount per delivered order for that day, in INR. The population is all delivered orders with INR currency on each date. Units: INR per delivered order. Interpretation: This shows daily variation in average delivered order value in INR for the first 40 days of 2025.",
+        "reason": "The SQL query calculated daily AOV for delivered orders in INR, grouped by order date, as requested. Only the first 40 days are shown due to row limits."
+      },
+      "model_stats": {
+        "seconds": 3.0,
+        "prompt_tokens": 4435,
+        "completion_tokens": 346
+      }
+    }
+  ],
+  "final_answer": "For delivered orders in 2025 with currency INR, the average order value (AOV) by recorded order date ranged from approximately 473.444666 to 490.374065 INR per delivered order (first 40 days shown). For example, on 2025-01-01, AOV was 478.891045 INR; on 2025-01-15, it was 483.859289 INR; and on 2025-02-09, it was 484.597208 INR. Each value represents the mean sales amount per delivered order for that day, in INR. The population is all delivered orders with INR currency on each date. Units: INR per delivered order. Interpretation: This shows daily variation in average delivered order value in INR for the first 40 days of 2025.",
+  "outcome": "answer",
+  "total_seconds": 26.82,
+  "finished_utc": "2026-10-20T23:56:31.742810+00:00"
+}

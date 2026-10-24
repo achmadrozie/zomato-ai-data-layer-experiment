@@ -1,0 +1,602 @@
+{
+  "A-Q18": [
+    0,
+    "Used numeric ages instead of customer dimension segment labels"
+  ],
+  "E-Q18": [
+    1,
+    "Both customer age segments and all values correct"
+  ],
+  "F-Q18": [
+    1,
+    "Both customer age segments and all values correct"
+  ],
+  "B-Q12": [
+    0,
+    "Top-ten GMV arithmetic wrong: 3,552,107 instead of 3,552,103"
+  ],
+  "C-Q12": [
+    0,
+    "Top-ten GMV arithmetic wrong: 3,542,107"
+  ],
+  "D-Q12": [
+    1,
+    "Correct top-ten GMV, denominator, share and tie-break query"
+  ],
+  "E-Q12": [
+    0,
+    "Contradictory and incorrect share claims, including 1.84%"
+  ],
+  "B-Q13": [
+    0,
+    "Cancellation denominators wrongly limited to Delivered orders"
+  ],
+  "C-Q13": [
+    0,
+    "Cancellation denominators wrongly limited to Delivered orders"
+  ],
+  "D-Q13": [
+    1,
+    "Exact cuisine labels, counts and GMV correct; cancellation rates within revised \u00b10.01 percentage-point tolerance"
+  ],
+  "E-Q13": [
+    1,
+    "Exact cuisine labels, all-status counts, GMV and rates correct"
+  ],
+  "F-Q13": [
+    1,
+    "Exact cuisine labels, all-status counts, GMV and rates correct"
+  ],
+  "C-Q14": [
+    0,
+    "Ordered-unit shares wrong"
+  ],
+  "E-Q14": [
+    0,
+    "Ordered-unit shares wrong"
+  ],
+  "F-Q14": [
+    0,
+    "Ordered-unit shares wrong"
+  ],
+  "C-Q16": [
+    1,
+    "All requested reconciliation values and interpretation correct"
+  ],
+  "F-Q16": [
+    1,
+    "All requested reconciliation values and interpretation correct"
+  ],
+  "A-Q17": [
+    0,
+    "Does not report per-status counts and signed sums"
+  ],
+  "D-Q17": [
+    1,
+    "Per-status zero differences and zero sums correct"
+  ],
+  "A-Q25": [
+    0,
+    "Wrong highest-cancellation city"
+  ],
+  "C-Q25": [
+    1,
+    "Correct city, comparisons and causal limit"
+  ],
+  "E-Q25": [
+    0,
+    "Missing Hyderabad delivery-time comparison"
+  ],
+  "B-Q01": [
+    1,
+    "Correct annual order count"
+  ],
+  "E-Q01": [
+    1,
+    "Correct annual order count"
+  ],
+  "C-Q02": [
+    0,
+    "Returned daily series instead of annual GMV"
+  ],
+  "E-Q02": [
+    0,
+    "Returned monthly series instead of annual GMV"
+  ],
+  "D-Q03": [
+    0,
+    "Returned daily and all-status AOV instead of annual Delivered AOV"
+  ],
+  "B-Q04": [
+    0,
+    "Returned daily rates instead of annual cancellation rate"
+  ],
+  "C-Q04": [
+    0,
+    "Returned daily rates instead of annual cancellation rate"
+  ],
+  "F-Q04": [
+    0,
+    "Returned monthly rates instead of annual cancellation rate"
+  ],
+  "B-Q05": [
+    0,
+    "Returned daily quantity per order instead of annual ratio of totals"
+  ],
+  "C-Q06": [
+    1,
+    "Correct peak month, runner-up and gap"
+  ],
+  "B-Q07": [
+    0,
+    "Incorrect January-to-December order-count growth percentage"
+  ],
+  "D-Q07": [
+    0,
+    "Incorrect January-to-December order-count growth percentage"
+  ],
+  "E-Q07": [
+    0,
+    "Incorrect January-to-December order-count growth percentage"
+  ],
+  "F-Q07": [
+    0,
+    "Incorrect January-to-December order-count growth percentage"
+  ],
+  "C-Q08": [
+    1,
+    "Top three exact order cities and all values correct"
+  ],
+  "E-Q08": [
+    1,
+    "Top three exact order cities and all values correct"
+  ],
+  "C-Q09": [
+    0,
+    "Wrong city, cancellation rate and overall rate"
+  ],
+  "F-Q09": [
+    1,
+    "Correct city, count, rate and percentage-point gap"
+  ],
+  "D-Q10": [
+    1,
+    "Correct delivery means and gap"
+  ],
+  "E-Q10": [
+    1,
+    "Correct delivery means and gap"
+  ],
+  "C-Q11": [
+    1,
+    "All status counts, coverage and rated-only means correct"
+  ],
+  "D-Q11": [
+    1,
+    "All status counts, coverage and rated-only means correct"
+  ],
+  "B-Q15": [
+    1,
+    "Counts and averages correct; 70% is within revised \u00b10.01 percentage-point tolerance of 70.005686%"
+  ],
+  "C-Q15": [
+    0,
+    "Incorrect multi-line share arithmetic"
+  ],
+  "E-Q15": [
+    1,
+    "Counts and averages correct; 70% is within revised \u00b10.01 percentage-point tolerance of 70.005686%"
+  ],
+  "B-Q19": [
+    1,
+    "Seven weekday averages include all calendar dates"
+  ],
+  "C-Q19": [
+    1,
+    "Seven weekday averages include all calendar dates"
+  ],
+  "B-Q20": [
+    0,
+    "Incorrect count and AOV decomposition amounts"
+  ],
+  "C-Q20": [
+    0,
+    "Incorrect count and AOV decomposition amounts"
+  ],
+  "C-Q21": [
+    0,
+    "Incorrect Pearson correlation"
+  ],
+  "E-Q21": [
+    0,
+    "Incorrect Pearson correlation"
+  ],
+  "D-Q22": [
+    0,
+    "Invented eligibility rule; omitted restaurant rating-count threshold"
+  ],
+  "E-Q22": [
+    0,
+    "Invented eligibility rule; omitted restaurant rating-count threshold"
+  ],
+  "B-Q23": [
+    0,
+    "Applied full-market order-city ranking instead of unspecified standard-market policy"
+  ],
+  "B-Q24": [
+    0,
+    "Counted all-status repeat orders instead of Delivered-only policy"
+  ],
+  "C-Q24": [
+    0,
+    "Counted all-status repeat orders instead of Delivered-only policy"
+  ],
+  "F-Q23": [
+    1,
+    "Correct eligibility, geography, ranking, GMV and shares within revised \u00b10.01 percentage-point tolerance"
+  ],
+  "A-Q12": [
+    0,
+    "Incorrect top-ten GMV and share"
+  ],
+  "D-Q14": [
+    0,
+    "Ordered-unit shares wrong"
+  ],
+  "D-Q15": [
+    1,
+    "Counts and averages correct; 70.01% is within revised \u00b10.01 percentage-point tolerance of 70.005686%"
+  ],
+  "B-Q16": [
+    0,
+    "Wrong count of lines with nonzero amount difference"
+  ],
+  "E-Q16": [
+    1,
+    "Correct item reconciliation values and interpretation"
+  ],
+  "B-Q17": [
+    0,
+    "Claimed unavailable despite joinable accessible tables"
+  ],
+  "F-Q17": [
+    0,
+    "Omitted per-status counts and signed sums"
+  ],
+  "F-Q02": [
+    0,
+    "Returned monthly GMV instead of annual total"
+  ],
+  "D-Q02": [
+    0,
+    "Returned daily GMV instead of annual total"
+  ],
+  "A-Q04": [
+    0,
+    "Returned daily rates instead of annual cancellation rate"
+  ],
+  "A-Q10": [
+    0,
+    "Falsely reported no recorded delivery durations"
+  ],
+  "E-Q06": [
+    1,
+    "Correct peak month, runner-up and gap"
+  ],
+  "B-Q09": [
+    1,
+    "Correct city, count, rates and percentage-point gap"
+  ],
+  "A-Q06": [
+    1,
+    "Correct peak month, runner-up and gap"
+  ],
+  "A-Q09": [
+    0,
+    "Wrong city and zero cancellation rates"
+  ],
+  "A-Q23": [
+    0,
+    "Invented full-market geography and ignored missing standard-market policy"
+  ],
+  "C-Q03": [
+    0,
+    "Daily all-status AOV instead of annual Delivered AOV"
+  ],
+  "D-Q05": [
+    0,
+    "Daily quantity per order instead of annual ratio of totals"
+  ],
+  "D-Q25": [
+    0,
+    "Incorrect Hyderabad delivery mean"
+  ],
+  "F-Q10": [
+    1,
+    "Correct delivery means and gap"
+  ],
+  "F-Q20": [
+    0,
+    "Wrong months for largest GMV decline and inconsistent decomposition"
+  ],
+  "F-Q25": [
+    0,
+    "Missing Hyderabad delivery-time comparison"
+  ],
+  "F-Q05": [
+    0,
+    "Daily truncated values instead of annual units per order"
+  ],
+  "D-Q19": [
+    0,
+    "Averaged mart city-date rows rather than daily total Delivered orders"
+  ],
+  "B-Q10": [
+    1,
+    "Correct delivery means and gap"
+  ],
+  "E-Q09": [
+    1,
+    "Correct city and rates; final interpretation imprecisely says large-city average, but SQL and stated overall rate use all orders"
+  ],
+  "B-Q18": [
+    0,
+    "Used income-band labels instead of age segments"
+  ],
+  "A-Q21": [
+    0,
+    "Incorrect Pearson correlation"
+  ],
+  "E-Q11": [
+    1,
+    "All status counts, coverage and rated-only means correct"
+  ],
+  "E-Q23": [
+    0,
+    "Invented standard-market policy and used full-market order-city ranking"
+  ],
+  "B-Q02": [
+    0,
+    "Returned daily series instead of annual GMV"
+  ],
+  "B-Q25": [
+    1,
+    "Correct city, cancellation and delivery comparisons, causal limit"
+  ],
+  "C-Q05": [
+    0,
+    "Daily quantity per order instead of annual ratio of totals"
+  ],
+  "F-Q24": [
+    1,
+    "Applied delivered-only repeat rule separately in each half and correct counts"
+  ],
+  "D-Q08": [
+    1,
+    "Correct top three order cities and all values"
+  ],
+  "C-Q01": [
+    1,
+    "Correct annual order count"
+  ],
+  "F-Q22": [
+    0,
+    "Quoted standard-market eligibility but used unfiltered full-market MetricFlow result"
+  ],
+  "F-Q06": [
+    1,
+    "Correct peak month, runner-up and gap"
+  ],
+  "C-Q23": [
+    0,
+    "Invented standard-market policy; used full-market order cities"
+  ],
+  "A-Q13": [
+    0,
+    "Limited cancellation counts to Delivered orders"
+  ],
+  "A-Q11": [
+    1,
+    "All status counts, coverage and rated-only means correct"
+  ],
+  "F-Q19": [
+    0,
+    "Several weekday totals and averages incorrect"
+  ],
+  "B-Q14": [
+    0,
+    "Ordered-unit shares wrong"
+  ],
+  "F-Q08": [
+    1,
+    "Correct top three order cities and all values after tool retries"
+  ],
+  "F-Q01": [
+    1,
+    "Correct annual order count"
+  ],
+  "F-Q12": [
+    0,
+    "Top-ten GMV arithmetic wrong despite correct restaurant query"
+  ],
+  "C-Q18": [
+    1,
+    "Both customer age segments and all values correct"
+  ],
+  "B-Q11": [
+    1,
+    "All status counts, coverage and rated-only means correct"
+  ],
+  "B-Q22": [
+    0,
+    "Invented standard-market eligibility and omitted rating-count threshold"
+  ],
+  "C-Q22": [
+    0,
+    "Invented standard-market eligibility and omitted rating-count threshold"
+  ],
+  "D-Q01": [
+    1,
+    "Correct annual order count"
+  ],
+  "A-Q02": [
+    0,
+    "Returned daily series instead of annual GMV"
+  ],
+  "D-Q18": [
+    1,
+    "Both customer age segments and all values correct"
+  ],
+  "D-Q21": [
+    0,
+    "Incorrect Pearson correlation"
+  ],
+  "F-Q03": [
+    0,
+    "Daily AOV instead of annual Delivered AOV"
+  ],
+  "A-Q22": [
+    0,
+    "Invented standard-market eligibility and omitted rating-count threshold"
+  ],
+  "B-Q08": [
+    1,
+    "Correct top three order cities and all values"
+  ],
+  "E-Q17": [
+    0,
+    "Omitted per-status counts and signed sums"
+  ],
+  "D-Q20": [
+    0,
+    "AOVs and decomposition amounts incorrect"
+  ],
+  "A-Q07": [
+    0,
+    "Unnecessary clarification of parseable order-date strings"
+  ],
+  "D-Q16": [
+    0,
+    "Missed nonzero line-amount differences"
+  ],
+  "A-Q15": [
+    0,
+    "Wrong total and multi-line order counts and averages"
+  ],
+  "A-Q08": [
+    0,
+    "Wrong order-city ranking and values"
+  ],
+  "D-Q09": [
+    0,
+    "Wrong highest-cancellation city and overall rate"
+  ],
+  "E-Q20": [
+    0,
+    "Wrong months for largest GMV decline and inconsistent decomposition"
+  ],
+  "F-Q11": [
+    1,
+    "All status counts, coverage and rated-only means correct"
+  ],
+  "A-Q20": [
+    0,
+    "Wrong months for largest GMV decline and incorrect decomposition"
+  ],
+  "A-Q19": [
+    1,
+    "Seven weekday averages include all calendar dates"
+  ],
+  "B-Q21": [
+    0,
+    "Incorrect Pearson correlation"
+  ],
+  "C-Q17": [
+    0,
+    "Omitted per-status counts and signed sums"
+  ],
+  "D-Q04": [
+    0,
+    "Returned daily rates instead of annual cancellation rate"
+  ],
+  "B-Q03": [
+    0,
+    "Daily all-status AOV instead of annual Delivered AOV"
+  ],
+  "A-Q24": [
+    0,
+    "Counted all-status repeat orders instead of Delivered-only policy"
+  ],
+  "E-Q05": [
+    0,
+    "Monthly units per order instead of annual ratio of totals"
+  ],
+  "E-Q19": [
+    1,
+    "Seven weekday averages include all calendar dates"
+  ],
+  "A-Q16": [
+    1,
+    "Correct item reconciliation values and interpretation"
+  ],
+  "B-Q06": [
+    1,
+    "Correct peak month, runner-up and gap"
+  ],
+  "A-Q14": [
+    0,
+    "Ordered-unit shares wrong"
+  ],
+  "A-Q05": [
+    0,
+    "Daily quantity per order instead of annual ratio of totals"
+  ],
+  "C-Q07": [
+    0,
+    "Incorrect January-to-December order-count growth percentage"
+  ],
+  "A-Q01": [
+    1,
+    "Correct annual order count"
+  ],
+  "F-Q21": [
+    0,
+    "Incorrect Pearson correlation sign and value"
+  ],
+  "E-Q03": [
+    0,
+    "Monthly AOV instead of annual Delivered AOV"
+  ],
+  "E-Q24": [
+    0,
+    "Used non-cancelled rather than Delivered-only repeat rule"
+  ],
+  "C-Q10": [
+    1,
+    "Correct delivery means and gap"
+  ],
+  "D-Q06": [
+    1,
+    "Correct peak month, runner-up and gap"
+  ],
+  "E-Q04": [
+    0,
+    "Daily rates instead of annual cancellation rate"
+  ],
+  "D-Q23": [
+    0,
+    "Invented standard-market geography and omitted eligibility rule"
+  ],
+  "A-Q03": [
+    0,
+    "Daily all-status AOV instead of annual Delivered AOV"
+  ],
+  "D-Q24": [
+    0,
+    "Counted all-status repeat orders instead of Delivered-only policy"
+  ],
+  "F-Q15": [
+    0,
+    "Multi-line and one-line shares miscalculated"
+  ]
+}

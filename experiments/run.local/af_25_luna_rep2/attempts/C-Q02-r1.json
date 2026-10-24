@@ -1,0 +1,72 @@
+{
+  "id": "C-Q02-r1",
+  "arm": "C",
+  "question_id": "Q02",
+  "stratum": "data",
+  "question": "What was total Delivered-order GMV in INR for the full year 2025? Use the recorded order date for the 2025 scope.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "a8d4429eb420f786e4e6d78827becd4432eba7892c850d9d79296107d1539459",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T05:01:25.235314+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT CURRENCY, SUM(DELIVERED_SALES_AMOUNT) AS TOTAL_DELIVERED_ORDER_GMV, COUNT(*) AS DELIVERED_ORDER_COUNT FROM ZOMATO_DLR.CORE.FACT_ORDER WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01' AND IS_DELIVERED = TRUE AND CURRENCY = 'INR' GROUP BY CURRENCY",
+        "metrics": "SUM(DELIVERED_SALES_AMOUNT), COUNT(*)",
+        "group_by": "CURRENCY",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 5.0,
+        "prompt_tokens": 2179,
+        "completion_tokens": 231
+      },
+      "result": {
+        "columns": [
+          "CURRENCY",
+          "TOTAL_DELIVERED_ORDER_GMV",
+          "DELIVERED_ORDER_COUNT"
+        ],
+        "rows": [
+          [
+            "INR",
+            "1926466048.00",
+            "3989077"
+          ]
+        ],
+        "query_id": "01c7df0d-0001-b442-0000-d295000482de",
+        "seconds": 0.21
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "Total Delivered-order GMV was INR 1,926,466,048.00 for delivered orders with recorded ORDER_DATE from 2025-01-01 through 2025-12-31 (inclusive). This covers 3,989,077 delivered orders and sums DELIVERED_SALES_AMOUNT in INR.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 5.19,
+        "prompt_tokens": 2437,
+        "completion_tokens": 182
+      }
+    }
+  ],
+  "final_answer": "Total Delivered-order GMV was INR 1,926,466,048.00 for delivered orders with recorded ORDER_DATE from 2025-01-01 through 2025-12-31 (inclusive). This covers 3,989,077 delivered orders and sums DELIVERED_SALES_AMOUNT in INR.",
+  "outcome": "answer",
+  "total_seconds": 10.4,
+  "finished_utc": "2026-10-21T05:01:35.632611+00:00"
+}

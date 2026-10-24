@@ -1,0 +1,86 @@
+{
+  "id": "C-Q11-r1",
+  "arm": "C",
+  "question_id": "Q11",
+  "stratum": "data",
+  "question": "For each recorded order status in 2025, report total orders, the share with a non-null customer rating, and average customer rating among rated orders. What population does each average describe?",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "5862dd0c5f141a397d30a274573ca261508f56f6b704cb4c138b381e3db1ebd5",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T06:35:58.965883+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT ORDER_STATUS, COUNT(*) AS TOTAL_ORDERS, COUNT_IF(CUSTOMER_RATING IS NOT NULL) / NULLIF(COUNT(*), 0)::FLOAT AS SHARE_WITH_RATING, AVG(CUSTOMER_RATING) AS AVG_RATING_AMONG_RATED_ORDERS FROM ZOMATO_DLR.CORE.FACT_ORDER WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01' GROUP BY ORDER_STATUS ORDER BY ORDER_STATUS",
+        "metrics": "Total orders; share with non-null customer rating; average rating among non-null ratings",
+        "group_by": "Recorded ORDER_STATUS",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 6.46,
+        "prompt_tokens": 2188,
+        "completion_tokens": 235
+      },
+      "result": {
+        "columns": [
+          "ORDER_STATUS",
+          "TOTAL_ORDERS",
+          "SHARE_WITH_RATING",
+          "AVG_RATING_AMONG_RATED_ORDERS"
+        ],
+        "rows": [
+          [
+            "Cancelled",
+            "261456",
+            "0.0",
+            null
+          ],
+          [
+            "Delivered",
+            "3989077",
+            "0.7003046068050328",
+            "4.14547985"
+          ],
+          [
+            "Refunded",
+            "109240",
+            "0.0",
+            null
+          ]
+        ],
+        "query_id": "01c7df6c-0001-b442-0000-d29500048582",
+        "seconds": 0.28
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "For orders with recorded ORDER_DATE in 2025 (2025-01-01 through 2025-12-31), at one row per order:\n\n- Cancelled: 261,456 total orders; share with a non-null customer rating: 0.000000 (0.000000%); average rating among rated orders: unavailable (0 rated orders).\n- Delivered: 3,989,077 total orders; share with a non-null customer rating: 0.700304606805 (70.030461%); average rating among rated orders: 4.145479850.\n- Refunded: 109,240 total orders; share with a non-null customer rating: 0.000000 (0.000000%); average rating among rated orders: unavailable (0 rated orders).\n\nEach average describes only the 2025 orders in that recorded status whose CUSTOMER_RATING is non-null—not all orders in the status. Cancelled and refunded statuses have no rated orders, so their averages are undefined.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 9.93,
+        "prompt_tokens": 2514,
+        "completion_tokens": 367
+      }
+    }
+  ],
+  "final_answer": "For orders with recorded ORDER_DATE in 2025 (2025-01-01 through 2025-12-31), at one row per order:\n\n- Cancelled: 261,456 total orders; share with a non-null customer rating: 0.000000 (0.000000%); average rating among rated orders: unavailable (0 rated orders).\n- Delivered: 3,989,077 total orders; share with a non-null customer rating: 0.700304606805 (70.030461%); average rating among rated orders: 4.145479850.\n- Refunded: 109,240 total orders; share with a non-null customer rating: 0.000000 (0.000000%); average rating among rated orders: unavailable (0 rated orders).\n\nEach average describes only the 2025 orders in that recorded status whose CUSTOMER_RATING is non-null—not all orders in the status. Cancelled and refunded statuses have no rated orders, so their averages are undefined.",
+  "outcome": "answer",
+  "total_seconds": 16.68,
+  "finished_utc": "2026-10-21T06:36:15.643099+00:00"
+}

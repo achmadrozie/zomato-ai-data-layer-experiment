@@ -1,0 +1,91 @@
+{
+  "id": "F-Q06-r1",
+  "arm": "F",
+  "question_id": "Q06",
+  "stratum": "data",
+  "question": "In 2025, which month had the highest Delivered-order GMV in INR? Give that month's GMV, the runner-up month's GMV, and the gap between them.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "4acf2281f3c70a54cd1b5548e8bf681e9cb90b7906d0b054d53e1083d674c16e",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T01:50:14.114834+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "gmv",
+        "group_by": "metric_time__month",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.09,
+        "prompt_tokens": 3459,
+        "completion_tokens": 47
+      },
+      "tool_error": "RuntimeError: MetricFlow query failed: ERROR: Database Error\n  250003: Hit non-retryable SSL error, HTTPSConnectionPool(host='clyqnlt-ew90521.snowflakecomputing.com', port=443): Max retries exceeded with url: /session/v1/login-request?request_id=d2638773-94b7-40a9-945b-d6da2ba75ee2&databaseName=ZOMATO_DLR&schemaName=STAGING&warehouse=ZOMATO_WH&roleName=DBT_LAYER_REFACTOR_ROLE&request_guid=cb879c75-78d1-4732-99f2-4ee3a0ad23ef (Caused by SSLError(SSLError(\"bad handshake: SysCallError(32, 'EPIPE')\"))).\n  Verify that the hostnames and port numbers in SYSTEM$ALLOWLIST are added to your firewall's allowed list.\n  To further troubleshoot your connection you may reference the following article: https://docs.snowflake.com/en/user-guide/client-connectivity-troubleshooting/overview.\n\nLog File:: /Users/achmadrozie/Workstation/zomato-dbt-layer-refactor/dbt_zomato/logs/metricflow.log\nArtifact Path: /Users/achmadrozie/Workstation/zomato-dbt-layer-refactor/dbt_zomato/target/semantic_manifest.json\nArtifact Modified Time: 2026-10-20T17:28:57.630760\n\nIf you think you found a bug, please report it here:\n    https://github.com/dbt-labs/metricflow/issues"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT d.MONTH, SUM(f.SALES_AMOUNT) AS DELIVERED_GMV_INR\nFROM ZOMATO_DLR.CORE.FACT_ORDER f\nJOIN ZOMATO_DLR.CORE.DIM_DATE d ON f.ORDER_DATE = d.DATE_DAY\nWHERE f.ORDER_STATUS = 'Delivered' AND f.CURRENCY = 'INR' AND f.ORDER_DATE >= '2025-01-01' AND f.ORDER_DATE < '2026-01-01'\nGROUP BY d.MONTH\nORDER BY DELIVERED_GMV_INR DESC\nLIMIT 2;",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.56,
+        "prompt_tokens": 3897,
+        "completion_tokens": 142
+      },
+      "result": {
+        "columns": [
+          "MONTH",
+          "DELIVERED_GMV_INR"
+        ],
+        "rows": [
+          [
+            "12",
+            "185263071.00"
+          ],
+          [
+            "11",
+            "180239871.00"
+          ]
+        ],
+        "query_id": "01c7de4e-0001-b38b-0000-d295000462d6",
+        "seconds": 0.28
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "gmv",
+        "group_by": "metric_time__month",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "In 2025, December (month 12) had the highest Delivered-order GMV in INR, with a GMV of 185,263,071.00 INR. The runner-up was November (month 11), with a GMV of 180,239,871.00 INR. The gap between them was 5,023,200.00 INR. Population: all Delivered orders in INR in 2025, grouped by order month. Unit: INR. Interpretation: December outperformed November by 5,023,200.00 INR in Delivered-order GMV.",
+        "reason": "The SQL query summed Delivered-order GMV by month for INR currency in 2025, returning the top two months and their GMVs."
+      },
+      "model_stats": {
+        "seconds": 1.56,
+        "prompt_tokens": 4154,
+        "completion_tokens": 192
+      }
+    }
+  ],
+  "final_answer": "In 2025, December (month 12) had the highest Delivered-order GMV in INR, with a GMV of 185,263,071.00 INR. The runner-up was November (month 11), with a GMV of 180,239,871.00 INR. The gap between them was 5,023,200.00 INR. Population: all Delivered orders in INR in 2025, grouped by order month. Unit: INR. Interpretation: December outperformed November by 5,023,200.00 INR in Delivered-order GMV.",
+  "outcome": "answer",
+  "total_seconds": 7.58,
+  "finished_utc": "2026-10-21T01:50:21.694202+00:00"
+}

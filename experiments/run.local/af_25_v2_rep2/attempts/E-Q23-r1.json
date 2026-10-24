@@ -1,0 +1,124 @@
+{
+  "id": "E-Q23-r1",
+  "arm": "E",
+  "question_id": "Q23",
+  "stratum": "context",
+  "question": "In the 2025 standard market report, which three cities led by Delivered-order GMV in INR? Give each city's GMV and share of standard market GMV, using the reporting geography default.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "a99a688c8b74f2d1acf86ffb095d4085e198af8d169bb3f0b5cd089f5752e8ce",
+  "question_sha256": "8e9d0cfb7f28a61c23e09bf8b8fb7f4025382414d411dc6f612c4c213a65cd6e",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:49:27.060673+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "gmv",
+        "group_by": "order_id__city,order_id__currency",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "To identify the top three cities by Delivered-order GMV in INR for 2025, I need to get GMV grouped by city and currency, then filter for INR and rank the cities."
+      },
+      "model_stats": {
+        "seconds": 1.19,
+        "prompt_tokens": 3078,
+        "completion_tokens": 90
+      },
+      "tool_error": "RuntimeError: MetricFlow query failed: ERROR: Database Error\n  250003: Hit non-retryable SSL error, HTTPSConnectionPool(host='clyqnlt-ew90521.snowflakecomputing.com', port=443): Max retries exceeded with url: /session/v1/login-request?request_id=3d8f7861-85ef-4bef-85e1-cd80b359187e&databaseName=ZOMATO_DLR&schemaName=STAGING&warehouse=ZOMATO_WH&roleName=DBT_LAYER_REFACTOR_ROLE&request_guid=ee086ca1-7c1a-4115-bc9d-51b3972259da (Caused by SSLError(SSLError(\"bad handshake: SysCallError(32, 'EPIPE')\"))).\n  Verify that the hostnames and port numbers in SYSTEM$ALLOWLIST are added to your firewall's allowed list.\n  To further troubleshoot your connection you may reference the following article: https://docs.snowflake.com/en/user-guide/client-connectivity-troubleshooting/overview.\n\nLog File:: /Users/achmadrozie/Workstation/zomato-dbt-layer-refactor/dbt_zomato/logs/metricflow.log\nArtifact Path: /Users/achmadrozie/Workstation/zomato-dbt-layer-refactor/dbt_zomato/target/semantic_manifest.json\nArtifact Modified Time: 2026-10-20T17:28:57.630760\n\nIf you think you found a bug, please report it here:\n    https://github.com/dbt-labs/metricflow/issues"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT CITY, SUM(DELIVERED_SALES_AMOUNT) AS GMV_INR\nFROM ZOMATO_DLR.MARTS.MART_ORDER_CITY_CURRENCY_DAY_UTC\nWHERE ORDER_DATE_UTC >= '2025-01-01' AND ORDER_DATE_UTC < '2026-01-01'\n  AND CURRENCY = 'INR'\nGROUP BY CITY\nORDER BY GMV_INR DESC\nLIMIT 3;",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "Metricflow failed, so I will use SQL to get the top 3 cities by delivered-order GMV in INR for 2025. This query sums delivered sales amount by city for INR orders."
+      },
+      "model_stats": {
+        "seconds": 1.68,
+        "prompt_tokens": 3559,
+        "completion_tokens": 156
+      },
+      "result": {
+        "columns": [
+          "CITY",
+          "GMV_INR"
+        ],
+        "rows": [
+          [
+            "Bangalore",
+            "233341258.00"
+          ],
+          [
+            "Delhi",
+            "177702873.00"
+          ],
+          [
+            "Chennai",
+            "155055243.00"
+          ]
+        ],
+        "query_id": "01c7de4d-0001-b38b-0000-d295000462be",
+        "seconds": 0.58
+      }
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT SUM(DELIVERED_SALES_AMOUNT) AS TOTAL_GMV_INR\nFROM ZOMATO_DLR.MARTS.MART_ORDER_CITY_CURRENCY_DAY_UTC\nWHERE ORDER_DATE_UTC >= '2025-01-01' AND ORDER_DATE_UTC < '2026-01-01'\n  AND CURRENCY = 'INR';",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "To calculate each top city's share of the standard market GMV, I need the total delivered-order GMV in INR for all cities in 2025."
+      },
+      "model_stats": {
+        "seconds": 1.26,
+        "prompt_tokens": 3838,
+        "completion_tokens": 129
+      },
+      "result": {
+        "columns": [
+          "TOTAL_GMV_INR"
+        ],
+        "rows": [
+          [
+            "1926466048.00"
+          ]
+        ],
+        "query_id": "01c7de4d-0001-b38b-0000-d295000462c2",
+        "seconds": 0.12
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "Delivered-order GMV (INR), GMV share (%)",
+        "group_by": "City",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "In the 2025 standard market report, the three cities leading by Delivered-order GMV in INR were:\n\n1. Bangalore: GMV = 233,341,258 INR, share = 12.116857% of standard market GMV\n2. Delhi: GMV = 177,702,873 INR, share = 9.226964% of standard market GMV\n3. Chennai: GMV = 155,055,243 INR, share = 8.050964% of standard market GMV\n\nPopulation: All delivered orders in INR in 2025, grouped by reporting city. Units: INR (GMV), percent (share of total INR GMV). Interpretation: These three cities together accounted for approximately 29.39% of the delivered-order GMV in INR for the standard market in 2025.",
+        "reason": "All requested values are provided: each city's GMV, share of total INR GMV, and the reporting geography is city as per the default."
+      },
+      "model_stats": {
+        "seconds": 1.95,
+        "prompt_tokens": 4097,
+        "completion_tokens": 257
+      }
+    }
+  ],
+  "final_answer": "In the 2025 standard market report, the three cities leading by Delivered-order GMV in INR were:\n\n1. Bangalore: GMV = 233,341,258 INR, share = 12.116857% of standard market GMV\n2. Delhi: GMV = 177,702,873 INR, share = 9.226964% of standard market GMV\n3. Chennai: GMV = 155,055,243 INR, share = 8.050964% of standard market GMV\n\nPopulation: All delivered orders in INR in 2025, grouped by reporting city. Units: INR (GMV), percent (share of total INR GMV). Interpretation: These three cities together accounted for approximately 29.39% of the delivered-order GMV in INR for the standard market in 2025.",
+  "outcome": "answer",
+  "total_seconds": 12.37,
+  "finished_utc": "2026-10-21T01:49:39.426120+00:00"
+}

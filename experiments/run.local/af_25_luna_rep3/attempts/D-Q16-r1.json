@@ -1,0 +1,107 @@
+{
+  "id": "D-Q16-r1",
+  "arm": "D",
+  "question_id": "Q16",
+  "stratum": "data",
+  "question": "Among item lines belonging to 2025 orders, how many have a non-zero difference between recorded line amount and price times quantity? Give the signed sum and absolute sum of those differences in INR. Do positive and negative differences offset in this snapshot?",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "b1f6e14c773bd842d58a660b709e48a10852a27a37faa316466d6e5582ae5f7b",
+  "question_sha256": "d4310ebc93888372b312428966d5cfa8110633e1b0bfb33194130115e28af54c",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T07:20:48.548389+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH line_differences AS (\n  SELECT i.LINE_AMOUNT - (i.PRICE * i.QUANTITY) AS difference_inr\n  FROM ZOMATO_DLR.CORE.FACT_ORDER_ITEM AS i\n  JOIN ZOMATO_DLR.CORE.FACT_ORDER AS o\n    ON o.ORDER_ID = i.ORDER_ID\n  WHERE o.ORDER_DATE >= '2025-01-01'\n    AND o.ORDER_DATE < '2026-01-01'\n    AND o.CURRENCY = 'INR'\n)\nSELECT COUNT(*) AS NONZERO_DIFFERENCE_LINE_COUNT,\n       SUM(difference_inr) AS SIGNED_DIFFERENCE_SUM_INR,\n       SUM(ABS(difference_inr)) AS ABSOLUTE_DIFFERENCE_SUM_INR\nFROM line_differences\nWHERE difference_inr <> 0",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 8.15,
+        "prompt_tokens": 2541,
+        "completion_tokens": 663
+      },
+      "result": {
+        "columns": [
+          "NONZERO_DIFFERENCE_LINE_COUNT",
+          "SIGNED_DIFFERENCE_SUM_INR",
+          "ABSOLUTE_DIFFERENCE_SUM_INR"
+        ],
+        "rows": [
+          [
+            "21466",
+            "23791.00",
+            "23791.00"
+          ]
+        ],
+        "query_id": "01c7df98-0001-b442-0000-d29500048622",
+        "seconds": 0.6
+      }
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT o.CURRENCY,\n       COUNT_IF(i.LINE_AMOUNT - (i.PRICE * i.QUANTITY) <> 0) AS NONZERO_DIFFERENCE_LINE_COUNT,\n       SUM(IFF(i.LINE_AMOUNT - (i.PRICE * i.QUANTITY) <> 0, i.LINE_AMOUNT - (i.PRICE * i.QUANTITY), 0)) AS SIGNED_DIFFERENCE_SUM,\n       SUM(IFF(i.LINE_AMOUNT - (i.PRICE * i.QUANTITY) <> 0, ABS(i.LINE_AMOUNT - (i.PRICE * i.QUANTITY)), 0)) AS ABSOLUTE_DIFFERENCE_SUM\nFROM ZOMATO_DLR.CORE.FACT_ORDER_ITEM AS i\nJOIN ZOMATO_DLR.CORE.FACT_ORDER AS o\n  ON o.ORDER_ID = i.ORDER_ID\nWHERE o.ORDER_DATE >= '2025-01-01'\n  AND o.ORDER_DATE < '2026-01-01'\nGROUP BY o.CURRENCY\nORDER BY o.CURRENCY",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 6.98,
+        "prompt_tokens": 2870,
+        "completion_tokens": 563
+      },
+      "result": {
+        "columns": [
+          "CURRENCY",
+          "NONZERO_DIFFERENCE_LINE_COUNT",
+          "SIGNED_DIFFERENCE_SUM",
+          "ABSOLUTE_DIFFERENCE_SUM"
+        ],
+        "rows": [
+          [
+            "INR",
+            "21466",
+            "23791.00",
+            "23791.00"
+          ]
+        ],
+        "query_id": "01c7df99-0001-b442-0000-d29500048626",
+        "seconds": 0.48
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "Among item lines belonging to orders recorded from 2025-01-01 through 2025-12-31 in INR, 21,466 lines had a non-zero difference (recorded line amount − price × quantity). The signed sum was INR 23,791.00 and the absolute sum was INR 23,791.00. Positive and negative differences do not offset: the equal signed and absolute sums indicate all non-zero differences were positive.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.61,
+        "prompt_tokens": 3239,
+        "completion_tokens": 235
+      }
+    }
+  ],
+  "final_answer": "Among item lines belonging to orders recorded from 2025-01-01 through 2025-12-31 in INR, 21,466 lines had a non-zero difference (recorded line amount − price × quantity). The signed sum was INR 23,791.00 and the absolute sum was INR 23,791.00. Positive and negative differences do not offset: the equal signed and absolute sums indicate all non-zero differences were positive.",
+  "outcome": "answer",
+  "total_seconds": 19.83,
+  "finished_utc": "2026-10-21T07:21:08.381692+00:00"
+}

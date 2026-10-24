@@ -1,0 +1,100 @@
+{
+  "id": "D-Q09-r1",
+  "arm": "D",
+  "question_id": "Q09",
+  "stratum": "data",
+  "question": "Among order-recorded cities with at least 50,000 total orders in 2025, which had the highest cancellation rate? Give its order count, cancellation rate, and gap versus the overall 2025 cancellation rate in percentage points.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "b1f6e14c773bd842d58a660b709e48a10852a27a37faa316466d6e5582ae5f7b",
+  "question_sha256": "6e0a1cd1cbada372d52c245b3fa84cdc25c7a0c50ae89b3d0d2e75a314024446",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T04:11:10.200953+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH city_stats AS (\n  SELECT CITY,\n         COUNT(*) AS ORDER_COUNT,\n         SUM(IFF(IS_CANCELLED, 1, 0)) AS CANCELLED_ORDER_COUNT\n  FROM ZOMATO_DLR.CORE.FACT_ORDER\n  WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n  GROUP BY CITY\n), overall_stats AS (\n  SELECT COUNT(*) AS OVERALL_ORDER_COUNT,\n         SUM(IFF(IS_CANCELLED, 1, 0)) AS OVERALL_CANCELLED_ORDER_COUNT\n  FROM ZOMATO_DLR.CORE.FACT_ORDER\n  WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n), eligible AS (\n  SELECT CITY,\n         ORDER_COUNT,\n         CANCELLED_ORDER_COUNT,\n         CANCELLED_ORDER_COUNT / NULLIF(ORDER_COUNT, 0)::FLOAT AS CANCELLATION_RATE\n  FROM city_stats\n  WHERE ORDER_COUNT >= 50000\n), ranked AS (\n  SELECT *, RANK() OVER (ORDER BY CANCELLATION_RATE DESC) AS RATE_RANK\n  FROM eligible\n)\nSELECT r.CITY,\n       r.ORDER_COUNT,\n       r.CANCELLED_ORDER_COUNT,\n       r.CANCELLATION_RATE,\n       o.OVERALL_ORDER_COUNT,\n       o.OVERALL_CANCELLED_ORDER_COUNT,\n       o.OVERALL_CANCELLED_ORDER_COUNT / NULLIF(o.OVERALL_ORDER_COUNT, 0)::FLOAT AS OVERALL_CANCELLATION_RATE,\n       (r.CANCELLATION_RATE - o.OVERALL_CANCELLED_ORDER_COUNT / NULLIF(o.OVERALL_ORDER_COUNT, 0)::FLOAT) * 100 AS GAP_PERCENTAGE_POINTS\nFROM ranked r\nCROSS JOIN overall_stats o\nWHERE r.RATE_RANK = 1\nORDER BY r.CITY\nLIMIT 40",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 7.06,
+        "prompt_tokens": 2540,
+        "completion_tokens": 623
+      },
+      "tool_error": "ValueError: SELECT * is forbidden"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH city_stats AS (\n  SELECT CITY,\n         COUNT(*) AS ORDER_COUNT,\n         SUM(IFF(IS_CANCELLED, 1, 0)) AS CANCELLED_ORDER_COUNT\n  FROM ZOMATO_DLR.CORE.FACT_ORDER\n  WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n  GROUP BY CITY\n), overall_stats AS (\n  SELECT COUNT(*) AS OVERALL_ORDER_COUNT,\n         SUM(IFF(IS_CANCELLED, 1, 0)) AS OVERALL_CANCELLED_ORDER_COUNT\n  FROM ZOMATO_DLR.CORE.FACT_ORDER\n  WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n), eligible AS (\n  SELECT CITY,\n         ORDER_COUNT,\n         CANCELLED_ORDER_COUNT,\n         CANCELLED_ORDER_COUNT / NULLIF(ORDER_COUNT, 0)::FLOAT AS CANCELLATION_RATE\n  FROM city_stats\n  WHERE ORDER_COUNT >= 50000\n), ranked AS (\n  SELECT CITY,\n         ORDER_COUNT,\n         CANCELLED_ORDER_COUNT,\n         CANCELLATION_RATE,\n         RANK() OVER (ORDER BY CANCELLATION_RATE DESC) AS RATE_RANK\n  FROM eligible\n)\nSELECT r.CITY,\n       r.ORDER_COUNT,\n       r.CANCELLED_ORDER_COUNT,\n       r.CANCELLATION_RATE,\n       o.OVERALL_ORDER_COUNT,\n       o.OVERALL_CANCELLED_ORDER_COUNT,\n       o.OVERALL_CANCELLED_ORDER_COUNT / NULLIF(o.OVERALL_ORDER_COUNT, 0)::FLOAT AS OVERALL_CANCELLATION_RATE,\n       (r.CANCELLATION_RATE - o.OVERALL_CANCELLED_ORDER_COUNT / NULLIF(o.OVERALL_ORDER_COUNT, 0)::FLOAT) * 100 AS GAP_PERCENTAGE_POINTS\nFROM ranked r\nCROSS JOIN overall_stats o\nWHERE r.RATE_RANK = 1\nORDER BY r.CITY\nLIMIT 40",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 6.03,
+        "prompt_tokens": 3024,
+        "completion_tokens": 556
+      },
+      "result": {
+        "columns": [
+          "CITY",
+          "ORDER_COUNT",
+          "CANCELLED_ORDER_COUNT",
+          "CANCELLATION_RATE",
+          "OVERALL_ORDER_COUNT",
+          "OVERALL_CANCELLED_ORDER_COUNT",
+          "OVERALL_CANCELLATION_RATE",
+          "GAP_PERCENTAGE_POINTS"
+        ],
+        "rows": [
+          [
+            "Hyderabad",
+            "319122",
+            "19236",
+            "0.06027788745370109",
+            "4359773",
+            "261456",
+            "0.05997009477328292",
+            "0.030779268041817437"
+          ]
+        ],
+        "query_id": "01c7dedb-0001-b38b-0000-d29500046896",
+        "seconds": 0.41
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "Among cities with at least 50,000 order-recorded orders in 2025, Hyderabad had the highest cancellation rate: 319,122 orders and a 6.027789% cancellation rate (19,236 cancelled orders). The overall 2025 cancellation rate was 5.997009%, so Hyderabad was higher by 0.030779 percentage points. Rates use cancelled orders divided by total orders recorded in 2025.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.72,
+        "prompt_tokens": 3664,
+        "completion_tokens": 222
+      }
+    }
+  ],
+  "final_answer": "Among cities with at least 50,000 order-recorded orders in 2025, Hyderabad had the highest cancellation rate: 319,122 orders and a 6.027789% cancellation rate (19,236 cancelled orders). The overall 2025 cancellation rate was 5.997009%, so Hyderabad was higher by 0.030779 percentage points. Rates use cancelled orders divided by total orders recorded in 2025.",
+  "outcome": "answer",
+  "total_seconds": 17.24,
+  "finished_utc": "2026-10-21T04:11:27.438233+00:00"
+}

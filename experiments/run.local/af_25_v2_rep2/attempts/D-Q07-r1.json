@@ -1,0 +1,79 @@
+{
+  "id": "D-Q07-r1",
+  "arm": "D",
+  "question_id": "Q07",
+  "stratum": "data",
+  "question": "Compare January and December 2025: Delivered order count, GMV in INR, and AOV in INR for each month. For both Delivered order count and AOV, calculate the percentage change from January to December as (December value minus January value) divided by January value times 100. Show both percentage changes and state which grew faster.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "b1f6e14c773bd842d58a660b709e48a10852a27a37faa316466d6e5582ae5f7b",
+  "question_sha256": "ffde7fbebc6e393182946e35173dbc682d761b0a7108ddcb03258f03a9f8ef1e",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:45:39.781716+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT \n  MONTH_NAME,\n  SUM(DELIVERED_ORDER_COUNT) AS DELIVERED_ORDER_COUNT,\n  SUM(DELIVERED_SALES_AMOUNT) AS GMV_INR,\n  CASE WHEN SUM(DELIVERED_ORDER_COUNT) > 0 THEN SUM(DELIVERED_SALES_AMOUNT) / SUM(DELIVERED_ORDER_COUNT) ELSE NULL END AS AOV_INR\nFROM ZOMATO_DLR.MARTS.MART_ORDER_CITY_CURRENCY_DAY_UTC d\nJOIN ZOMATO_DLR.CORE.DIM_DATE dt ON d.ORDER_DATE_UTC = dt.DATE_DAY\nWHERE dt.YEAR = 2025\n  AND d.CURRENCY = 'INR'\n  AND dt.MONTH IN (1, 12)\nGROUP BY MONTH_NAME\nORDER BY CASE WHEN MONTH_NAME = 'January' THEN 1 WHEN MONTH_NAME = 'December' THEN 2 END",
+        "metrics": "DELIVERED_ORDER_COUNT, GMV_INR, AOV_INR",
+        "group_by": "MONTH_NAME (January, December)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.88,
+        "prompt_tokens": 2563,
+        "completion_tokens": 250
+      },
+      "result": {
+        "columns": [
+          "MONTH_NAME",
+          "DELIVERED_ORDER_COUNT",
+          "GMV_INR",
+          "AOV_INR"
+        ],
+        "rows": [
+          [
+            "Jan",
+            "286712",
+            "138573283.00",
+            "483.31874145"
+          ],
+          [
+            "Dec",
+            "383530",
+            "185263071.00",
+            "483.04714364"
+          ]
+        ],
+        "query_id": "01c7de49-0001-b38b-0000-d29500046246",
+        "seconds": 0.19
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "Delivered order count, GMV in INR, AOV in INR for January and December 2025; percentage change for Delivered order count and AOV",
+        "group_by": "Month (January, December)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "For January 2025:\n- Delivered order count: 286,712\n- GMV in INR: 138,573,283.00\n- AOV in INR: 483.31874145\n\nFor December 2025:\n- Delivered order count: 383,530\n- GMV in INR: 185,263,071.00\n- AOV in INR: 483.04714364\n\nPercentage change from January to December:\n- Delivered order count: ((383,530 - 286,712) / 286,712) * 100 = 33.732% increase\n- AOV in INR: ((483.04714364 - 483.31874145) / 483.31874145) * 100 = -0.056% decrease\n\nInterpretation:\n- Delivered order count grew by 33.732% from January to December 2025.\n- AOV in INR slightly decreased by 0.056% over the same period.\n- Delivered order count grew much faster than AOV, which actually declined slightly.",
+        "reason": "All requested values and calculations are included, with clear interpretation of which metric grew faster."
+      },
+      "model_stats": {
+        "seconds": 2.73,
+        "prompt_tokens": 2959,
+        "completion_tokens": 323
+      }
+    }
+  ],
+  "final_answer": "For January 2025:\n- Delivered order count: 286,712\n- GMV in INR: 138,573,283.00\n- AOV in INR: 483.31874145\n\nFor December 2025:\n- Delivered order count: 383,530\n- GMV in INR: 185,263,071.00\n- AOV in INR: 483.04714364\n\nPercentage change from January to December:\n- Delivered order count: ((383,530 - 286,712) / 286,712) * 100 = 33.732% increase\n- AOV in INR: ((483.04714364 - 483.31874145) / 483.31874145) * 100 = -0.056% decrease\n\nInterpretation:\n- Delivered order count grew by 33.732% from January to December 2025.\n- AOV in INR slightly decreased by 0.056% over the same period.\n- Delivered order count grew much faster than AOV, which actually declined slightly.",
+  "outcome": "answer",
+  "total_seconds": 4.79,
+  "finished_utc": "2026-10-21T01:45:44.574691+00:00"
+}

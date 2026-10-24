@@ -1,0 +1,69 @@
+{
+  "id": "E-Q05-r1",
+  "arm": "E",
+  "question_id": "Q05",
+  "stratum": "data",
+  "question": "What was ordered quantity per order for the full year 2025? Use the recorded order date for the 2025 scope.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "a99a688c8b74f2d1acf86ffb095d4085e198af8d169bb3f0b5cd089f5752e8ce",
+  "question_sha256": "ea883bbd9440eaafaff5343a59ff8dcbd1aa4f1afa8c0d1e08ce4956a43b2a3e",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:18:20.561877+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "ordered_quantity_per_order",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "The user requested the ordered quantity per order for the full year 2025 using the recorded order date. The metricflow tool can directly provide this metric at the requested grain and time scope."
+      },
+      "model_stats": {
+        "seconds": 1.34,
+        "prompt_tokens": 3064,
+        "completion_tokens": 81
+      },
+      "result": {
+        "columns": [
+          "ORDERED_QUANTITY_PER_ORDER"
+        ],
+        "rows": [
+          [
+            "2.8053930789515875"
+          ]
+        ],
+        "metric_definitions": {
+          "ordered_quantity_per_order": "Ordered item quantity divided by number of orders; combines both fact semantic models."
+        },
+        "seconds": 7.38
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "ordered_quantity_per_order",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "For the full year 2025 (using recorded order date), the ordered quantity per order was 2.805393 (unit: items per order, population: all recorded orders in 2025). This means that, on average, each order contained approximately 2.81 items.",
+        "reason": "The metricflow result directly provides the ordered quantity per order for the requested time period and scope, with sufficient decimal precision for interpretation."
+      },
+      "model_stats": {
+        "seconds": 1.53,
+        "prompt_tokens": 3247,
+        "completion_tokens": 126
+      }
+    }
+  ],
+  "final_answer": "For the full year 2025 (using recorded order date), the ordered quantity per order was 2.805393 (unit: items per order, population: all recorded orders in 2025). This means that, on average, each order contained approximately 2.81 items.",
+  "outcome": "answer",
+  "total_seconds": 10.26,
+  "finished_utc": "2026-10-21T01:18:30.823248+00:00"
+}

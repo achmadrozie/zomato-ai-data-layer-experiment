@@ -1,0 +1,39 @@
+{
+  "id": "A-Q18-r1",
+  "arm": "A",
+  "question_id": "Q18",
+  "stratum": "data",
+  "question": "For 2025 Delivered orders in INR, show up to three customer age segments ranked by Delivered order count. Include Delivered order count, GMV, and AOV, using the existing customer dimension's segment labels. If fewer than three segments occur, report only those present.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "43755eab8a5718c24234f6fa409f14df3e4447edee255e17edc7340b37ed9afe",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T04:53:04.771415+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "clarify",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "The accessible customer dimension contains AGE but no age-segment label. Please provide the existing age-segment labels and the age-to-segment mapping (or identify the dimension that contains them); I can’t infer the requested segments."
+      },
+      "model_stats": {
+        "seconds": 4.18,
+        "prompt_tokens": 1331,
+        "completion_tokens": 249
+      }
+    }
+  ],
+  "final_answer": "The accessible customer dimension contains AGE but no age-segment label. Please provide the existing age-segment labels and the age-to-segment mapping (or identify the dimension that contains them); I can’t infer the requested segments.",
+  "outcome": "clarification",
+  "total_seconds": 4.18,
+  "finished_utc": "2026-10-21T04:53:08.948993+00:00"
+}

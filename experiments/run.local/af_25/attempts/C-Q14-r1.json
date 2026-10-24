@@ -1,0 +1,81 @@
+{
+  "id": "C-Q14-r1",
+  "arm": "C",
+  "question_id": "Q14",
+  "stratum": "data",
+  "question": "For item lines belonging to 2025 orders, compare Veg, Non-Veg, and unknown food classifications: item-line count, ordered units, and each group's share of all ordered units. What is the difference between line count and units here?",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "c11ec1608564053982627416721eff48a6033c2ab87d4840ffa0848b942a739d",
+  "context_sha256": null,
+  "started_utc": "2026-10-20T23:36:41.883818+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT \n  COALESCE(f.VEG_OR_NON_VEG, 'Unknown') AS FOOD_CLASSIFICATION,\n  COUNT(*) AS ITEM_LINE_COUNT,\n  SUM(oi.QUANTITY) AS ORDERED_UNITS\nFROM ZOMATO_DLR.CORE.FACT_ORDER_ITEM oi\nLEFT JOIN ZOMATO_DLR.CORE.DIM_FOOD f ON oi.FOOD_ID = f.FOOD_ID\nWHERE oi.ORDER_DATE >= '2025-01-01' AND oi.ORDER_DATE < '2026-01-01'\nGROUP BY COALESCE(f.VEG_OR_NON_VEG, 'Unknown')\nORDER BY ITEM_LINE_COUNT DESC;",
+        "metrics": "item-line count, ordered units by food classification",
+        "group_by": "food classification (Veg, Non-Veg, Unknown)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.7,
+        "prompt_tokens": 2201,
+        "completion_tokens": 199
+      },
+      "result": {
+        "columns": [
+          "FOOD_CLASSIFICATION",
+          "ITEM_LINE_COUNT",
+          "ORDERED_UNITS"
+        ],
+        "rows": [
+          [
+            "Veg",
+            "7277939",
+            "8877759"
+          ],
+          [
+            "Non-Veg",
+            "2749222",
+            "3353105"
+          ],
+          [
+            "Unknown",
+            "12",
+            "13"
+          ]
+        ],
+        "query_id": "01c7ddc8-0001-b38b-0000-d29500044ba6",
+        "seconds": 0.52
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "item-line count, ordered units, share of all ordered units by food classification",
+        "group_by": "food classification (Veg, Non-Veg, Unknown)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "For 2025 order item lines:\n\n- Veg: 7,277,939 item lines, 8,877,759 ordered units, 72.626964 share of all units\n- Non-Veg: 2,749,222 item lines, 3,353,105 ordered units, 27.443012 share of all units\n- Unknown: 12 item lines, 13 ordered units, 0.000106 share of all units\n\nThe difference between 'item-line count' and 'ordered units' is that item-line count measures the number of distinct item entries (each line may represent one or more units of a food item in an order), while ordered units sum the total quantity of food items ordered (i.e., the sum of quantities across all item lines). Thus, ordered units can be higher than item-line count if customers order multiple units of the same item per line.",
+        "reason": "All requested values are included: item-line count, ordered units, and share of all ordered units by food classification. The difference between the two metrics is explained."
+      },
+      "model_stats": {
+        "seconds": 2.34,
+        "prompt_tokens": 2537,
+        "completion_tokens": 284
+      }
+    }
+  ],
+  "final_answer": "For 2025 order item lines:\n\n- Veg: 7,277,939 item lines, 8,877,759 ordered units, 72.626964 share of all units\n- Non-Veg: 2,749,222 item lines, 3,353,105 ordered units, 27.443012 share of all units\n- Unknown: 12 item lines, 13 ordered units, 0.000106 share of all units\n\nThe difference between 'item-line count' and 'ordered units' is that item-line count measures the number of distinct item entries (each line may represent one or more units of a food item in an order), while ordered units sum the total quantity of food items ordered (i.e., the sum of quantities across all item lines). Thus, ordered units can be higher than item-line count if customers order multiple units of the same item per line.",
+  "outcome": "answer",
+  "total_seconds": 4.57,
+  "finished_utc": "2026-10-20T23:36:46.452691+00:00"
+}

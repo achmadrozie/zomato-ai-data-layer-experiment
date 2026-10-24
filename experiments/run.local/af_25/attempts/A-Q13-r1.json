@@ -1,0 +1,85 @@
+{
+  "id": "A-Q13-r1",
+  "arm": "A",
+  "question_id": "Q13",
+  "stratum": "data",
+  "question": "Which three exact cuisine labels had the highest 2025 Delivered-order GMV in INR? For each label, also give total order count and cancellation rate. Do not split comma-separated cuisine labels.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "5a3ce21426ab9c55f11a602608b374b91fb0a9a7a62404be1ef55a222df3ccea",
+  "context_sha256": null,
+  "started_utc": "2026-10-20T23:54:09.235612+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT CUISINE, \n       SUM(SALES_AMOUNT) AS GMV_INR, \n       COUNT(*) AS TOTAL_ORDERS,\n       AVG(CASE WHEN IS_CANCELLED THEN 1 ELSE 0 END) AS CANCELLATION_RATE\nFROM ZOMATO_DLR.STAGING.STG_ZOMATO__ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n  AND CURRENCY = 'INR'\n  AND IS_DELIVERED = TRUE\nGROUP BY CUISINE\nORDER BY GMV_INR DESC\nLIMIT 3;",
+        "metrics": "GMV_INR, TOTAL_ORDERS, CANCELLATION_RATE",
+        "group_by": "CUISINE",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.75,
+        "prompt_tokens": 1317,
+        "completion_tokens": 191
+      },
+      "result": {
+        "columns": [
+          "CUISINE",
+          "GMV_INR",
+          "TOTAL_ORDERS",
+          "CANCELLATION_RATE"
+        ],
+        "rows": [
+          [
+            "North Indian,Chinese",
+            "97195380.00",
+            "185649",
+            "0.000000"
+          ],
+          [
+            "Indian,Chinese",
+            "60447386.00",
+            "116036",
+            "0.000000"
+          ],
+          [
+            "Indian",
+            "58362786.00",
+            "136184",
+            "0.000000"
+          ]
+        ],
+        "query_id": "01c7ddda-0001-b38b-0000-d29500044ce6",
+        "seconds": 0.38
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "GMV_INR, TOTAL_ORDERS, CANCELLATION_RATE",
+        "group_by": "CUISINE",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "The three exact cuisine labels with the highest 2025 Delivered-order GMV in INR are:\n\n1. \"North Indian,Chinese\":\n   - GMV: 97,195,380.00 INR\n   - Total delivered orders: 185,649\n   - Cancellation rate: 0.000000 (no cancellations)\n\n2. \"Indian,Chinese\":\n   - GMV: 60,447,386.00 INR\n   - Total delivered orders: 116,036\n   - Cancellation rate: 0.000000 (no cancellations)\n\n3. \"Indian\":\n   - GMV: 58,362,786.00 INR\n   - Total delivered orders: 136,184\n   - Cancellation rate: 0.000000 (no cancellations)\n\nInterpretation: In 2025, the top three cuisine labels by delivered-order GMV in INR were all Indian or Indian fusion types, with no cancellations recorded for these delivered orders. The population is all delivered orders in INR in 2025, and the units are INR for GMV, count for orders, and rate for cancellations (six decimals).",
+        "reason": "All requested values (GMV, order count, cancellation rate) for the top three cuisine labels by delivered-order GMV in INR in 2025 are provided, with clear population, units, and interpretation."
+      },
+      "model_stats": {
+        "seconds": 2.58,
+        "prompt_tokens": 1679,
+        "completion_tokens": 344
+      }
+    }
+  ],
+  "final_answer": "The three exact cuisine labels with the highest 2025 Delivered-order GMV in INR are:\n\n1. \"North Indian,Chinese\":\n   - GMV: 97,195,380.00 INR\n   - Total delivered orders: 185,649\n   - Cancellation rate: 0.000000 (no cancellations)\n\n2. \"Indian,Chinese\":\n   - GMV: 60,447,386.00 INR\n   - Total delivered orders: 116,036\n   - Cancellation rate: 0.000000 (no cancellations)\n\n3. \"Indian\":\n   - GMV: 58,362,786.00 INR\n   - Total delivered orders: 136,184\n   - Cancellation rate: 0.000000 (no cancellations)\n\nInterpretation: In 2025, the top three cuisine labels by delivered-order GMV in INR were all Indian or Indian fusion types, with no cancellations recorded for these delivered orders. The population is all delivered orders in INR in 2025, and the units are INR for GMV, count for orders, and rate for cancellations (six decimals).",
+  "outcome": "answer",
+  "total_seconds": 4.71,
+  "finished_utc": "2026-10-20T23:54:13.949723+00:00"
+}

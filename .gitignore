@@ -8,6 +8,7 @@
 !.env.example
 *.secret
 *.local
+!experiments/run.local/
 
 # Local datasets
 raw-csv/

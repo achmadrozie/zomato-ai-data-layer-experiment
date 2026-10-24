@@ -1,0 +1,72 @@
+{
+  "id": "A-Q03-r1",
+  "arm": "A",
+  "question_id": "Q03",
+  "stratum": "data",
+  "question": "What was AOV in INR for Delivered orders in the full year 2025? Use the recorded order date for the 2025 scope.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "57beaba4b4339db13b7043c2a2928cf39d5baa511836db3dbde6518945b0b963",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T06:24:48.977900+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT COUNT(*) AS DELIVERED_INR_ORDERS, SUM(SALES_AMOUNT) AS TOTAL_SALES_AMOUNT_INR, SUM(SALES_AMOUNT) / NULLIF(COUNT(*), 0) AS AOV_INR FROM ZOMATO_DLR.STAGING.STG_ZOMATO__ORDER WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01' AND IS_DELIVERED = TRUE AND CURRENCY = 'INR'",
+        "metrics": "Delivered-order average order value = SUM(SALES_AMOUNT) / COUNT(*); also return order count and total sales amount.",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.91,
+        "prompt_tokens": 1305,
+        "completion_tokens": 291
+      },
+      "result": {
+        "columns": [
+          "DELIVERED_INR_ORDERS",
+          "TOTAL_SALES_AMOUNT_INR",
+          "AOV_INR"
+        ],
+        "rows": [
+          [
+            "3989077",
+            "1926466048.00",
+            "482.93528754"
+          ]
+        ],
+        "query_id": "01c7df60-0001-b442-0000-d2950004852a",
+        "seconds": 0.35
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "AOV was ₹482.935288 per order (₹482.94 rounded) for 3,989,077 Delivered orders recorded from 2025-01-01 through 2025-12-31, inclusive, with currency INR. Calculated as total sales amount ₹1,926,466,048.00 divided by delivered order count.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.91,
+        "prompt_tokens": 1595,
+        "completion_tokens": 172
+      }
+    }
+  ],
+  "final_answer": "AOV was ₹482.935288 per order (₹482.94 rounded) for 3,989,077 Delivered orders recorded from 2025-01-01 through 2025-12-31, inclusive, with currency INR. Calculated as total sales amount ₹1,926,466,048.00 divided by delivered order count.",
+  "outcome": "answer",
+  "total_seconds": 7.17,
+  "finished_utc": "2026-10-21T06:24:56.148918+00:00"
+}

@@ -1,0 +1,121 @@
+{
+  "id": "E-Q13-r1",
+  "arm": "E",
+  "question_id": "Q13",
+  "stratum": "data",
+  "question": "Which three exact cuisine labels had the highest 2025 Delivered-order GMV in INR? For each label, also give total order count and cancellation rate. Do not split comma-separated cuisine labels.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "a99a688c8b74f2d1acf86ffb095d4085e198af8d169bb3f0b5cd089f5752e8ce",
+  "question_sha256": "5a3ce21426ab9c55f11a602608b374b91fb0a9a7a62404be1ef55a222df3ccea",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:42:40.041497+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "gmv,count_order_total,cancellation_rate",
+        "group_by": "order_id__cuisine,order_id__currency",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "We need to find the top three cuisine labels by delivered-order GMV in INR for 2025, and for each, also provide total order count and cancellation rate. Grouping by cuisine and currency allows us to filter for INR and rank by GMV."
+      },
+      "model_stats": {
+        "seconds": 1.77,
+        "prompt_tokens": 3077,
+        "completion_tokens": 110
+      },
+      "tool_error": "RuntimeError: MetricFlow query failed: ERROR: Database Error\n  250003: Hit non-retryable SSL error, HTTPSConnectionPool(host='clyqnlt-ew90521.snowflakecomputing.com', port=443): Max retries exceeded with url: /session/v1/login-request?request_id=f05e4874-2476-4a12-b8ae-64b0d074a82f&databaseName=ZOMATO_DLR&schemaName=STAGING&warehouse=ZOMATO_WH&roleName=DBT_LAYER_REFACTOR_ROLE&request_guid=75da9453-18be-4b5a-8f01-12f8e3b33629 (Caused by SSLError(SSLError(\"bad handshake: SysCallError(32, 'EPIPE')\"))).\n  Verify that the hostnames and port numbers in SYSTEM$ALLOWLIST are added to your firewall's allowed list.\n  To further troubleshoot your connection you may reference the following article: https://docs.snowflake.com/en/user-guide/client-connectivity-troubleshooting/overview.\n\nLog File:: /Users/achmadrozie/Workstation/zomato-dbt-layer-refactor/dbt_zomato/logs/metricflow.log\nArtifact Path: /Users/achmadrozie/Workstation/zomato-dbt-layer-refactor/dbt_zomato/target/semantic_manifest.json\nArtifact Modified Time: 2026-10-20T17:28:57.630760\n\nIf you think you found a bug, please report it here:\n    https://github.com/dbt-labs/metricflow/issues"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT CUISINE, SUM(DELIVERED_SALES_AMOUNT) AS GMV_INR, SUM(ORDER_COUNT) AS TOTAL_ORDER_COUNT, SUM(CANCELLED_ORDER_COUNT) AS CANCELLED_ORDER_COUNT, SUM(ORDER_COUNT) AS ORDER_COUNT\nFROM ZOMATO_DLR.MARTS.MART_ORDER_CITY_CURRENCY_DAY_UTC\nWHERE ORDER_DATE_UTC >= '2025-01-01' AND ORDER_DATE_UTC < '2026-01-01' AND CURRENCY = 'INR'\nGROUP BY CUISINE\nORDER BY GMV_INR DESC\nLIMIT 10;",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "Metricflow failed, so switching to SQL. We need to aggregate delivered GMV, order count, and cancelled order count by cuisine for INR orders in 2025. Cuisine is not a column in this mart, so a join or different table may be needed. This query will error, but will help confirm available columns and next steps."
+      },
+      "model_stats": {
+        "seconds": 1.9,
+        "prompt_tokens": 3580,
+        "completion_tokens": 218
+      },
+      "tool_error": "ProgrammingError: 000904 (42000): SQL compilation error: error line 1 at position 7\ninvalid identifier 'CUISINE' (request_id=4a568b3b-7e15-445b-a3fc-6c37bb578e14, sfqid=01c7de46-0001-b442-0000-d29500040bba)"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT CUISINE, SUM(DELIVERED_SALES_AMOUNT) AS GMV_INR, COUNT(ORDER_ID) AS TOTAL_ORDER_COUNT, SUM(CASE WHEN IS_CANCELLED THEN 1 ELSE 0 END) AS CANCELLED_ORDER_COUNT\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01' AND CURRENCY = 'INR'\nGROUP BY CUISINE\nORDER BY GMV_INR DESC\nLIMIT 3;",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "The previous mart does not have cuisine. FACT_ORDER has cuisine, delivered sales amount, order status, and cancellation flag. This query aggregates by cuisine for INR orders in 2025, returning GMV, order count, and cancelled order count for the top 3 cuisines by delivered GMV."
+      },
+      "model_stats": {
+        "seconds": 1.69,
+        "prompt_tokens": 3923,
+        "completion_tokens": 197
+      },
+      "result": {
+        "columns": [
+          "CUISINE",
+          "GMV_INR",
+          "TOTAL_ORDER_COUNT",
+          "CANCELLED_ORDER_COUNT"
+        ],
+        "rows": [
+          [
+            "North Indian,Chinese",
+            "97195380.00",
+            "202651",
+            "11916"
+          ],
+          [
+            "Indian,Chinese",
+            "60447386.00",
+            "126766",
+            "7583"
+          ],
+          [
+            "Indian",
+            "58362786.00",
+            "148932",
+            "8936"
+          ]
+        ],
+        "query_id": "01c7de46-0001-b38b-0000-d295000461f2",
+        "seconds": 1.05
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "gmv,count_order_total,cancellation_rate",
+        "group_by": "order_id__cuisine",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "The three exact cuisine labels with the highest 2025 delivered-order GMV in INR are:\n\n1. \"North Indian,Chinese\":\n   - Delivered-order GMV: 97,195,380.00 INR\n   - Total order count: 202,651\n   - Cancellation rate: 0.058800 (11,916 cancelled / 202,651 total)\n\n2. \"Indian,Chinese\":\n   - Delivered-order GMV: 60,447,386.00 INR\n   - Total order count: 126,766\n   - Cancellation rate: 0.059832 (7,583 cancelled / 126,766 total)\n\n3. \"Indian\":\n   - Delivered-order GMV: 58,362,786.00 INR\n   - Total order count: 148,932\n   - Cancellation rate: 0.060018 (8,936 cancelled / 148,932 total)\n\nPopulation: All 2025 orders with currency INR, grouped by exact cuisine label (no splitting of comma-separated values). Units: GMV in INR, order count in orders, cancellation rate as ratio (six decimals). Interpretation: These cuisine labels generated the highest delivered-order GMV in INR for 2025, with cancellation rates between 5.88% and 6.00%.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.36,
+        "prompt_tokens": 4316,
+        "completion_tokens": 335
+      }
+    }
+  ],
+  "final_answer": "The three exact cuisine labels with the highest 2025 delivered-order GMV in INR are:\n\n1. \"North Indian,Chinese\":\n   - Delivered-order GMV: 97,195,380.00 INR\n   - Total order count: 202,651\n   - Cancellation rate: 0.058800 (11,916 cancelled / 202,651 total)\n\n2. \"Indian,Chinese\":\n   - Delivered-order GMV: 60,447,386.00 INR\n   - Total order count: 126,766\n   - Cancellation rate: 0.059832 (7,583 cancelled / 126,766 total)\n\n3. \"Indian\":\n   - Delivered-order GMV: 58,362,786.00 INR\n   - Total order count: 148,932\n   - Cancellation rate: 0.060018 (8,936 cancelled / 148,932 total)\n\nPopulation: All 2025 orders with currency INR, grouped by exact cuisine label (no splitting of comma-separated values). Units: GMV in INR, order count in orders, cancellation rate as ratio (six decimals). Interpretation: These cuisine labels generated the highest delivered-order GMV in INR for 2025, with cancellation rates between 5.88% and 6.00%.",
+  "outcome": "answer",
+  "total_seconds": 14.37,
+  "finished_utc": "2026-10-21T01:42:54.408763+00:00"
+}

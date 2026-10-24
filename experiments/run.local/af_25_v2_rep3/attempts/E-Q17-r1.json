@@ -1,0 +1,65 @@
+{
+  "id": "E-Q17-r1",
+  "arm": "E",
+  "question_id": "Q17",
+  "stratum": "data",
+  "question": "Does recorded order sales amount reconcile to subtotal minus discount plus delivery fee plus GST for 2025? For each order status, give the count of non-zero differences and their signed sum in INR; do not assume one side is the corrected amount.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "a99a688c8b74f2d1acf86ffb095d4085e198af8d169bb3f0b5cd089f5752e8ce",
+  "question_sha256": "3864edaa78738362e14d70dc187d33a6baf9e596378a324e96b60e5b6c2d0ad6",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T02:45:38.882715+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT ORDER_STATUS, COUNT(*) AS NONZERO_DIFF_COUNT, SUM(SALES_AMOUNT - (SUBTOTAL - DISCOUNT + DELIVERY_FEE + GST)) AS SIGNED_SUM_DIFF_INR\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01' AND CURRENCY = 'INR' AND (SALES_AMOUNT - (SUBTOTAL - DISCOUNT + DELIVERY_FEE + GST)) != 0\nGROUP BY ORDER_STATUS\nORDER BY NONZERO_DIFF_COUNT DESC;",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.44,
+        "prompt_tokens": 3087,
+        "completion_tokens": 147
+      },
+      "result": {
+        "columns": [
+          "ORDER_STATUS",
+          "NONZERO_DIFF_COUNT",
+          "SIGNED_SUM_DIFF_INR"
+        ],
+        "rows": [],
+        "query_id": "01c7de85-0001-b38b-0000-d295000466c6",
+        "seconds": 0.43
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "For all 2025 orders in INR, there are no orders with a non-zero difference between the recorded sales amount and the calculation (subtotal minus discount plus delivery fee plus GST), for any order status. This means the recorded sales amount fully reconciles to the expected formula across all order statuses in 2025. \n\nPopulation: All 2025 orders in INR, grouped by order status.\nUnit: Count of orders and INR (Indian Rupees) for sum of differences.\nInterpretation: The sales amount calculation is consistent and accurate for all order statuses in 2025, with no discrepancies detected.",
+        "reason": "The query returned zero rows, indicating no non-zero differences for any order status."
+      },
+      "model_stats": {
+        "seconds": 1.6,
+        "prompt_tokens": 3329,
+        "completion_tokens": 164
+      }
+    }
+  ],
+  "final_answer": "For all 2025 orders in INR, there are no orders with a non-zero difference between the recorded sales amount and the calculation (subtotal minus discount plus delivery fee plus GST), for any order status. This means the recorded sales amount fully reconciles to the expected formula across all order statuses in 2025. \n\nPopulation: All 2025 orders in INR, grouped by order status.\nUnit: Count of orders and INR (Indian Rupees) for sum of differences.\nInterpretation: The sales amount calculation is consistent and accurate for all order statuses in 2025, with no discrepancies detected.",
+  "outcome": "answer",
+  "total_seconds": 3.47,
+  "finished_utc": "2026-10-21T02:45:42.357372+00:00"
+}

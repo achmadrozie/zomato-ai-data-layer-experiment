@@ -1,0 +1,69 @@
+{
+  "id": "B-Q24-r1",
+  "arm": "B",
+  "question_id": "Q24",
+  "stratum": "context",
+  "question": "How many repeat customers were there in January–June 2025 and in July–December 2025? Evaluate repeat status separately within each reporting period, then say which half had more.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "968aad7d611f901a7d8dfa1d40ac00ed82254c5407f1175667aee50fc5949a8c",
+  "question_sha256": "47aaa7d55358153cbbba418ac8794c3771f8644e5bb9851213b684c61f0a1372",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T02:02:42.508392+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH jan_jun_orders AS (\n    SELECT CUSTOMER_ID\n    FROM ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE\n    WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2025-07-01'\n),\njul_dec_orders AS (\n    SELECT CUSTOMER_ID\n    FROM ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE\n    WHERE ORDER_DATE >= '2025-07-01' AND ORDER_DATE < '2026-01-01'\n),\nrepeat_jan_jun AS (\n    SELECT CUSTOMER_ID\n    FROM jan_jun_orders\n    GROUP BY CUSTOMER_ID\n    HAVING COUNT(*) > 1\n),\nrepeat_jul_dec AS (\n    SELECT CUSTOMER_ID\n    FROM jul_dec_orders\n    GROUP BY CUSTOMER_ID\n    HAVING COUNT(*) > 1\n)\nSELECT \n    (SELECT COUNT(*) FROM repeat_jan_jun) AS repeat_customers_jan_jun,\n    (SELECT COUNT(*) FROM repeat_jul_dec) AS repeat_customers_jul_dec;",
+        "metrics": "repeat_customers_jan_jun, repeat_customers_jul_dec",
+        "group_by": "none",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.0,
+        "prompt_tokens": 1687,
+        "completion_tokens": 281
+      },
+      "result": {
+        "columns": [
+          "REPEAT_CUSTOMERS_JAN_JUN",
+          "REPEAT_CUSTOMERS_JUL_DEC"
+        ],
+        "rows": [
+          [
+            "95048",
+            "96514"
+          ]
+        ],
+        "query_id": "01c7de5a-0001-b442-0000-d29500040e46",
+        "seconds": 0.53
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "repeat_customers_jan_jun, repeat_customers_jul_dec",
+        "group_by": "none",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "In January–June 2025, there were 95,048 repeat customers (customers who placed more than one order in that period). In July–December 2025, there were 96,514 repeat customers (evaluated independently for that half). July–December 2025 had more repeat customers than January–June 2025. Population: all customers with more than one order in each respective half-year period. Unit: unique customers per period. Interpretation: Repeat customer counts are slightly higher in the second half of 2025.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.98,
+        "prompt_tokens": 2077,
+        "completion_tokens": 165
+      }
+    }
+  ],
+  "final_answer": "In January–June 2025, there were 95,048 repeat customers (customers who placed more than one order in that period). In July–December 2025, there were 96,514 repeat customers (evaluated independently for that half). July–December 2025 had more repeat customers than January–June 2025. Population: all customers with more than one order in each respective half-year period. Unit: unique customers per period. Interpretation: Repeat customer counts are slightly higher in the second half of 2025.",
+  "outcome": "answer",
+  "total_seconds": 4.52,
+  "finished_utc": "2026-10-21T02:02:47.025288+00:00"
+}

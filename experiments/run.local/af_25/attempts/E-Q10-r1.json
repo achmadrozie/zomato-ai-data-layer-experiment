@@ -1,0 +1,91 @@
+{
+  "id": "E-Q10-r1",
+  "arm": "E",
+  "question_id": "Q10",
+  "stratum": "data",
+  "question": "For Delivered orders in 2025 with a recorded delivery duration, compare the average delivery time in order-recorded Bangalore and Delhi. Which city was slower, and by how many minutes?",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "a99a688c8b74f2d1acf86ffb095d4085e198af8d169bb3f0b5cd089f5752e8ce",
+  "question_sha256": "a5ab611d5fcdfe1de5ae276f83652dbfb9eb7150fb423aacb910c78cbf03a38c",
+  "context_sha256": null,
+  "started_utc": "2026-10-20T23:44:17.119013+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "avg_delivery_time_min",
+        "group_by": "order_id__city",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "We need the average delivery time for delivered orders in 2025, grouped by city (Bangalore and Delhi)."
+      },
+      "model_stats": {
+        "seconds": 1.11,
+        "prompt_tokens": 3075,
+        "completion_tokens": 71
+      },
+      "tool_error": "ValueError: MetricFlow result exceeds 40 rows; use SQL or coarser grain"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT CITY, AVG(DELIVERY_TIME_MIN) AS AVG_DELIVERY_TIME_MIN\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n  AND IS_DELIVERED = TRUE\n  AND DELIVERY_TIME_MIN IS NOT NULL\n  AND CITY IN ('Bangalore', 'Delhi')\nGROUP BY CITY\nORDER BY CITY;",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "MetricFlow returned too many rows; using SQL to get the average delivery time for delivered orders in Bangalore and Delhi in 2025."
+      },
+      "model_stats": {
+        "seconds": 1.85,
+        "prompt_tokens": 3207,
+        "completion_tokens": 144
+      },
+      "result": {
+        "columns": [
+          "CITY",
+          "AVG_DELIVERY_TIME_MIN"
+        ],
+        "rows": [
+          [
+            "Bangalore",
+            "31.0560894"
+          ],
+          [
+            "Delhi",
+            "31.0484820"
+          ]
+        ],
+        "query_id": "01c7ddd0-0001-b442-0000-d295000405a6",
+        "seconds": 0.3
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "avg_delivery_time_min",
+        "group_by": "order_id__city",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "For delivered orders in 2025 with a recorded delivery duration, the average delivery time in Bangalore was 31.056089 minutes, and in Delhi it was 31.048482 minutes. Bangalore was slower than Delhi by 0.007607 minutes (about 0.46 seconds). The difference is extremely small and likely not operationally significant.",
+        "reason": "Both cities had nearly identical average delivery times for delivered orders in 2025, with Bangalore being marginally slower by less than one second."
+      },
+      "model_stats": {
+        "seconds": 1.54,
+        "prompt_tokens": 3463,
+        "completion_tokens": 146
+      }
+    }
+  ],
+  "final_answer": "For delivered orders in 2025 with a recorded delivery duration, the average delivery time in Bangalore was 31.056089 minutes, and in Delhi it was 31.048482 minutes. Bangalore was slower than Delhi by 0.007607 minutes (about 0.46 seconds). The difference is extremely small and likely not operationally significant.",
+  "outcome": "answer",
+  "total_seconds": 25.19,
+  "finished_utc": "2026-10-20T23:44:42.308350+00:00"
+}

@@ -1,0 +1,85 @@
+{
+  "id": "B-Q03-r1",
+  "arm": "B",
+  "question_id": "Q03",
+  "stratum": "data",
+  "question": "What was AOV in INR for Delivered orders in the full year 2025? Use the recorded order date for the 2025 scope.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "968aad7d611f901a7d8dfa1d40ac00ed82254c5407f1175667aee50fc5949a8c",
+  "question_sha256": "57beaba4b4339db13b7043c2a2928cf39d5baa511836db3dbde6518945b0b963",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T02:46:57.769024+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT ROUND(SUM(SALES_AMOUNT)/NULLIF(COUNT(DISTINCT ORDER_ID),0), 6) AS AOV_INR_2025\nFROM ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE ob\nJOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FINANCIALS ofi ON ob.ORDER_ID = ofi.ORDER_ID\nJOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FULFILLMENT off ON ob.ORDER_ID = off.ORDER_ID\nWHERE ob.ORDER_DATE >= '2025-01-01' AND ob.ORDER_DATE < '2026-01-01'\n  AND off.IS_DELIVERED = TRUE\n  AND ob.CURRENCY = 'INR'",
+        "metrics": "AOV (Average Order Value) in INR for delivered orders in 2025",
+        "group_by": "none",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.51,
+        "prompt_tokens": 1678,
+        "completion_tokens": 201
+      },
+      "tool_error": "ProgrammingError: 002028 (42601): SQL compilation error:\nambiguous column name 'ORDER_ID' (request_id=787e47c2-b50c-4272-8793-a7be607a90f0, sfqid=01c7de86-0001-b442-0000-d29500048112)"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT ROUND(SUM(ofi.SALES_AMOUNT)/NULLIF(COUNT(DISTINCT ob.ORDER_ID),0), 6) AS AOV_INR_2025\nFROM ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE ob\nJOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FINANCIALS ofi ON ob.ORDER_ID = ofi.ORDER_ID\nJOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FULFILLMENT off ON ob.ORDER_ID = off.ORDER_ID\nWHERE ob.ORDER_DATE >= '2025-01-01' AND ob.ORDER_DATE < '2026-01-01'\n  AND off.IS_DELIVERED = TRUE\n  AND ob.CURRENCY = 'INR'",
+        "metrics": "AOV (Average Order Value) in INR for delivered orders in 2025",
+        "group_by": "none",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.57,
+        "prompt_tokens": 1994,
+        "completion_tokens": 204
+      },
+      "result": {
+        "columns": [
+          "AOV_INR_2025"
+        ],
+        "rows": [
+          [
+            "482.935288"
+          ]
+        ],
+        "query_id": "01c7de87-0001-b442-0000-d29500048116",
+        "seconds": 1.55
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "AOV (Average Order Value) in INR for delivered orders in 2025",
+        "group_by": "none",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "The AOV (Average Order Value) in INR for delivered orders in the full year 2025, using the recorded order date, was 482.935288 INR. This value is calculated across all delivered orders with currency INR in the specified period. Unit: INR per delivered order. Population: all delivered orders in 2025 with currency INR.",
+        "reason": "The query summed the SALES_AMOUNT for delivered orders in INR and divided by the count of distinct delivered order IDs in 2025, providing the requested AOV at the correct grain and scope."
+      },
+      "model_stats": {
+        "seconds": 1.46,
+        "prompt_tokens": 2293,
+        "completion_tokens": 165
+      }
+    }
+  ],
+  "final_answer": "The AOV (Average Order Value) in INR for delivered orders in the full year 2025, using the recorded order date, was 482.935288 INR. This value is calculated across all delivered orders with currency INR in the specified period. Unit: INR per delivered order. Population: all delivered orders in 2025 with currency INR.",
+  "outcome": "answer",
+  "total_seconds": 6.36,
+  "finished_utc": "2026-10-21T02:47:04.132037+00:00"
+}

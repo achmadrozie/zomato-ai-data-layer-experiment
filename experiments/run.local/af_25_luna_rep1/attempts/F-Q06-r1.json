@@ -1,0 +1,129 @@
+{
+  "id": "F-Q06-r1",
+  "arm": "F",
+  "question_id": "Q06",
+  "stratum": "data",
+  "question": "In 2025, which month had the highest Delivered-order GMV in INR? Give that month's GMV, the runner-up month's GMV, and the gap between them.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "4acf2281f3c70a54cd1b5548e8bf681e9cb90b7906d0b054d53e1083d674c16e",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T04:06:04.606245+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "metricflow",
+        "query": "",
+        "metrics": "gmv",
+        "group_by": "order_id__currency,metric_time__month",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.74,
+        "prompt_tokens": 3457,
+        "completion_tokens": 142
+      },
+      "result": {
+        "columns": [
+          "METRIC_TIME__MONTH",
+          "ORDER_ID__CURRENCY",
+          "GMV"
+        ],
+        "rows": [
+          [
+            "2025-05-01 00:00:00",
+            "INR",
+            "158447281.0"
+          ],
+          [
+            "2025-11-01 00:00:00",
+            "INR",
+            "180239871.0"
+          ],
+          [
+            "2025-08-01 00:00:00",
+            "INR",
+            "173914937.0"
+          ],
+          [
+            "2025-10-01 00:00:00",
+            "INR",
+            "178131054.0"
+          ],
+          [
+            "2025-09-01 00:00:00",
+            "INR",
+            "167309430.0"
+          ],
+          [
+            "2025-03-01 00:00:00",
+            "INR",
+            "149731681.0"
+          ],
+          [
+            "2025-07-01 00:00:00",
+            "INR",
+            "163095157.0"
+          ],
+          [
+            "2025-06-01 00:00:00",
+            "INR",
+            "156551606.0"
+          ],
+          [
+            "2025-12-01 00:00:00",
+            "INR",
+            "185263071.0"
+          ],
+          [
+            "2025-01-01 00:00:00",
+            "INR",
+            "138573283.0"
+          ],
+          [
+            "2025-02-01 00:00:00",
+            "INR",
+            "129414085.0"
+          ],
+          [
+            "2025-04-01 00:00:00",
+            "INR",
+            "145794592.0"
+          ]
+        ],
+        "metric_definitions": {
+          "gmv": "Sum of `sales_amount` for orders whose `order_status` is `Delivered`."
+        },
+        "seconds": 8.63
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "December 2025 had the highest Delivered-order GMV in INR: ₹185,263,071. The runner-up was November 2025 at ₹180,239,871. The gap was ₹5,023,200. GMV is the sum of recorded sales_amount for orders whose recorded order status was Delivered, grouped by month in 2025 and limited to INR.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.0,
+        "prompt_tokens": 3914,
+        "completion_tokens": 163
+      }
+    }
+  ],
+  "final_answer": "December 2025 had the highest Delivered-order GMV in INR: ₹185,263,071. The runner-up was November 2025 at ₹180,239,871. The gap was ₹5,023,200. GMV is the sum of recorded sales_amount for orders whose recorded order status was Delivered, grouped by month in 2025 and limited to INR.",
+  "outcome": "answer",
+  "total_seconds": 14.37,
+  "finished_utc": "2026-10-21T04:06:18.971863+00:00"
+}

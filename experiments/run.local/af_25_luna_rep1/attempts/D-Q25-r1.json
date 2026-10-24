@@ -1,0 +1,106 @@
+{
+  "id": "D-Q25-r1",
+  "arm": "D",
+  "question_id": "Q25",
+  "stratum": "data",
+  "question": "For the order-recorded city with the highest 2025 cancellation rate among cities with at least 50,000 orders, compare its cancellation rate and average Delivered-order delivery time with the overall 2025 figures. Can these figures establish that slower delivery caused cancellations?",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "b1f6e14c773bd842d58a660b709e48a10852a27a37faa316466d6e5582ae5f7b",
+  "question_sha256": "7f3d4471209d96eddd58ec2bda0c6b30940b6de7071cb012e065e181a79aba94",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T03:56:02.266043+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH city_stats AS (\n  SELECT CITY,\n         COUNT(*) AS ORDER_COUNT,\n         SUM(IFF(IS_CANCELLED, 1, 0)) AS CANCELLED_ORDER_COUNT,\n         SUM(IFF(IS_CANCELLED, 1, 0)) / COUNT(*)::FLOAT AS CANCELLATION_RATE,\n         AVG(IFF(IS_DELIVERED AND DELIVERY_TIME_MIN IS NOT NULL, DELIVERY_TIME_MIN, NULL)) AS AVG_DELIVERED_TIME_MIN,\n         COUNT_IF(IS_DELIVERED AND DELIVERY_TIME_MIN IS NOT NULL) AS DELIVERED_TIME_OBSERVATION_COUNT\n  FROM ZOMATO_DLR.CORE.FACT_ORDER\n  WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n  GROUP BY CITY\n  HAVING COUNT(*) >= 50000\n), top_city AS (\n  SELECT *\n  FROM city_stats\n  QUALIFY ROW_NUMBER() OVER (ORDER BY CANCELLATION_RATE DESC, CITY) = 1\n), overall_stats AS (\n  SELECT COUNT(*) AS ORDER_COUNT,\n         SUM(IFF(IS_CANCELLED, 1, 0)) AS CANCELLED_ORDER_COUNT,\n         SUM(IFF(IS_CANCELLED, 1, 0)) / COUNT(*)::FLOAT AS CANCELLATION_RATE,\n         AVG(IFF(IS_DELIVERED AND DELIVERY_TIME_MIN IS NOT NULL, DELIVERY_TIME_MIN, NULL)) AS AVG_DELIVERED_TIME_MIN,\n         COUNT_IF(IS_DELIVERED AND DELIVERY_TIME_MIN IS NOT NULL) AS DELIVERED_TIME_OBSERVATION_COUNT\n  FROM ZOMATO_DLR.CORE.FACT_ORDER\n  WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n)\nSELECT t.CITY,\n       t.ORDER_COUNT AS CITY_ORDER_COUNT,\n       t.CANCELLED_ORDER_COUNT AS CITY_CANCELLED_ORDER_COUNT,\n       t.CANCELLATION_RATE AS CITY_CANCELLATION_RATE,\n       t.AVG_DELIVERED_TIME_MIN AS CITY_AVG_DELIVERED_TIME_MIN,\n       t.DELIVERED_TIME_OBSERVATION_COUNT AS CITY_DELIVERED_TIME_OBSERVATIONS,\n       o.ORDER_COUNT AS OVERALL_ORDER_COUNT,\n       o.CANCELLED_ORDER_COUNT AS OVERALL_CANCELLED_ORDER_COUNT,\n       o.CANCELLATION_RATE AS OVERALL_CANCELLATION_RATE,\n       o.AVG_DELIVERED_TIME_MIN AS OVERALL_AVG_DELIVERED_TIME_MIN,\n       o.DELIVERED_TIME_OBSERVATION_COUNT AS OVERALL_DELIVERED_TIME_OBSERVATIONS\nFROM top_city t CROSS JOIN overall_stats o",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 10.6,
+        "prompt_tokens": 2545,
+        "completion_tokens": 1111
+      },
+      "tool_error": "ValueError: SELECT * is forbidden"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH city_stats AS (\n  SELECT CITY,\n         COUNT(*) AS ORDER_COUNT,\n         COUNT_IF(IS_CANCELLED) AS CANCELLED_ORDER_COUNT,\n         COUNT_IF(IS_CANCELLED) / COUNT(*)::FLOAT AS CANCELLATION_RATE,\n         AVG(IFF(IS_DELIVERED AND DELIVERY_TIME_MIN IS NOT NULL, DELIVERY_TIME_MIN, NULL)) AS AVG_DELIVERED_TIME_MIN,\n         COUNT_IF(IS_DELIVERED AND DELIVERY_TIME_MIN IS NOT NULL) AS DELIVERED_TIME_OBSERVATION_COUNT\n  FROM ZOMATO_DLR.CORE.FACT_ORDER\n  WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n  GROUP BY CITY\n  HAVING COUNT(*) >= 50000\n), top_city AS (\n  SELECT CITY, ORDER_COUNT, CANCELLED_ORDER_COUNT, CANCELLATION_RATE, AVG_DELIVERED_TIME_MIN, DELIVERED_TIME_OBSERVATION_COUNT\n  FROM city_stats\n  QUALIFY ROW_NUMBER() OVER (ORDER BY CANCELLATION_RATE DESC, CITY) = 1\n), overall_stats AS (\n  SELECT COUNT(*) AS ORDER_COUNT,\n         COUNT_IF(IS_CANCELLED) AS CANCELLED_ORDER_COUNT,\n         COUNT_IF(IS_CANCELLED) / COUNT(*)::FLOAT AS CANCELLATION_RATE,\n         AVG(IFF(IS_DELIVERED AND DELIVERY_TIME_MIN IS NOT NULL, DELIVERY_TIME_MIN, NULL)) AS AVG_DELIVERED_TIME_MIN,\n         COUNT_IF(IS_DELIVERED AND DELIVERY_TIME_MIN IS NOT NULL) AS DELIVERED_TIME_OBSERVATION_COUNT\n  FROM ZOMATO_DLR.CORE.FACT_ORDER\n  WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n)\nSELECT t.CITY,\n       t.ORDER_COUNT AS CITY_ORDER_COUNT,\n       t.CANCELLED_ORDER_COUNT AS CITY_CANCELLED_ORDER_COUNT,\n       t.CANCELLATION_RATE AS CITY_CANCELLATION_RATE,\n       t.AVG_DELIVERED_TIME_MIN AS CITY_AVG_DELIVERED_TIME_MIN,\n       t.DELIVERED_TIME_OBSERVATION_COUNT AS CITY_DELIVERED_TIME_OBSERVATIONS,\n       o.ORDER_COUNT AS OVERALL_ORDER_COUNT,\n       o.CANCELLED_ORDER_COUNT AS OVERALL_CANCELLED_ORDER_COUNT,\n       o.CANCELLATION_RATE AS OVERALL_CANCELLATION_RATE,\n       o.AVG_DELIVERED_TIME_MIN AS OVERALL_AVG_DELIVERED_TIME_MIN,\n       o.DELIVERED_TIME_OBSERVATION_COUNT AS OVERALL_DELIVERED_TIME_OBSERVATIONS\nFROM top_city t CROSS JOIN overall_stats o",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 5.52,
+        "prompt_tokens": 3183,
+        "completion_tokens": 627
+      },
+      "result": {
+        "columns": [
+          "CITY",
+          "CITY_ORDER_COUNT",
+          "CITY_CANCELLED_ORDER_COUNT",
+          "CITY_CANCELLATION_RATE",
+          "CITY_AVG_DELIVERED_TIME_MIN",
+          "CITY_DELIVERED_TIME_OBSERVATIONS",
+          "OVERALL_ORDER_COUNT",
+          "OVERALL_CANCELLED_ORDER_COUNT",
+          "OVERALL_CANCELLATION_RATE",
+          "OVERALL_AVG_DELIVERED_TIME_MIN",
+          "OVERALL_DELIVERED_TIME_OBSERVATIONS"
+        ],
+        "rows": [
+          [
+            "Hyderabad",
+            "319122",
+            "19236",
+            "0.06027788745370109",
+            "31.0967157",
+            "291876",
+            "4359773",
+            "261456",
+            "0.05997009477328292",
+            "31.0743794",
+            "3989077"
+          ]
+        ],
+        "query_id": "01c7decc-0001-b38b-0000-d2950004682e",
+        "seconds": 0.4
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "For 2025 recorded orders, Hyderabad was the highest-cancellation-rate city among cities with at least 50,000 orders: 19,236 cancellations out of 319,122 orders, a 6.027789% cancellation rate. Across all cities, there were 261,456 cancellations out of 4,359,773 orders, a 5.997009% rate. Hyderabad was higher by 0.030779 percentage points.\n\nAverage delivery time among delivered orders with recorded delivery time was 31.096716 minutes in Hyderabad (291,876 observations), versus 31.074379 minutes overall (3,989,077 observations), a difference of 0.022336 minutes (about 1.34 seconds).\n\nThese figures do not establish that slower delivery caused cancellations. They are aggregate comparisons, and delivery time is measured only for delivered orders, not cancelled orders; the figures alone cannot show the effect of delivery speed on cancellation or rule out other factors.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 5.73,
+        "prompt_tokens": 4006,
+        "completion_tokens": 407
+      }
+    }
+  ],
+  "final_answer": "For 2025 recorded orders, Hyderabad was the highest-cancellation-rate city among cities with at least 50,000 orders: 19,236 cancellations out of 319,122 orders, a 6.027789% cancellation rate. Across all cities, there were 261,456 cancellations out of 4,359,773 orders, a 5.997009% rate. Hyderabad was higher by 0.030779 percentage points.\n\nAverage delivery time among delivered orders with recorded delivery time was 31.096716 minutes in Hyderabad (291,876 observations), versus 31.074379 minutes overall (3,989,077 observations), a difference of 0.022336 minutes (about 1.34 seconds).\n\nThese figures do not establish that slower delivery caused cancellations. They are aggregate comparisons, and delivery time is measured only for delivered orders, not cancelled orders; the figures alone cannot show the effect of delivery speed on cancellation or rule out other factors.",
+  "outcome": "answer",
+  "total_seconds": 22.27,
+  "finished_utc": "2026-10-21T03:56:24.537252+00:00"
+}

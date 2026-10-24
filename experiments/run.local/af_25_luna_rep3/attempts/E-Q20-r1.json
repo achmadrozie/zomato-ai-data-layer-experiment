@@ -1,0 +1,265 @@
+{
+  "id": "E-Q20-r1",
+  "arm": "E",
+  "question_id": "Q20",
+  "stratum": "data",
+  "question": "Compute month-over-month Delivered-order GMV change in INR for all eleven consecutive month pairs in 2025 (January to February, February to March, through November to December). Identify the pair with the largest negative change. For those two months report: Delivered order count, GMV in INR, and AOV. Then decompose the GMV change using: count effect = (month-2 count minus month-1 count) times month-1 AOV; AOV effect = (month-2 AOV minus month-1 AOV) times month-2 count. Report both effects in INR and verify they sum to the observed GMV change. Do not claim a cause.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "a99a688c8b74f2d1acf86ffb095d4085e198af8d169bb3f0b5cd089f5752e8ce",
+  "question_sha256": "ab86e138fae945ad9a0fbe941db2ce3e7761818c1cedfb840f3bd8da59ac356b",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T07:21:45.908850+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH monthly AS (\n  SELECT\n    DATE_TRUNC('MONTH', ORDER_DATE)::DATE AS MONTH_START,\n    COUNT_IF(ORDER_STATUS = 'Delivered') AS DELIVERED_ORDER_COUNT,\n    SUM(IFF(ORDER_STATUS = 'Delivered', SALES_AMOUNT, 0)) AS GMV_INR\n  FROM ZOMATO_DLR.CORE.FACT_ORDER\n  WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n    AND CURRENCY = 'INR'\n  GROUP BY 1\n), with_prior AS (\n  SELECT\n    MONTH_START,\n    DELIVERED_ORDER_COUNT,\n    GMV_INR,\n    GMV_INR / NULLIF(DELIVERED_ORDER_COUNT, 0) AS AOV_INR,\n    LAG(DELIVERED_ORDER_COUNT) OVER (ORDER BY MONTH_START) AS PRIOR_DELIVERED_ORDER_COUNT,\n    LAG(GMV_INR) OVER (ORDER BY MONTH_START) AS PRIOR_GMV_INR,\n    LAG(GMV_INR / NULLIF(DELIVERED_ORDER_COUNT, 0)) OVER (ORDER BY MONTH_START) AS PRIOR_AOV_INR\n  FROM monthly\n)\nSELECT\n  TO_CHAR(DATEADD(MONTH, -1, MONTH_START), 'YYYY-MM') || ' to ' || TO_CHAR(MONTH_START, 'YYYY-MM') AS MONTH_PAIR,\n  PRIOR_DELIVERED_ORDER_COUNT AS PRIOR_MONTH_DELIVERED_ORDER_COUNT,\n  PRIOR_GMV_INR AS PRIOR_MONTH_GMV_INR,\n  PRIOR_AOV_INR AS PRIOR_MONTH_AOV_INR,\n  DELIVERED_ORDER_COUNT AS CURRENT_MONTH_DELIVERED_ORDER_COUNT,\n  GMV_INR AS CURRENT_MONTH_GMV_INR,\n  AOV_INR AS CURRENT_MONTH_AOV_INR,\n  GMV_INR - PRIOR_GMV_INR AS GMV_CHANGE_INR,\n  (DELIVERED_ORDER_COUNT - PRIOR_DELIVERED_ORDER_COUNT) * PRIOR_AOV_INR AS COUNT_EFFECT_INR,\n  (AOV_INR - PRIOR_AOV_INR) * DELIVERED_ORDER_COUNT AS AOV_EFFECT_INR,\n  (DELIVERED_ORDER_COUNT - PRIOR_DELIVERED_ORDER_COUNT) * PRIOR_AOV_INR + (AOV_INR - PRIOR_AOV_INR) * DELIVERED_ORDER_COUNT AS DECOMPOSED_CHANGE_INR\nFROM with_prior\nWHERE MONTH_START >= '2025-02-01' AND MONTH_START < '2026-01-01'\nORDER BY MONTH_START",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 7.18,
+        "prompt_tokens": 3174,
+        "completion_tokens": 783
+      },
+      "result": {
+        "columns": [
+          "MONTH_PAIR",
+          "PRIOR_MONTH_DELIVERED_ORDER_COUNT",
+          "PRIOR_MONTH_GMV_INR",
+          "PRIOR_MONTH_AOV_INR",
+          "CURRENT_MONTH_DELIVERED_ORDER_COUNT",
+          "CURRENT_MONTH_GMV_INR",
+          "CURRENT_MONTH_AOV_INR",
+          "GMV_CHANGE_INR",
+          "COUNT_EFFECT_INR",
+          "AOV_EFFECT_INR",
+          "DECOMPOSED_CHANGE_INR"
+        ],
+        "rows": [
+          [
+            "2025-01 to 2025-02",
+            "286712",
+            "138573283.00",
+            "483.31874145",
+            "268570",
+            "129414085.00",
+            "481.86351789",
+            "-9159198.00",
+            "-8768368.60738590",
+            "-390829.39150920",
+            "-9159197.99889510"
+          ],
+          [
+            "2025-02 to 2025-03",
+            "268570",
+            "129414085.00",
+            "481.86351789",
+            "310046",
+            "149731681.00",
+            "482.93376144",
+            "20317596.00",
+            "19985771.26800564",
+            "331824.73170330",
+            "20317595.99970894"
+          ],
+          [
+            "2025-03 to 2025-04",
+            "310046",
+            "149731681.00",
+            "482.93376144",
+            "301706",
+            "145794592.00",
+            "483.23398275",
+            "-3937089.00",
+            "-4027667.57040960",
+            "90578.57055486",
+            "-3937088.99985474"
+          ],
+          [
+            "2025-04 to 2025-05",
+            "301706",
+            "145794592.00",
+            "483.23398275",
+            "328311",
+            "158447281.00",
+            "482.61337878",
+            "12652689.00",
+            "12856440.11106375",
+            "-203751.10999467",
+            "12652689.00106908"
+          ],
+          [
+            "2025-05 to 2025-06",
+            "328311",
+            "158447281.00",
+            "482.61337878",
+            "322898",
+            "156551606.00",
+            "484.83299989",
+            "-1895675.00",
+            "-2612386.21933614",
+            "716711.21717678",
+            "-1895675.00215936"
+          ],
+          [
+            "2025-06 to 2025-07",
+            "322898",
+            "156551606.00",
+            "484.83299989",
+            "338254",
+            "163095157.00",
+            "482.16771125",
+            "6543551.00",
+            "7445095.54631084",
+            "-901544.54363456",
+            "6543551.00267628"
+          ],
+          [
+            "2025-07 to 2025-08",
+            "338254",
+            "163095157.00",
+            "482.16771125",
+            "360436",
+            "173914937.00",
+            "482.51267077",
+            "10819780.00",
+            "10695444.17094750",
+            "124335.82955072",
+            "10819780.00049822"
+          ],
+          [
+            "2025-08 to 2025-09",
+            "360436",
+            "173914937.00",
+            "482.51267077",
+            "346662",
+            "167309430.00",
+            "482.62985271",
+            "-6605507.00",
+            "-6646129.52718598",
+            "40622.52568428",
+            "-6605507.00150170"
+          ],
+          [
+            "2025-09 to 2025-10",
+            "346662",
+            "167309430.00",
+            "482.62985271",
+            "368301",
+            "178131054.00",
+            "483.65617796",
+            "10821624.00",
+            "10443627.38279169",
+            "377996.61590025",
+            "10821623.99869194"
+          ],
+          [
+            "2025-10 to 2025-11",
+            "368301",
+            "178131054.00",
+            "483.65617796",
+            "373651",
+            "180239871.00",
+            "482.37491938",
+            "2108817.00",
+            "2587560.55208600",
+            "-478743.54967558",
+            "2108817.00241042"
+          ],
+          [
+            "2025-11 to 2025-12",
+            "373651",
+            "180239871.00",
+            "482.37491938",
+            "383530",
+            "185263071.00",
+            "483.04714364",
+            "5023200.00",
+            "4765381.82855502",
+            "257818.17043780",
+            "5023199.99899282"
+          ]
+        ],
+        "query_id": "01c7df99-0001-b38b-0000-d29500046c5a",
+        "seconds": 0.25
+      }
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH m AS (\n  SELECT DATE_TRUNC('MONTH', ORDER_DATE)::DATE AS MONTH_START,\n         COUNT_IF(ORDER_STATUS = 'Delivered') AS N,\n         SUM(IFF(ORDER_STATUS = 'Delivered', SALES_AMOUNT, 0)) AS GMV\n  FROM ZOMATO_DLR.CORE.FACT_ORDER\n  WHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01' AND CURRENCY = 'INR'\n  GROUP BY 1\n), p AS (\n  SELECT MAX(IFF(MONTH_START = '2025-01-01', N, NULL)) AS N1,\n         MAX(IFF(MONTH_START = '2025-01-01', GMV, NULL)) AS G1,\n         MAX(IFF(MONTH_START = '2025-02-01', N, NULL)) AS N2,\n         MAX(IFF(MONTH_START = '2025-02-01', GMV, NULL)) AS G2\n  FROM m\n)\nSELECT N1 AS JAN_DELIVERED_ORDERS, G1 AS JAN_GMV_INR,\n       G1::NUMBER(38,12) / N1 AS JAN_AOV_INR,\n       N2 AS FEB_DELIVERED_ORDERS, G2 AS FEB_GMV_INR,\n       G2::NUMBER(38,12) / N2 AS FEB_AOV_INR,\n       (N2 - N1) * (G1::NUMBER(38,12) / N1) AS COUNT_EFFECT_INR,\n       (G2::NUMBER(38,12) / N2 - G1::NUMBER(38,12) / N1) * N2 AS AOV_EFFECT_INR,\n       G2 - G1 AS OBSERVED_GMV_CHANGE_INR,\n       (N2 - N1) * (G1::NUMBER(38,12) / N1) + (G2::NUMBER(38,12) / N2 - G1::NUMBER(38,12) / N1) * N2 AS DECOMPOSED_GMV_CHANGE_INR\nFROM p",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 12.63,
+        "prompt_tokens": 4814,
+        "completion_tokens": 1357
+      },
+      "result": {
+        "columns": [
+          "JAN_DELIVERED_ORDERS",
+          "JAN_GMV_INR",
+          "JAN_AOV_INR",
+          "FEB_DELIVERED_ORDERS",
+          "FEB_GMV_INR",
+          "FEB_AOV_INR",
+          "COUNT_EFFECT_INR",
+          "AOV_EFFECT_INR",
+          "OBSERVED_GMV_CHANGE_INR",
+          "DECOMPOSED_GMV_CHANGE_INR"
+        ],
+        "rows": [
+          [
+            "286712",
+            "138573283.00",
+            "483.318741454840",
+            "268570",
+            "129414085.00",
+            "481.863517891053",
+            "-8768368.607473707280",
+            "-390829.392526274590",
+            "-9159198.00",
+            "-9159197.999999981870"
+          ]
+        ],
+        "query_id": "01c7df9a-0001-b442-0000-d2950004862a",
+        "seconds": 0.29
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "Population: orders recorded in 2025 (ORDER_DATE), INR currency, counted as delivered when ORDER_STATUS = 'Delivered'. GMV is the sum of delivered-order SALES_AMOUNT; AOV = GMV / delivered-order count. All amounts are INR.\n\nMonth-over-month delivered GMV change:\n- January to February: -9,159,198.00\n- February to March: +20,317,596.00\n- March to April: -3,937,089.00\n- April to May: +12,652,689.00\n- May to June: -1,895,675.00\n- June to July: +6,543,551.00\n- July to August: +10,819,780.00\n- August to September: -6,605,507.00\n- September to October: +10,821,624.00\n- October to November: +2,108,817.00\n- November to December: +5,023,200.00\n\nThe largest negative change was January to February: -9,159,198.00 INR.\n\nJanuary: 286,712 delivered orders; GMV 138,573,283.00 INR; AOV 483.318741 INR/order.\nFebruary: 268,570 delivered orders; GMV 129,414,085.00 INR; AOV 481.863518 INR/order.\n\nJanuary-to-February decomposition using the requested formulas:\n- Count effect: -8,768,368.607474 INR\n- AOV effect: -390,829.392526 INR\n- Sum of effects: -9,159,198.000000 INR (unrounded calculation: -9,159,197.999999981870 INR)\n- Observed GMV change: -9,159,198.00 INR\n\nThe two effects reconcile to the observed change, subject only to floating-point precision. This is an arithmetic decomposition and does not establish a cause.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 6.59,
+        "prompt_tokens": 5541,
+        "completion_tokens": 662
+      }
+    }
+  ],
+  "final_answer": "Population: orders recorded in 2025 (ORDER_DATE), INR currency, counted as delivered when ORDER_STATUS = 'Delivered'. GMV is the sum of delivered-order SALES_AMOUNT; AOV = GMV / delivered-order count. All amounts are INR.\n\nMonth-over-month delivered GMV change:\n- January to February: -9,159,198.00\n- February to March: +20,317,596.00\n- March to April: -3,937,089.00\n- April to May: +12,652,689.00\n- May to June: -1,895,675.00\n- June to July: +6,543,551.00\n- July to August: +10,819,780.00\n- August to September: -6,605,507.00\n- September to October: +10,821,624.00\n- October to November: +2,108,817.00\n- November to December: +5,023,200.00\n\nThe largest negative change was January to February: -9,159,198.00 INR.\n\nJanuary: 286,712 delivered orders; GMV 138,573,283.00 INR; AOV 483.318741 INR/order.\nFebruary: 268,570 delivered orders; GMV 129,414,085.00 INR; AOV 481.863518 INR/order.\n\nJanuary-to-February decomposition using the requested formulas:\n- Count effect: -8,768,368.607474 INR\n- AOV effect: -390,829.392526 INR\n- Sum of effects: -9,159,198.000000 INR (unrounded calculation: -9,159,197.999999981870 INR)\n- Observed GMV change: -9,159,198.00 INR\n\nThe two effects reconcile to the observed change, subject only to floating-point precision. This is an arithmetic decomposition and does not establish a cause.",
+  "outcome": "answer",
+  "total_seconds": 26.96,
+  "finished_utc": "2026-10-21T07:22:12.873569+00:00"
+}

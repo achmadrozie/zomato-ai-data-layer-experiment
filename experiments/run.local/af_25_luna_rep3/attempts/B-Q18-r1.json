@@ -1,0 +1,39 @@
+{
+  "id": "B-Q18-r1",
+  "arm": "B",
+  "question_id": "Q18",
+  "stratum": "data",
+  "question": "For 2025 Delivered orders in INR, show up to three customer age segments ranked by Delivered order count. Include Delivered order count, GMV, and AOV, using the existing customer dimension's segment labels. If fewer than three segments occur, report only those present.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "968aad7d611f901a7d8dfa1d40ac00ed82254c5407f1175667aee50fc5949a8c",
+  "question_sha256": "43755eab8a5718c24234f6fa409f14df3e4447edee255e17edc7340b37ed9afe",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T07:10:47.530095+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "clarify",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "The accessible customer dimension contains numeric AGE but no age-segment labels. Please provide the age-band labels and cutoffs to use; then I can rank the 2025 INR Delivered orders by segment and report count, GMV, and AOV."
+      },
+      "model_stats": {
+        "seconds": 6.08,
+        "prompt_tokens": 1702,
+        "completion_tokens": 455
+      }
+    }
+  ],
+  "final_answer": "The accessible customer dimension contains numeric AGE but no age-segment labels. Please provide the age-band labels and cutoffs to use; then I can rank the 2025 INR Delivered orders by segment and report count, GMV, and AOV.",
+  "outcome": "clarification",
+  "total_seconds": 6.08,
+  "finished_utc": "2026-10-21T07:10:53.613491+00:00"
+}

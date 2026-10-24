@@ -1,0 +1,72 @@
+{
+  "id": "F-Q05-r1",
+  "arm": "F",
+  "question_id": "Q05",
+  "stratum": "data",
+  "question": "What was ordered quantity per order for the full year 2025? Use the recorded order date for the 2025 scope.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "535b657a26e506b9a0eb92b75f4129ff8613b644205817c4b6825425adf0ee49",
+  "question_sha256": "ea883bbd9440eaafaff5343a59ff8dcbd1aa4f1afa8c0d1e08ce4956a43b2a3e",
+  "context_sha256": "7c0d4471a1bf91de4d7360ba61f72fd444c7e625bc3c4e0afc2b9076345734c0",
+  "started_utc": "2026-10-21T03:59:43.243595+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT SUM(COALESCE(i.ITEM_QUANTITY, 0))::FLOAT / NULLIF(COUNT(*), 0) AS ORDERED_QUANTITY_PER_ORDER, SUM(COALESCE(i.ITEM_QUANTITY, 0)) AS TOTAL_ORDERED_QUANTITY, COUNT(*) AS TOTAL_ORDERS FROM ZOMATO_DLR.CORE.FACT_ORDER o LEFT JOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_ITEM_ROLLUP i ON o.ORDER_ID = i.ORDER_ID WHERE o.ORDER_DATE >= '2025-01-01' AND o.ORDER_DATE < '2026-01-01'",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 5.27,
+        "prompt_tokens": 3447,
+        "completion_tokens": 421
+      },
+      "result": {
+        "columns": [
+          "ORDERED_QUANTITY_PER_ORDER",
+          "TOTAL_ORDERED_QUANTITY",
+          "TOTAL_ORDERS"
+        ],
+        "rows": [
+          [
+            "2.8053930789515875",
+            "12230877",
+            "4359773"
+          ]
+        ],
+        "query_id": "01c7decf-0001-b442-0000-d2950004821e",
+        "seconds": 1.22
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "For recorded orders dated in 2025, ordered quantity per order was 2.805393 item units per order (12,230,877 ordered units across 4,359,773 orders).",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.36,
+        "prompt_tokens": 3719,
+        "completion_tokens": 239
+      }
+    }
+  ],
+  "final_answer": "For recorded orders dated in 2025, ordered quantity per order was 2.805393 item units per order (12,230,877 ordered units across 4,359,773 orders).",
+  "outcome": "answer",
+  "total_seconds": 9.86,
+  "finished_utc": "2026-10-21T03:59:53.103226+00:00"
+}

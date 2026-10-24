@@ -1,0 +1,80 @@
+{
+  "id": "A-Q15-r1",
+  "arm": "A",
+  "question_id": "Q15",
+  "stratum": "data",
+  "question": "In 2025, what share of orders contained more than one item line? Compare average ordered units per order for one-line and multi-line orders; also report orders with no item line separately.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "597a068c5b5f4f3b488102e5fb6ff26da6762c24c56b9a012f2123b3304db3dc",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T06:17:16.397530+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "WITH item_rollup AS (\n  SELECT ORDER_ID, COUNT(*) AS ITEM_LINE_COUNT, SUM(QUANTITY) AS ORDERED_UNITS\n  FROM ZOMATO_DLR.STAGING.STG_ZOMATO__ORDER_ITEM\n  GROUP BY ORDER_ID\n), classified_orders AS (\n  SELECT\n    CASE\n      WHEN COALESCE(i.ITEM_LINE_COUNT, 0) = 0 THEN 'No item line'\n      WHEN i.ITEM_LINE_COUNT = 1 THEN 'One item line'\n      ELSE 'More than one item line'\n    END AS ORDER_LINE_GROUP,\n    i.ORDERED_UNITS\n  FROM ZOMATO_DLR.STAGING.STG_ZOMATO__ORDER o\n  LEFT JOIN item_rollup i ON o.ORDER_ID = i.ORDER_ID\n  WHERE o.ORDER_DATE >= '2025-01-01' AND o.ORDER_DATE < '2026-01-01'\n)\nSELECT\n  ORDER_LINE_GROUP,\n  COUNT(*) AS ORDER_COUNT,\n  COUNT(*) / SUM(COUNT(*)) OVER () AS SHARE_OF_ALL_2025_ORDERS,\n  AVG(ORDERED_UNITS) AS AVG_ORDERED_UNITS_PER_ORDER\nFROM classified_orders\nGROUP BY ORDER_LINE_GROUP\nORDER BY CASE ORDER_LINE_GROUP WHEN 'One item line' THEN 1 WHEN 'More than one item line' THEN 2 ELSE 3 END",
+        "metrics": "2025 recorded orders categorized by number of item lines; share denominator includes all 2025 orders, including those with no item line. Average ordered units is summed item quantity per order, averaged within the one-line and multi-line groups.",
+        "group_by": "Order line group",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 8.58,
+        "prompt_tokens": 1315,
+        "completion_tokens": 694
+      },
+      "result": {
+        "columns": [
+          "ORDER_LINE_GROUP",
+          "ORDER_COUNT",
+          "SHARE_OF_ALL_2025_ORDERS",
+          "AVG_ORDERED_UNITS_PER_ORDER"
+        ],
+        "rows": [
+          [
+            "One item line",
+            "1307684",
+            "0.299943",
+            "1.219753"
+          ],
+          [
+            "More than one item line",
+            "3052089",
+            "0.700057",
+            "3.484769"
+          ]
+        ],
+        "query_id": "01c7df59-0001-b38b-0000-d29500046b32",
+        "seconds": 1.9
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "Among 4,359,773 recorded orders in 2025, 3,052,089 had more than one item line: 70.005700% of all orders. Average ordered units per order were 1.219753 for the 1,307,684 one-line orders and 3.484769 for the 3,052,089 multi-line orders. There were 0 orders with no item line.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 5.64,
+        "prompt_tokens": 1855,
+        "completion_tokens": 420
+      }
+    }
+  ],
+  "final_answer": "Among 4,359,773 recorded orders in 2025, 3,052,089 had more than one item line: 70.005700% of all orders. Average ordered units per order were 1.219753 for the 1,307,684 one-line orders and 3.484769 for the 3,052,089 multi-line orders. There were 0 orders with no item line.",
+  "outcome": "answer",
+  "total_seconds": 16.13,
+  "finished_utc": "2026-10-21T06:17:32.526157+00:00"
+}

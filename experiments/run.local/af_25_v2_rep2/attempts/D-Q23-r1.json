@@ -1,0 +1,106 @@
+{
+  "id": "D-Q23-r1",
+  "arm": "D",
+  "question_id": "Q23",
+  "stratum": "context",
+  "question": "In the 2025 standard market report, which three cities led by Delivered-order GMV in INR? Give each city's GMV and share of standard market GMV, using the reporting geography default.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "b1f6e14c773bd842d58a660b709e48a10852a27a37faa316466d6e5582ae5f7b",
+  "question_sha256": "8e9d0cfb7f28a61c23e09bf8b8fb7f4025382414d411dc6f612c4c213a65cd6e",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:57:00.952064+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT CITY, SUM(DELIVERED_SALES_AMOUNT) AS DELIVERED_GMV_INR\nFROM ZOMATO_DLR.MARTS.MART_ORDER_CITY_CURRENCY_DAY_UTC\nWHERE ORDER_DATE_UTC >= '2025-01-01' AND ORDER_DATE_UTC < '2026-01-01'\n  AND CURRENCY = 'INR'\nGROUP BY CITY\nORDER BY DELIVERED_GMV_INR DESC\nLIMIT 3;",
+        "metrics": "DELIVERED_GMV_INR (sum of delivered sales amount in INR)",
+        "group_by": "CITY",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "First, identify the top three cities by delivered GMV in INR for 2025. The share calculation will require the total delivered GMV for all cities, which will be queried next."
+      },
+      "model_stats": {
+        "seconds": 1.54,
+        "prompt_tokens": 2534,
+        "completion_tokens": 193
+      },
+      "result": {
+        "columns": [
+          "CITY",
+          "DELIVERED_GMV_INR"
+        ],
+        "rows": [
+          [
+            "Bangalore",
+            "233341258.00"
+          ],
+          [
+            "Delhi",
+            "177702873.00"
+          ],
+          [
+            "Chennai",
+            "155055243.00"
+          ]
+        ],
+        "query_id": "01c7de55-0001-b38b-0000-d29500046376",
+        "seconds": 0.13
+      }
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT SUM(DELIVERED_SALES_AMOUNT) AS TOTAL_DELIVERED_GMV_INR\nFROM ZOMATO_DLR.MARTS.MART_ORDER_CITY_CURRENCY_DAY_UTC\nWHERE ORDER_DATE_UTC >= '2025-01-01' AND ORDER_DATE_UTC < '2026-01-01'\n  AND CURRENCY = 'INR';",
+        "metrics": "TOTAL_DELIVERED_GMV_INR (sum of delivered sales amount in INR for all cities)",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "To calculate each top city's share of the standard market GMV, I need the total delivered GMV in INR for all cities in 2025."
+      },
+      "model_stats": {
+        "seconds": 1.4,
+        "prompt_tokens": 2852,
+        "completion_tokens": 166
+      },
+      "result": {
+        "columns": [
+          "TOTAL_DELIVERED_GMV_INR"
+        ],
+        "rows": [
+          [
+            "1926466048.00"
+          ]
+        ],
+        "query_id": "01c7de55-0001-b442-0000-d29500040d32",
+        "seconds": 0.11
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "Delivered GMV in INR, share of standard market GMV",
+        "group_by": "CITY",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "In the 2025 standard market report, the three cities leading by Delivered-order GMV in INR were:\n\n1. Bangalore: GMV = 233,341,258 INR, Share = 0.121144 (12.1144%)\n2. Delhi: GMV = 177,702,873 INR, Share = 0.092263 (9.2263%)\n3. Chennai: GMV = 155,055,243 INR, Share = 0.080497 (8.0497%)\n\nPopulation: All delivered orders in INR currency in 2025, grouped by city (reporting geography default).\nUnit: INR (Indian Rupees) for GMV, share is a decimal fraction of total standard market GMV.\nInterpretation: Bangalore, Delhi, and Chennai contributed the highest delivered GMV in INR, together accounting for about 29.39% of the standard market's delivered GMV in 2025.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.94,
+        "prompt_tokens": 3117,
+        "completion_tokens": 256
+      }
+    }
+  ],
+  "final_answer": "In the 2025 standard market report, the three cities leading by Delivered-order GMV in INR were:\n\n1. Bangalore: GMV = 233,341,258 INR, Share = 0.121144 (12.1144%)\n2. Delhi: GMV = 177,702,873 INR, Share = 0.092263 (9.2263%)\n3. Chennai: GMV = 155,055,243 INR, Share = 0.080497 (8.0497%)\n\nPopulation: All delivered orders in INR currency in 2025, grouped by city (reporting geography default).\nUnit: INR (Indian Rupees) for GMV, share is a decimal fraction of total standard market GMV.\nInterpretation: Bangalore, Delhi, and Chennai contributed the highest delivered GMV in INR, together accounting for about 29.39% of the standard market's delivered GMV in 2025.",
+  "outcome": "answer",
+  "total_seconds": 5.12,
+  "finished_utc": "2026-10-21T01:57:06.069394+00:00"
+}

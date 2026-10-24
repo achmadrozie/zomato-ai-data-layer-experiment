@@ -1,0 +1,111 @@
+{
+  "id": "E-Q19-r1",
+  "arm": "E",
+  "question_id": "Q19",
+  "stratum": "data",
+  "question": "Across every calendar date in 2025, including dates with zero Delivered orders, what was the average number of Delivered orders for each weekday? Which weekday had the highest average?",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "a99a688c8b74f2d1acf86ffb095d4085e198af8d169bb3f0b5cd089f5752e8ce",
+  "question_sha256": "e1eaf3ef9b54696d69a4f4b213fbccf78b1cb1bfd78e3388cce48b93e7dfc197",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T02:47:14.472360+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT d.DATE_DAY, d.DAY_NAME, COALESCE(m.DELIVERED_ORDER_COUNT, 0) AS DELIVERED_ORDER_COUNT\nFROM ZOMATO_DLR.CORE.DIM_DATE d\nLEFT JOIN (\n    SELECT ORDER_DATE_UTC, SUM(DELIVERED_ORDER_COUNT) AS DELIVERED_ORDER_COUNT\n    FROM ZOMATO_DLR.MARTS.MART_ORDER_CITY_CURRENCY_DAY_UTC\n    WHERE ORDER_DATE_UTC >= '2025-01-01' AND ORDER_DATE_UTC < '2026-01-01'\n    GROUP BY ORDER_DATE_UTC\n) m\n    ON d.DATE_DAY = m.ORDER_DATE_UTC\nWHERE d.YEAR = 2025\nORDER BY d.DATE_DAY;",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "First, I need the number of Delivered orders for each calendar date in 2025, including dates with zero orders, and the weekday name for each date. This will allow calculation of the average Delivered orders per weekday, counting zeroes for dates with no Delivered orders."
+      },
+      "model_stats": {
+        "seconds": 1.85,
+        "prompt_tokens": 3073,
+        "completion_tokens": 234
+      },
+      "tool_error": "ValueError: Result exceeds 40 rows; return a smaller aggregate"
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT d.DAY_NAME, AVG(COALESCE(m.DELIVERED_ORDER_COUNT, 0)) AS AVG_DELIVERED_ORDER_COUNT\nFROM ZOMATO_DLR.CORE.DIM_DATE d\nLEFT JOIN (\n    SELECT ORDER_DATE_UTC, SUM(DELIVERED_ORDER_COUNT) AS DELIVERED_ORDER_COUNT\n    FROM ZOMATO_DLR.MARTS.MART_ORDER_CITY_CURRENCY_DAY_UTC\n    WHERE ORDER_DATE_UTC >= '2025-01-01' AND ORDER_DATE_UTC < '2026-01-01'\n    GROUP BY ORDER_DATE_UTC\n) m\n    ON d.DATE_DAY = m.ORDER_DATE_UTC\nWHERE d.YEAR = 2025\nGROUP BY d.DAY_NAME\nORDER BY AVG_DELIVERED_ORDER_COUNT DESC;",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "Aggregate to weekday level to get the average number of Delivered orders for each weekday, including dates with zero Delivered orders. This will also allow identification of the weekday with the highest average."
+      },
+      "model_stats": {
+        "seconds": 1.6,
+        "prompt_tokens": 3363,
+        "completion_tokens": 225
+      },
+      "result": {
+        "columns": [
+          "DAY_NAME",
+          "AVG_DELIVERED_ORDER_COUNT"
+        ],
+        "rows": [
+          [
+            "Sat",
+            "14486.211538"
+          ],
+          [
+            "Sun",
+            "13119.134615"
+          ],
+          [
+            "Fri",
+            "12228.980769"
+          ],
+          [
+            "Thu",
+            "9473.653846"
+          ],
+          [
+            "Mon",
+            "9094.365385"
+          ],
+          [
+            "Tue",
+            "9082.788462"
+          ],
+          [
+            "Wed",
+            "9053.773585"
+          ]
+        ],
+        "query_id": "01c7de87-0001-b442-0000-d2950004812a",
+        "seconds": 0.11
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "Average Delivered orders per weekday (2025):\n- Saturday: 14486.211538\n- Sunday: 13119.134615\n- Friday: 12228.980769\n- Thursday: 9473.653846\n- Monday: 9094.365385\n- Tuesday: 9082.788462\n- Wednesday: 9053.773585",
+        "group_by": "DAY_NAME",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "Across every calendar date in 2025 (including dates with zero Delivered orders), the average number of Delivered orders for each weekday was:\n- Saturday: 14486.211538\n- Sunday: 13119.134615\n- Friday: 12228.980769\n- Thursday: 9473.653846\n- Monday: 9094.365385\n- Tuesday: 9082.788462\n- Wednesday: 9053.773585\n\nSaturday had the highest average number of Delivered orders. Units are orders per day, population is all calendar dates in 2025, and zero-order days are included in the averages. Interpretation: Saturdays saw the most Delivered orders on average, while Wednesdays saw the fewest.",
+        "reason": "The query calculated the average Delivered orders per weekday, including all dates in 2025, even those with zero Delivered orders, as requested."
+      },
+      "model_stats": {
+        "seconds": 1.89,
+        "prompt_tokens": 3751,
+        "completion_tokens": 302
+      }
+    }
+  ],
+  "final_answer": "Across every calendar date in 2025 (including dates with zero Delivered orders), the average number of Delivered orders for each weekday was:\n- Saturday: 14486.211538\n- Sunday: 13119.134615\n- Friday: 12228.980769\n- Thursday: 9473.653846\n- Monday: 9094.365385\n- Tuesday: 9082.788462\n- Wednesday: 9053.773585\n\nSaturday had the highest average number of Delivered orders. Units are orders per day, population is all calendar dates in 2025, and zero-order days are included in the averages. Interpretation: Saturdays saw the most Delivered orders on average, while Wednesdays saw the fewest.",
+  "outcome": "answer",
+  "total_seconds": 5.56,
+  "finished_utc": "2026-10-21T02:47:20.029445+00:00"
+}

@@ -1,0 +1,67 @@
+{
+  "id": "D-Q01-r1",
+  "arm": "D",
+  "question_id": "Q01",
+  "stratum": "data",
+  "question": "How many orders were placed during 2025? Use the recorded order date and report a count.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "b1f6e14c773bd842d58a660b709e48a10852a27a37faa316466d6e5582ae5f7b",
+  "question_sha256": "26a8123001af6a9345ad0cf4c1e3b09eec0ec006c7e9ec43b587c5e59377b8a4",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:15:57.298500+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT COUNT(*) AS order_count\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01';",
+        "metrics": "order count",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.08,
+        "prompt_tokens": 2514,
+        "completion_tokens": 85
+      },
+      "result": {
+        "columns": [
+          "ORDER_COUNT"
+        ],
+        "rows": [
+          [
+            "4359773"
+          ]
+        ],
+        "query_id": "01c7de2b-0001-b442-0000-d29500040a42",
+        "seconds": 0.15
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "order count",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "A total of 4,359,773 orders were placed during 2025, using the recorded order date. This count represents all orders in the population for that year.",
+        "reason": "The query directly counted all orders with ORDER_DATE in 2025, as requested."
+      },
+      "model_stats": {
+        "seconds": 1.15,
+        "prompt_tokens": 2690,
+        "completion_tokens": 92
+      }
+    }
+  ],
+  "final_answer": "A total of 4,359,773 orders were placed during 2025, using the recorded order date. This count represents all orders in the population for that year.",
+  "outcome": "answer",
+  "total_seconds": 2.37,
+  "finished_utc": "2026-10-21T01:15:59.671059+00:00"
+}

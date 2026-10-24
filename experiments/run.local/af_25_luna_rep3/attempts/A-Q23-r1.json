@@ -1,0 +1,39 @@
+{
+  "id": "A-Q23-r1",
+  "arm": "A",
+  "question_id": "Q23",
+  "stratum": "context",
+  "question": "In the 2025 standard market report, which three cities led by Delivered-order GMV in INR? Give each city's GMV and share of standard market GMV, using the reporting geography default.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "6134748b1dd40ff0c66ed0fa45407fd8584a1145715ced68daf49e51f8102ece",
+  "question_sha256": "8e9d0cfb7f28a61c23e09bf8b8fb7f4025382414d411dc6f612c4c213a65cd6e",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T07:06:42.959983+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "clarify",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "",
+        "reason": "The snapshot does not define the standard market report’s GMV measure (for example, SUBTOTAL or SALES_AMOUNT) or its reporting-geography default (order CITY or restaurant CITY). Please specify those rules so I can rank cities and calculate each share consistently."
+      },
+      "model_stats": {
+        "seconds": 6.65,
+        "prompt_tokens": 1316,
+        "completion_tokens": 497
+      }
+    }
+  ],
+  "final_answer": "The snapshot does not define the standard market report’s GMV measure (for example, SUBTOTAL or SALES_AMOUNT) or its reporting-geography default (order CITY or restaurant CITY). Please specify those rules so I can rank cities and calculate each share consistently.",
+  "outcome": "clarification",
+  "total_seconds": 6.65,
+  "finished_utc": "2026-10-21T07:06:49.613667+00:00"
+}

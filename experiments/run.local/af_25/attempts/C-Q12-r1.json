@@ -1,0 +1,134 @@
+{
+  "id": "C-Q12-r1",
+  "arm": "C",
+  "question_id": "Q12",
+  "stratum": "data",
+  "question": "What share of 2025 Delivered-order GMV in INR came from the top ten restaurants ranked by that same GMV? Rank by restaurant ID when GMV ties, and report both top-ten and total GMV.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "c2475835703a3609660f193d2e6779203e85920e3664ab2e57228f4f411840e5",
+  "context_sha256": null,
+  "started_utc": "2026-10-20T23:37:09.932368+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT RESTAURANT_ID, SUM(DELIVERED_SALES_AMOUNT) AS GMV_INR\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n  AND IS_DELIVERED = TRUE\n  AND CURRENCY = 'INR'\nGROUP BY RESTAURANT_ID\nORDER BY GMV_INR DESC, RESTAURANT_ID ASC\nLIMIT 10;",
+        "metrics": "Top ten restaurant delivered GMV in INR for 2025",
+        "group_by": "RESTAURANT_ID",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.61,
+        "prompt_tokens": 2196,
+        "completion_tokens": 163
+      },
+      "result": {
+        "columns": [
+          "RESTAURANT_ID",
+          "GMV_INR"
+        ],
+        "rows": [
+          [
+            "437065",
+            "444796.00"
+          ],
+          [
+            "22964",
+            "407677.00"
+          ],
+          [
+            "4484",
+            "387457.00"
+          ],
+          [
+            "16214",
+            "365456.00"
+          ],
+          [
+            "223614",
+            "360967.00"
+          ],
+          [
+            "198307",
+            "320494.00"
+          ],
+          [
+            "84365",
+            "319035.00"
+          ],
+          [
+            "4955",
+            "315964.00"
+          ],
+          [
+            "16344",
+            "315251.00"
+          ],
+          [
+            "4813",
+            "315006.00"
+          ]
+        ],
+        "query_id": "01c7ddc9-0001-b38b-0000-d29500044bb2",
+        "seconds": 0.3
+      }
+    },
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT SUM(DELIVERED_SALES_AMOUNT) AS TOTAL_GMV_INR\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01'\n  AND IS_DELIVERED = TRUE\n  AND CURRENCY = 'INR';",
+        "metrics": "Total delivered GMV in INR for 2025",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": "Need total delivered GMV in INR for 2025 to compute share from top ten restaurants."
+      },
+      "model_stats": {
+        "seconds": 1.34,
+        "prompt_tokens": 2555,
+        "completion_tokens": 140
+      },
+      "result": {
+        "columns": [
+          "TOTAL_GMV_INR"
+        ],
+        "rows": [
+          [
+            "1926466048.00"
+          ]
+        ],
+        "query_id": "01c7ddc9-0001-b442-0000-d29500040526",
+        "seconds": 0.42
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "Top ten restaurant delivered GMV in INR for 2025; Total delivered GMV in INR for 2025; Share of top ten",
+        "group_by": "RESTAURANT_ID (for top ten)",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "For 2025 delivered orders in INR, the top ten restaurants by delivered GMV (ranked by GMV, then restaurant ID) generated a combined GMV of 3,542,107.00 INR. The total delivered GMV in INR for all restaurants in 2025 was 1,926,466,048.00 INR. Thus, the share of delivered GMV from the top ten restaurants was 0.001838 (or 0.1838%). This indicates that the top ten restaurants contributed a very small fraction of the total delivered GMV in INR for 2025.",
+        "reason": "Summed the delivered GMV for the top ten restaurants and divided by the total delivered GMV for all restaurants to compute the share."
+      },
+      "model_stats": {
+        "seconds": 1.79,
+        "prompt_tokens": 2791,
+        "completion_tokens": 227
+      }
+    }
+  ],
+  "final_answer": "For 2025 delivered orders in INR, the top ten restaurants by delivered GMV (ranked by GMV, then restaurant ID) generated a combined GMV of 3,542,107.00 INR. The total delivered GMV in INR for all restaurants in 2025 was 1,926,466,048.00 INR. Thus, the share of delivered GMV from the top ten restaurants was 0.001838 (or 0.1838%). This indicates that the top ten restaurants contributed a very small fraction of the total delivered GMV in INR for 2025.",
+  "outcome": "answer",
+  "total_seconds": 5.46,
+  "finished_utc": "2026-10-20T23:37:15.389380+00:00"
+}

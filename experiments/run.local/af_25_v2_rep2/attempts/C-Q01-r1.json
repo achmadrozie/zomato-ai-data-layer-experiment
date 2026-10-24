@@ -1,0 +1,67 @@
+{
+  "id": "C-Q01-r1",
+  "arm": "C",
+  "question_id": "Q01",
+  "stratum": "data",
+  "question": "How many orders were placed during 2025? Use the recorded order date and report a count.",
+  "model": "gpt-4.1",
+  "temperature": 0,
+  "seed": 20261021,
+  "prompt_sha256": "14a27f83bc80f282cc6c01b34369f1e01d3530ed57ddc97b5ac2ce47021da566",
+  "question_sha256": "26a8123001af6a9345ad0cf4c1e3b09eec0ec006c7e9ec43b587c5e59377b8a4",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T01:50:02.134096+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT COUNT(*) AS order_count\nFROM ZOMATO_DLR.CORE.FACT_ORDER\nWHERE ORDER_DATE >= '2025-01-01' AND ORDER_DATE < '2026-01-01';",
+        "metrics": "order count",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 1.43,
+        "prompt_tokens": 2172,
+        "completion_tokens": 85
+      },
+      "result": {
+        "columns": [
+          "ORDER_COUNT"
+        ],
+        "rows": [
+          [
+            "4359773"
+          ]
+        ],
+        "query_id": "01c7de4e-0001-b442-0000-d29500040ca6",
+        "seconds": 0.11
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "order count",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2025-12-31",
+        "answer": "A total of 4,359,773 orders were placed during 2025, using the recorded order date. This is a simple count of all orders in that year.",
+        "reason": "The query counted all orders with ORDER_DATE in 2025, directly answering the question."
+      },
+      "model_stats": {
+        "seconds": 1.15,
+        "prompt_tokens": 2348,
+        "completion_tokens": 93
+      }
+    }
+  ],
+  "final_answer": "A total of 4,359,773 orders were placed during 2025, using the recorded order date. This is a simple count of all orders in that year.",
+  "outcome": "answer",
+  "total_seconds": 2.69,
+  "finished_utc": "2026-10-21T01:50:04.824022+00:00"
+}

@@ -1,0 +1,72 @@
+{
+  "id": "B-Q04-r1",
+  "arm": "B",
+  "question_id": "Q04",
+  "stratum": "data",
+  "question": "What was the cancellation rate as a percentage for the full year 2025? Use the recorded order date for the 2025 scope.",
+  "model": "gpt-6-luna",
+  "temperature": null,
+  "reasoning_effort": "high",
+  "seed": 20261021,
+  "prompt_sha256": "968aad7d611f901a7d8dfa1d40ac00ed82254c5407f1175667aee50fc5949a8c",
+  "question_sha256": "c78053dc8b040d814fe60448b43cd930654dd067b593ed4f86d73191b907169a",
+  "context_sha256": null,
+  "started_utc": "2026-10-21T06:35:01.657735+00:00",
+  "status": "completed",
+  "steps": [
+    {
+      "action": {
+        "kind": "sql",
+        "query": "SELECT COUNT(*) AS total_orders, COUNT_IF(f.IS_CANCELLED) AS cancelled_orders, 100.0 * COUNT_IF(f.IS_CANCELLED) / NULLIF(COUNT(*), 0) AS cancellation_rate_pct\nFROM ZOMATO_DLR.INTERMEDIATE.INT_ORDER_BASE b\nJOIN ZOMATO_DLR.INTERMEDIATE.INT_ORDER_FULFILLMENT f ON b.ORDER_ID = f.ORDER_ID\nWHERE b.ORDER_DATE >= '2025-01-01' AND b.ORDER_DATE < '2026-01-01'",
+        "metrics": "Total recorded orders, cancelled orders, and cancellation rate as a percentage (cancelled orders / total orders)",
+        "group_by": "",
+        "start_time": "2025-01-01",
+        "end_time": "2026-01-01",
+        "answer": "",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 3.93,
+        "prompt_tokens": 1675,
+        "completion_tokens": 269
+      },
+      "result": {
+        "columns": [
+          "TOTAL_ORDERS",
+          "CANCELLED_ORDERS",
+          "CANCELLATION_RATE_PCT"
+        ],
+        "rows": [
+          [
+            "4359773",
+            "261456",
+            "5.997009"
+          ]
+        ],
+        "query_id": "01c7df6b-0001-b38b-0000-d29500046baa",
+        "seconds": 0.17
+      }
+    },
+    {
+      "action": {
+        "kind": "answer",
+        "query": "",
+        "metrics": "",
+        "group_by": "",
+        "start_time": "",
+        "end_time": "",
+        "answer": "For the full year 2025 by recorded order date, 261,456 of 4,359,773 orders were cancelled, giving a cancellation rate of 5.997009%. The rate is cancelled orders divided by all recorded orders in scope.",
+        "reason": ""
+      },
+      "model_stats": {
+        "seconds": 2.36,
+        "prompt_tokens": 1967,
+        "completion_tokens": 118
+      }
+    }
+  ],
+  "final_answer": "For the full year 2025 by recorded order date, 261,456 of 4,359,773 orders were cancelled, giving a cancellation rate of 5.997009%. The rate is cancelled orders divided by all recorded orders in scope.",
+  "outcome": "answer",
+  "total_seconds": 6.46,
+  "finished_utc": "2026-10-21T06:35:08.122213+00:00"
+}
