@@ -16,7 +16,7 @@ The original scripts in `snowflake/01_setup.sql` through `05_copy_into.sql` are 
 
 **Current refactor checkpoint:** seven staging and six intermediate views plus six core tables have been built in `ZOMATO_DLR`. All six core models have semantic definitions; the project has 19 metrics and four simple aggregate marts. Each model's SQL, Markdown, and YAML files document its own grain, logic, and tests.
 
-The [25-question A–F experiment design](docs/experiment_design.md), [questions](experiments/questions_25.md), [reference answers](experiments/answers_25.md), and [experiment report](docs/experiment_report.md) document the current evaluation. Context is implemented as a versioned Markdown glossary. The evaluated model receives no reference answers.
+The [25-question A–F experiment design](docs/experiment_design.md), [questions](experiments/questions_25.md), [reference answers](experiments/answers_25.md), and [gpt-4.1](docs/experiment_report_v2.md) and [Luna](docs/experiment_report_luna.md) reports document the current evaluation. Context is implemented as a versioned Markdown glossary. The evaluated model receives no reference answers.
 
 Each SQL-based dbt model lives in its own folder with matching `.sql`, `.md`, and `.yml` files. The SQL defines the transformation, Markdown explains its grain and purpose, and YAML holds its dbt description and tests. Metric declarations have no SQL model and remain YAML plus Markdown configuration files. Semantic declarations for SQL-based core models live in the corresponding model YAML.
 

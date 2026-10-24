@@ -48,7 +48,7 @@ EXPERIMENTS = ROOT / "experiments"
 QUESTIONS = EXPERIMENTS / "questions_25.json"
 CONTEXT = ROOT / "context/v1/business_glossary.md"
 METRIC_ROOT = ROOT / "dbt_zomato/models/metrics"
-RUN_DIR = EXPERIMENTS / "run.local" / "af_25"
+RUN_DIR = EXPERIMENTS / "run.local" / "new_run"
 MODEL = "gpt-4.1"
 SCHEMAS = {
     "A": ("SOURCES", "STAGING"),

@@ -47,5 +47,5 @@
 - Pada **satu model, satu dataset, dan tiga repetisi per kombinasi**, ada tren kenaikan A→E untuk pertanyaan data, tetapi kenaikan tidak selalu konsisten di setiap layer. C dan D memiliki mean data yang sama (16,33/22). Penambahan glossary di F memberikan lompatan besar pada pertanyaan kebijakan (0→3/3) tanpa mengorbankan akurasi data.
 - **Keterbatasan:** (1) Hanya satu model (gpt-4.1); (2) Tiga repetisi belum cukup untuk estimasi ketidakpastian yang robust; (3) Rubrik ±0,01pp untuk perubahan persentase sangat ketat dan membutuhkan kalkulasi presisi tinggi yang sulit bagi model bahasa.
 - Langkah selanjutnya: perjelas Q07 (minta SQL eksplisit untuk perubahan persen), gunakan calculation tool untuk Q14/Q20/Q07, uji model lain, dan tambah repetisi untuk pertanyaan dengan variasi tinggi.
-- Trace lengkap tersimpan lokal di `experiments/run.local/af_25_v2_rep{1,2,3}/` (Git-ignored). Grade tersimpan di [`af_25_v2_grades.json`](../experiments/run.local/af_25_v2_grades.json).
+- Trace lengkap tersimpan di repo pada `experiments/run.local/af_25_v2_rep{1,2,3}/`. Grade tersimpan di [`af_25_v2_grades.json`](../experiments/run.local/af_25_v2_grades.json).
 - [Audit per pertanyaan v2](experiment_answer_audit_v2.md) menampilkan kunci, skor per arm×rep, dan jawaban akhir untuk seluruh 25 pertanyaan.

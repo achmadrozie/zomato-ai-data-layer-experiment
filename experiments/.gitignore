@@ -1,6 +1,5 @@
 gold_25.local.sql
 run.local/*
-!run.local/af_25/
 !run.local/af_25_v2_rep1/
 !run.local/af_25_v2_rep2/
 !run.local/af_25_v2_rep3/
@@ -10,8 +9,6 @@ run.local/*
 !run.local/af_25_v2_grades.json
 !run.local/af_25_luna_grades.json
 run.local/*/*
-!run.local/af_25/grades.local.json
-!run.local/af_25/grades_strict.local.json
 !run.local/*/attempts/
 run.local/*/attempts/*
 !run.local/*/attempts/*.json
