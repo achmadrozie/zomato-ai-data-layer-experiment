@@ -18,6 +18,8 @@ The original scripts in `snowflake/01_setup.sql` through `05_copy_into.sql` are 
 
 The [25-question A–F experiment design](docs/experiment_design.md), [questions](experiments/questions_25.md), [reference answers](experiments/answers_25.md), and [gpt-4.1](docs/experiment_report_v2.md) and [Luna](docs/experiment_report_luna.md) reports document the current evaluation. Context is implemented as a versioned Markdown glossary. The evaluated model receives no reference answers.
 
+Three [follow-up analysis tasks](docs/experiment_extension_questions.md) explore diagnosis and decisions beyond the frozen 900-attempt benchmark.
+
 Each SQL-based dbt model lives in its own folder with matching `.sql`, `.md`, and `.yml` files. The SQL defines the transformation, Markdown explains its grain and purpose, and YAML holds its dbt description and tests. Metric declarations have no SQL model and remain YAML plus Markdown configuration files. Semantic declarations for SQL-based core models live in the corresponding model YAML.
 
 Set `DBT_SNOWFLAKE_ACCOUNT`, `DBT_SNOWFLAKE_USER`, and `DBT_ENV_SECRET_SNOWFLAKE_PASSWORD` in your shell. Copy [`dbt_zomato/profiles.yml.example`](dbt_zomato/profiles.yml.example) to a private profiles directory such as `.local/dbt/profiles.yml`, then run dbt with `--profiles-dir .local/dbt --project-dir dbt_zomato`. The Project 1 profile and run guard require `ZOMATO_DLR`, so the existing Project 0 profile cannot accidentally direct this project to `ZOMATO`.
