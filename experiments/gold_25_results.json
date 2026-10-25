@@ -1,0 +1,509 @@
+{
+ "Q01-05": {
+  "cols": [
+   "Q1",
+   "Q2",
+   "Q3",
+   "Q4",
+   "Q5"
+  ],
+  "rows": [
+   [
+    4359773,
+    1926466048.0,
+    482.93528754,
+    5.997009,
+    2.805393
+   ]
+  ]
+ },
+ "Q06": {
+  "cols": [
+   "MONTH",
+   "DELIVERED_ORDERS",
+   "GMV_INR"
+  ],
+  "rows": [
+   [
+    "2025-12-01",
+    383530,
+    185263071.0
+   ],
+   [
+    "2025-11-01",
+    373651,
+    180239871.0
+   ]
+  ]
+ },
+ "Q07": {
+  "cols": [
+   "MONTH",
+   "DELIVERED_ORDERS",
+   "GMV_INR",
+   "AOV_INR"
+  ],
+  "rows": [
+   [
+    "2025-01-01",
+    286712,
+    138573283.0,
+    483.31874145
+   ],
+   [
+    "2025-12-01",
+    383530,
+    185263071.0,
+    483.04714364
+   ]
+  ]
+ },
+ "Q08": {
+  "cols": [
+   "ORDER_CITY",
+   "DELIVERED_ORDERS",
+   "GMV_INR",
+   "AOV_INR"
+  ],
+  "rows": [
+   [
+    "Bangalore",
+    440743,
+    233341258.0,
+    529.42703117
+   ],
+   [
+    "Delhi",
+    339384,
+    177702873.0,
+    523.60415635
+   ],
+   [
+    "Chennai",
+    310963,
+    155055243.0,
+    498.62923563
+   ]
+  ]
+ },
+ "Q09": {
+  "cols": [
+   "CITY",
+   "ORDERS",
+   "CANCELLED_ORDERS",
+   "CITY_RATE_PCT",
+   "OVERALL_RATE_PCT",
+   "GAP_PP"
+  ],
+  "rows": [
+   [
+    "Hyderabad",
+    319122,
+    19236,
+    6.027789,
+    5.997009,
+    0.03078
+   ]
+  ]
+ },
+ "Q10": {
+  "cols": [
+   "ORDER_CITY",
+   "DURATION_OBSERVATIONS",
+   "AVG_DELIVERY_MIN"
+  ],
+  "rows": [
+   [
+    "Bangalore",
+    440743,
+    31.0560894
+   ],
+   [
+    "Delhi",
+    339384,
+    31.048482
+   ]
+  ]
+ },
+ "Q11": {
+  "cols": [
+   "ORDER_STATUS",
+   "ORDERS",
+   "RATED_ORDERS",
+   "RATING_COVERAGE_PCT",
+   "AVG_RATING_AMONG_RATED"
+  ],
+  "rows": [
+   [
+    "Cancelled",
+    261456,
+    0,
+    0.0,
+    null
+   ],
+   [
+    "Delivered",
+    3989077,
+    2793569,
+    70.030461,
+    4.14547985
+   ],
+   [
+    "Refunded",
+    109240,
+    0,
+    0.0,
+    null
+   ]
+  ]
+ },
+ "Q12": {
+  "cols": [
+   "TOP_TEN_GMV_INR",
+   "TOTAL_GMV_INR",
+   "TOP_TEN_SHARE_PCT"
+  ],
+  "rows": [
+   [
+    3552103.0,
+    1926466048.0,
+    0.18438441
+   ]
+  ]
+ },
+ "Q13": {
+  "cols": [
+   "EXACT_CUISINE_LABEL",
+   "TOTAL_ORDERS",
+   "CANCELLED_ORDERS",
+   "CANCELLATION_RATE_PCT",
+   "DELIVERED_GMV_INR"
+  ],
+  "rows": [
+   [
+    "North Indian,Chinese",
+    202651,
+    11916,
+    5.88006,
+    97195380.0
+   ],
+   [
+    "Indian,Chinese",
+    126766,
+    7583,
+    5.981888,
+    60447386.0
+   ],
+   [
+    "Indian",
+    148932,
+    8936,
+    6.000054,
+    58362786.0
+   ]
+  ]
+ },
+ "Q14": {
+  "cols": [
+   "FOOD_CLASS",
+   "ITEM_LINES",
+   "ORDERED_UNITS",
+   "UNIT_SHARE_PCT"
+  ],
+  "rows": [
+   [
+    "Non-Veg",
+    2749222,
+    3353105,
+    27.415082
+   ],
+   [
+    "Unknown",
+    12,
+    13,
+    0.000106
+   ],
+   [
+    "Veg",
+    7277939,
+    8877759,
+    72.584811
+   ]
+  ]
+ },
+ "Q15": {
+  "cols": [
+   "LINE_GROUP",
+   "ORDERS",
+   "AVG_UNITS_PER_ORDER",
+   "SHARE_OF_ALL_ORDERS_PCT"
+  ],
+  "rows": [
+   [
+    "Multiple lines",
+    3052089,
+    3.484769,
+    70.005686
+   ],
+   [
+    "No line",
+    0,
+    null,
+    0.0
+   ],
+   [
+    "One line",
+    1307684,
+    1.219753,
+    29.994314
+   ]
+  ]
+ },
+ "Q16": {
+  "cols": [
+   "ITEM_LINES",
+   "DISCREPANT_LINES",
+   "SIGNED_DELTA_INR",
+   "ABSOLUTE_DELTA_INR"
+  ],
+  "rows": [
+   [
+    10027173,
+    21466,
+    23791.0,
+    23791.0
+   ]
+  ]
+ },
+ "Q17": {
+  "cols": [
+   "ORDER_STATUS",
+   "ORDERS",
+   "DISCREPANT_ORDERS",
+   "SIGNED_DELTA_INR"
+  ],
+  "rows": [
+   [
+    "Cancelled",
+    261456,
+    0,
+    0.0
+   ],
+   [
+    "Delivered",
+    3989077,
+    0,
+    0.0
+   ],
+   [
+    "Refunded",
+    109240,
+    0,
+    0.0
+   ]
+  ]
+ },
+ "Q18": {
+  "cols": [
+   "AGE_SEGMENT",
+   "DELIVERED_ORDERS",
+   "GMV_INR",
+   "AOV_INR"
+  ],
+  "rows": [
+   [
+    "Gen Z",
+    2222349,
+    1073372395.0,
+    482.99002317
+   ],
+   [
+    "Millennial",
+    1766728,
+    853093653.0,
+    482.86643615
+   ]
+  ]
+ },
+ "Q19": {
+  "cols": [
+   "WEEKDAY_ISO",
+   "CALENDAR_DAYS",
+   "DELIVERED_ORDERS",
+   "AVG_DELIVERED_ORDERS_PER_DAY"
+  ],
+  "rows": [
+   [
+    1,
+    52,
+    472907,
+    9094.365385
+   ],
+   [
+    2,
+    52,
+    472305,
+    9082.788462
+   ],
+   [
+    3,
+    53,
+    479850,
+    9053.773585
+   ],
+   [
+    4,
+    52,
+    492630,
+    9473.653846
+   ],
+   [
+    5,
+    52,
+    635907,
+    12228.980769
+   ],
+   [
+    6,
+    52,
+    753283,
+    14486.211538
+   ],
+   [
+    7,
+    52,
+    682195,
+    13119.134615
+   ]
+  ]
+ },
+ "Q20": {
+  "cols": [
+   "PRIOR_MONTH",
+   "MONTH",
+   "PRIOR_ORDERS",
+   "DELIVERED_ORDERS",
+   "PRIOR_GMV_INR",
+   "GMV_INR",
+   "PRIOR_AOV_INR",
+   "CURRENT_AOV_INR",
+   "GMV_CHANGE_INR",
+   "COUNT_EFFECT_INR",
+   "AOV_EFFECT_INR"
+  ],
+  "rows": [
+   [
+    "2025-01-01",
+    "2025-02-01",
+    286712,
+    268570,
+    138573283.0,
+    129414085.0,
+    483.31874145,
+    481.86351789,
+    -9159198.0,
+    -8768368.6074737,
+    -390829.3915092
+   ]
+  ]
+ },
+ "Q21": {
+  "cols": [
+   "MONTHS_USED",
+   "PEARSON_R",
+   "MIN_CANCEL_RATE_PCT",
+   "MAX_CANCEL_RATE_PCT",
+   "MIN_AVG_DELIVERY_MIN",
+   "MAX_AVG_DELIVERY_MIN"
+  ],
+  "rows": [
+   [
+    12,
+    -0.020030263907185555,
+    5.935521,
+    6.054661,
+    31.030407,
+    31.0970975
+   ]
+  ]
+ },
+ "Q22": {
+  "cols": [
+   "DELIVERED_ORDERS",
+   "GMV_INR",
+   "AOV_INR"
+  ],
+  "rows": [
+   [
+    1848107,
+    927955016.0,
+    502.11108772
+   ]
+  ]
+ },
+ "Q23": {
+  "cols": [
+   "REPORTING_CITY",
+   "GMV_INR",
+   "STANDARD_MARKET_SHARE_PCT"
+  ],
+  "rows": [
+   [
+    "Bangalore",
+    129604607.0,
+    13.96669071
+   ],
+   [
+    "Chennai",
+    92523985.0,
+    9.97074033
+   ],
+   [
+    "Hyderabad",
+    79925454.0,
+    8.61307419
+   ]
+  ]
+ },
+ "Q24": {
+  "cols": [
+   "HALF_YEAR",
+   "REPEAT_CUSTOMERS",
+   "CUSTOMERS_WITH_DELIVERED_ORDER"
+  ],
+  "rows": [
+   [
+    "H1",
+    94251,
+    98033
+   ],
+   [
+    "H2",
+    95899,
+    98642
+   ]
+  ]
+ },
+ "Q25": {
+  "cols": [
+   "CITY",
+   "CITY_ORDERS",
+   "CITY_CANCEL_PCT",
+   "CITY_AVG_DELIVERY_MIN",
+   "OVERALL_ORDERS",
+   "OVERALL_CANCEL_PCT",
+   "OVERALL_AVG_DELIVERY_MIN"
+  ],
+  "rows": [
+   [
+    "Hyderabad",
+    319122,
+    6.027789,
+    31.0967157,
+    4359773,
+    5.997009,
+    31.0743794
+   ]
+  ]
+ }
+}

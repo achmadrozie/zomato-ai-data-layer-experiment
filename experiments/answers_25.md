@@ -6,9 +6,9 @@ Snapshot: `ZOMATO_DLR`, verified on 20 October 2026. Recorded `order_date` in 20
 
 - **Primary:** compare the agent’s final user-facing output with the expected values or tables, requested population/date/currency, units, and interpretation. Different SQL is acceptable when it yields the same valid answer.
 - Give full correctness credit on a multi-part question only when every requested part is correct. A valid clarification or abstention is a separate outcome, not a numerically correct answer. Policy-dependent Q22–Q24 can warrant clarification in A–E; F should apply the approved context.
-- Exact matching applies to integer counts, ranks, identities, and null-versus-zero meaning. Allow INR 0.01 for money totals; **0.01 percentage point** for rates, shares, and percentage changes; 0.01 in stated units for averages and correlation. For Q20, allow INR 0.05 rounding on each decomposition component. These wider tolerances were applied consistently to all 150 saved answers after the initial run; no model attempt was rerun.
-- **Secondary:** inspect SQL/MetricFlow calls and execution traces to explain wrong outputs and check access limits. The initial A/E prototype scored locally computed query outputs only, not final agent wording.
-- Executable references remain in ignored `gold_25.local.sql` (Q01–Q25). The combined SQL reference and this answer file are evaluator-only.
+- Exact matching applies to integer counts, ranks, identities, and null-versus-zero meaning. Allow INR 0.01 for money totals; **0.01 percentage point** for rates, shares, and percentage changes; 0.01 in stated units for averages and correlation. For Q20, allow INR 0.05 rounding on each decomposition component. The same tolerances apply to every attempt and are implemented in `scripts/autograde.py`, which produces the official scores; no model attempt was rerun.
+- **Secondary:** inspect SQL/MetricFlow calls and execution traces to explain wrong outputs and check access limits.
+- Executable references remain in ignored `gold_25.local.sql` (Q01–Q25); their output on 25 October 2026 is stored in `gold_25_results.json`. The combined SQL reference and this answer file are evaluator-only.
 
 ## Questions and answers
 

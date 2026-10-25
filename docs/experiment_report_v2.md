@@ -1,51 +1,51 @@
-# Ringkasan eksperimen A–F: 25 pertanyaan (run v2, 3 repetisi)
+# Ringkasan eksperimen A–F: 25 pertanyaan (gpt-4.1, 3 repetisi)
 
 ## Proses
 
 - **Tujuan:** mengukur perubahan akurasi jawaban saat akses agent ditambah bertahap: A = source/staging, B = +intermediate, C = +core, D = +marts, E = +19 metric MetricFlow, F = +business glossary. Akses SQL dari layer sebelumnya tetap tersedia di setiap arm.
-- **Setup:** satu model `gpt-4.1`, temperature 0, seed 20261021. Setiap kombinasi 25 pertanyaan × 6 arm dijalankan **3 kali (repetisi)** = **450 attempt** total. Semua memakai snapshot `ZOMATO_DLR`, teks pertanyaan yang sama, dan batas query yang konsisten.
-- **Run:** 21 Oktober 2026; **450/450 selesai** (status `completed`). Repetisi disimpan di direktori `af_25_v2_rep1`, `af_25_v2_rep2`, `af_25_v2_rep3`. Agent tidak menerima [jawaban referensi](../experiments/answers_25.md).
-- **Rubrik skor:** jawaban akhir harus benar pada *semua* angka, populasi, unit, dan interpretasi. Toleransi: ±INR 0,01 untuk total uang; ±0,01 percentage point untuk rate, share, dan perubahan persen; ±0,01 unit untuk average dan korelasi; ±INR 0,05 untuk tiap komponen dekomposisi Q20; integer count dan identitas eksak. Q01–Q21 dan Q25 adalah pertanyaan data; Q22–Q24 memerlukan aturan bisnis yang hanya diberikan ke F. Arm A–E di Q22–Q24 dinilai 0 karena tidak memiliki aturan eligibility standard market.
-- **Skor mean ±std** dihitung dari 3 nilai (0 atau 1) tiap arm×pertanyaan di atas tiga repetisi.
+- **Setup:** satu model `gpt-4.1`, temperature 0, seed 20261021. Setiap kombinasi 25 pertanyaan × 6 arm dijalankan **3 kali (repetisi)** = **450 attempt**. Semua memakai snapshot `ZOMATO_DLR`, teks pertanyaan yang sama, dan batas query yang sama.
+- **Run:** 21 Oktober 2026; **450/450 selesai** (status `completed`). Repetisi disimpan di `af_25_v2_rep1`, `af_25_v2_rep2`, `af_25_v2_rep3`. Agent tidak menerima [jawaban referensi](../experiments/answers_25.md).
+- **Penilaian:** skor resmi berasal dari [`scripts/autograde.py`](../scripts/autograde.py), yang memeriksa jawaban akhir terhadap nilai referensi di [`gold_25_results.json`](../experiments/gold_25_results.json) (hasil menjalankan ulang gold SQL pada 25 Oktober 2026; sama dengan `answers_25.md`). Aturan yang sama dipakai untuk semua attempt. Toleransi: ±INR 0,01 untuk total uang; ±0,01 percentage point untuk rate, share, dan perubahan persen; ±0,01 unit untuk average dan korelasi; ±INR 0,05 untuk tiap komponen dekomposisi Q20; integer count dan identitas eksak. Klarifikasi dan query gagal bernilai 0. Q22–Q24 memerlukan aturan bisnis yang hanya diberikan ke F, sehingga bernilai 0 di A–E.
+- **Koreksi atas penilaian manual awal:** 13 dari 450 nilai manual berbeda dari skor ini dan sudah diganti (daftar di [`experiments/README.md`](../experiments/README.md)). Sebelas nilai manual terlalu longgar dan dua terlalu ketat.
+- **Statistik:** mean ± simpangan baku **sampel** (n−1) dari 3 total per repetisi.
 
 ## Hasil
 
-| Arm | Data benar (mean±std / 22) | Kebijakan benar (mean±std / 3) | Total benar (mean±std / 25) |
+| Arm | Data benar (mean ± std / 22) | Kebijakan benar (mean ± std / 3) | Total benar (mean ± std / 25) |
 | --- | ---: | ---: | ---: |
-| A | 11,67 ± 0,58 | 0,00 ± 0,00 | 11,67 ± 0,58 |
-| B | 15,67 ± 0,58 | 0,00 ± 0,00 | 15,67 ± 0,58 |
-| C | 16,33 ± 0,58 | 0,00 ± 0,00 | 16,33 ± 0,58 |
+| A | 11,33 ± 0,58 | 0,00 ± 0,00 | 11,33 ± 0,58 |
+| B | 14,00 ± 1,00 | 0,00 ± 0,00 | 14,00 ± 1,00 |
+| C | 16,67 ± 1,15 | 0,00 ± 0,00 | 16,67 ± 1,15 |
 | D | 16,33 ± 0,58 | 0,00 ± 0,00 | 16,33 ± 0,58 |
-| E | **17,33 ± 1,15** | 0,00 ± 0,00 | **17,33 ± 1,15** |
-| F | 16,00 ± 0,00 | **3,00 ± 0,00** | **19,00 ± 0,00** |
+| E | 16,67 ± 0,58 | 0,00 ± 0,00 | 16,67 ± 0,58 |
+| F | 15,33 ± 0,58 | 3,00 ± 0,00 | **18,33 ± 0,58** |
 
-**Catatan per arm:**
+Total semua arm: **93,33 / 150** (92, 94, 94 per repetisi; std 1,15).
 
-- **A (source/staging):** 11–12 benar per repetisi. Gagal pada Q08 (menggunakan granular city bukan kota agregat), Q09 (Bikaner bukan Hyderabad), Q10 (tidak menemukan data delivery duration), Q13 (total order salah, hanya Delivered), Q14 (share unit salah), Q18 (pakai usia numerik, bukan label segmen), Q25 (Bikaner).
-- **B (+intermediate):** 15–16 benar. Mengalami inkonsistensi di Q13 (total order masih salah), Q14 (share unit), Q16 (filter INR menghasilkan 14.321 bukan 21.466 perbedaan), Q18 (beberapa rep menggunakan segmen income bukan age).
-- **C (+core):** 16–17 benar. Core membawa label age segment yang benar (Q18). Q16 gagal karena filter INR. Q20 hanya benar di rep3 (dekomposisi eksak dengan AOV presisi tinggi).
-- **D (+marts):** 16–17 benar. Marts membawa label segmen yang tepat dan Q13 benar (memakai total order benar). Q19 gagal semua rep karena merata-ratakan data mart city-hari bukan total order per hari.
-- **E (+MetricFlow):** 16–18 benar. Arm terbaik untuk pertanyaan data. Q05 gagal di rep3 (query error). Q09 gagal di rep3 (timeout). Variasi antar-rep tertinggi (std 1,15).
-- **F (+glossary):** 16 data benar + 3 kebijakan benar = total terbaik 19/25. Sempurna di Q22–Q24 berkat aturan `rating_count >= 100`. Q19 gagal semua rep (salah hitung rata-rata per hari weekday), Q20 gagal (dekomposisi dengan AOV tidak presisi), Q25 gagal (delivery Hyderabad tidak dikueri secara eksplisit di rep1 dan rep3).
+Pertanyaan data yang tidak dijawab benar di setiap repetisi. Angka dalam kurung adalah skor rep1 rep2 rep3:
 
-**Pertanyaan yang tidak bisa dijawab oleh semua arm:**
-- **Q07:** Seluruh arm melaporkan perubahan count ~33,73%–33,75%, sementara kunci membutuhkan 33,7684% (±0,01pp). Selisih terkecil masih ~0,018pp di luar toleransi. Semua arm membuat kesalahan hitung aritmetika saat menghitung perubahan persentase count.
-- **Q14:** Semua arm melaporkan share Veg ~72,57%–72,63%, sementara kunci 72,584811%. Sebagian besar meleset ~0,04–0,04pp di luar toleransi ±0,01pp.
-- **Q20:** Hampir semua arm membuat kesalahan aritmetika pada perkalian komponen dekomposisi (melaporkan −8.771.964 alih-alih −8.768.368 untuk count effect). Hanya C-rep3 yang mendapat nilai tepat.
+| Arm | Pertanyaan yang gagal |
+| --- | --- |
+| A | Q07, Q08, Q09, Q10, Q12, Q13, Q14, Q18, Q20, Q25 (000); Q15 (010) |
+| B | Q07, Q12, Q13, Q14, Q16, Q18, Q20 (000); Q09 (101), Q15 (011), Q17 (101) |
+| C | Q07, Q13, Q14, Q16 (000); Q09 (011), Q20 (001), Q21 (101) |
+| D | Q07, Q14, Q19, Q20, Q25 (000); Q21 (010) |
+| E | Q07, Q14, Q20, Q25 (000); Q05 (110), Q08 (101), Q09 (110), Q12 (011) |
+| F | Q07, Q12, Q14, Q15, Q19, Q20 (000); Q25 (010) |
 
-## Pembelajaran
+## Pola yang terlihat
 
-1. **Akses layer yang lebih tinggi membantu secara bertahap untuk sebagian pertanyaan.** Q08 (kota order), Q13 (total order per cuisine), Q18 (label age segment) menunjukkan kenaikan yang jelas dari A ke C/D. Arm A gagal pada pertanyaan yang membutuhkan join dimensi atau label dari mart.
-2. **Kesalahan hitung di jawaban akhir tetap dominan.** Q07, Q14, Q20 gagal di semua arm karena kesalahan aritmetika numerik, bukan karena akses data. Ini menunjukkan limitasi model dalam melakukan kalkulasi presisi tinggi pada saat merangkum jawaban.
-3. **MetricFlow (E) memberi manfaat terbesar pada data, glossary (F) penting untuk kebijakan.** E memiliki akurasi data tertinggi (17,33/22); F tidak kalah di data tetapi unggul di Q22–Q24 yang membutuhkan aturan bisnis.
-4. **Variabilitas lintas repetisi mengungkap instabilitas.** E memiliki std tertinggi (1,15) karena rep3 mengalami dua kegagalan query (Q05, Q09). F paling stabil (std 0) karena pertanyaannya lebih konsisten menghasilkan jawaban sama. Tiga repetisi sangat membantu mengidentifikasi pertanyaan yang bersifat acak (Q21 untuk C dan D).
-5. **Pertanyaan "satu angka tambahan" paling sulit.** Q07 (perubahan % count yang tepat), Q14 (share unit dengan dua angka presisi tinggi), Q20 (dekomposisi dengan toleransi ±0,05 INR) mengharuskan rantai kalkulasi yang presisi. Lebih baik menggunakan tool kalkulasi terpisah daripada mengandalkan model untuk aritmetika presisi.
-6. **Kegagalan Q19 pada D dan F.** D menggunakan rata-rata data mart kota-hari (bukan total order per hari), F melakukan pembagian total/count secara manual tetapi menghasilkan nilai yang sedikit salah untuk beberapa hari (Sunday, Friday, Tuesday, Wednesday).
+- **Q07 dan Q14 gagal di semua 18 attempt masing-masing; Q20 gagal di 17 dari 18.** Dalam jawaban akhir model menghitung persentase dan share dengan hitungan manual, bukan dari hasil SQL. Contohnya Q07 melaporkan kenaikan count 33,732% (benar 33,7684%) dan Q14 melaporkan share Veg 72,5739% (benar 72,5848%). Ini kesalahan aritmetika model, bukan kekurangan akses data.
+- **Q12 gagal di 10 attempt** (A, B, dan F di semua repetisi; E di satu repetisi). Contoh: model menulis top-ten GMV 3.552.107 padahal sepuluh nilai yang ia tulis sendiri berjumlah 3.552.103.
+- **Q13 gagal di A, B, dan C di semua repetisi:** total order dan cancellation rate per cuisine tidak sesuai kunci; D, E, dan F memperbaikinya.
+- **Q18 gagal di A dan B** karena label age segment ada di `DIM_CUSTOMER` (layer core), yang belum tersedia di kedua arm itu.
+- **Q22–Q24:** hanya F yang menjawab benar (3/3 di semua repetisi), berkat aturan `rating_count >= 100`, geografi restoran, dan definisi repeat customer. Tidak ada jawaban A–E yang cocok dengan kunci walau skor 0 tidak dipaksakan.
+- **Variasi antar repetisi** terbesar ada di C (std 1,15) dan B (std 1,00), terutama dari Q09, Q15, Q17, Q20, dan Q21.
 
 ## Kesimpulan dan batas
 
-- Pada **satu model, satu dataset, dan tiga repetisi per kombinasi**, ada tren kenaikan A→E untuk pertanyaan data, tetapi kenaikan tidak selalu konsisten di setiap layer. C dan D memiliki mean data yang sama (16,33/22). Penambahan glossary di F memberikan lompatan besar pada pertanyaan kebijakan (0→3/3) tanpa mengorbankan akurasi data.
-- **Keterbatasan:** (1) Hanya satu model (gpt-4.1); (2) Tiga repetisi belum cukup untuk estimasi ketidakpastian yang robust; (3) Rubrik ±0,01pp untuk perubahan persentase sangat ketat dan membutuhkan kalkulasi presisi tinggi yang sulit bagi model bahasa.
-- Langkah selanjutnya: perjelas Q07 (minta SQL eksplisit untuk perubahan persen), gunakan calculation tool untuk Q14/Q20/Q07, uji model lain, dan tambah repetisi untuk pertanyaan dengan variasi tinggi.
-- Trace lengkap tersimpan di repo pada `experiments/run.local/af_25_v2_rep{1,2,3}/`. Grade tersimpan di [`af_25_v2_grades.json`](../experiments/run.local/af_25_v2_grades.json).
-- [Audit per pertanyaan v2](experiment_answer_audit_v2.md) menampilkan kunci, skor per arm×rep, dan jawaban akhir untuk seluruh 25 pertanyaan.
+- Pada **satu model, satu dataset, dan tiga repetisi**, skor total naik dari A (11,33) ke B (14,00) ke C (16,67), lalu datar di D dan E (16,33 dan 16,67). F menambah 3 poin dari pertanyaan kebijakan, sementara skor data F (15,33) lebih rendah daripada C–E karena Q12, Q15, dan Q19 gagal di F di semua repetisi.
+- Selisih C, D, dan E (0,33 poin) lebih kecil daripada simpangan baku antar repetisi (0,58–1,15), jadi urutan ketiganya tidak dapat disimpulkan.
+- **Keterbatasan:** (1) satu model; (2) tiga repetisi belum cukup untuk estimasi ketidakpastian yang kuat; (3) rubrik ±0,01 pp untuk persentase menuntut aritmetika presisi tinggi yang sulit bagi model tanpa alat hitung; (4) kunci referensi dan pertanyaan berasal dari penulis yang sama.
+- Langkah lanjutan yang masuk akal: alat kalkulasi atau instruksi agar menghitung persentase di SQL (Q07, Q12, Q14, Q20), uji model lain, dan tambah repetisi untuk pertanyaan yang bervariasi.
+- Trace lengkap ada di `experiments/run.local/af_25_v2_rep{1,2,3}/`. Skor tersimpan di [`af_25_v2_grades.json`](../experiments/run.local/af_25_v2_grades.json).

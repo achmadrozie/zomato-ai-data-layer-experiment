@@ -32,9 +32,9 @@ The MetricFlow time spine is backend support, not an agent-visible staging objec
 
 ## Scoring
 
-The primary unit is the **final user-facing answer**. For each data-answerable Q01–Q21 and Q25, all requested values, ranking, scope, units, and interpretation must match the frozen author reference within its stated tolerance. Equivalent SQL is acceptable. An execution error, unsupported claim, or unrequested change in population is incorrect; record the reason separately. Report per-question outcomes and arm totals with denominators, plus query/metric use and failures.
+The primary unit is the **final user-facing answer**, graded by `scripts/autograde.py` against `experiments/gold_25_results.json` with identical rules for every attempt and model. For each data-answerable Q01–Q21 and Q25, all requested values, ranking, scope, units, and interpretation must match the frozen author reference within its stated tolerance. Equivalent SQL is acceptable. An execution error, unsupported claim, or unrequested change in population is incorrect; record the reason separately. Report per-question outcomes and arm totals with denominators, plus query/metric use and failures.
 
-Scoring uses ±0.01 percentage point for percentages, ±0.01 in stated units for averages/correlation, exact integer counts and identities, and the stated money/decomposition tolerances. The [reference answers](../experiments/answers_25.md), [gpt-4.1 report](experiment_report_v2.md), and [Luna report](experiment_report_luna.md) record the scores.
+Scoring uses ±0.01 percentage point for percentages, ±0.01 in stated units for averages/correlation, exact integer counts and identities, and the stated money/decomposition tolerances. The [reference answers](../experiments/answers_25.md), [gpt-4.1 report](experiment_report_v2.md), [Luna report](experiment_report_luna.md), and the [experiment README](../experiments/README.md) (which lists the corrections to the first manual grading) record the scores.
 
 Q22–Q24 require policies supplied only to F. Score these separately: a justified request for the missing rule is an appropriate A–E outcome, while F is expected to apply the policy and answer. Do not count A–E clarification as a numeric success or silently remove it from the denominator. Distinguish appropriate clarification, wrong numeric answer, and tool failure.
 

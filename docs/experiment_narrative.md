@@ -2,11 +2,17 @@
 
 ## The short version
 
-- We ran a controlled test: one model, one frozen dataset, 25 business questions, six progressively richer data environments, three repetitions each — 450 attempts total.
-- Raw source tables got 47% of answers right. A full semantic layer with business context got 76%.
-- The biggest single jump wasn't adding a semantic layer. It was cleaning up the joins and adding business logic at the intermediate layer.
-- Two questions failed across every arm, every rep. That's a model problem, not a data problem.
-- One arm achieved zero variance across all three runs. It also got every policy question right.
+- We ran a controlled test: two models, one frozen dataset, 25 business questions, six progressively richer data environments ("arms"), three repetitions each — 900 attempts in total (450 per model).
+- With `gpt-4.1`, raw source tables got 45% of answers right (11.3 of 25). The full stack with semantic metrics and a business glossary got 73% (18.3 of 25).
+- Most of the climb comes from reaching the intermediate and core layers (A→C, +5.3 correct answers). After C the data-question score is flat: C, D, and E differ by less than the repetition-to-repetition spread.
+- The glossary is what makes the three policy questions answerable. No arm without it answered any of them correctly.
+- With `gpt-6-luna` (reasoning effort high) the same benchmark scores 130.7 of 150 versus 93.3 for `gpt-4.1`, and the biggest remaining gap is access to definitions, not arithmetic.
+
+---
+
+## How it was scored
+
+Every final answer is graded by one deterministic script, [`scripts/autograde.py`](../scripts/autograde.py), against reference values obtained by re-running the author's gold SQL on 25 October 2026. The same rules apply to every attempt; the script never looks at the arm or the model. An earlier manual grading agreed on 887 of 900 attempts; the 13 differences (all `gpt-4.1`) were reviewed one by one and replaced by the script's score. Luna's manual and scripted scores were identical.
 
 ---
 
@@ -29,88 +35,68 @@ The question was simple: does each rung earn its place?
 
 ## The test
 
-25 questions drawn from real analyst workflows — order counts, GMV, cancellation rates, delivery comparisons, customer segmentation, correlation analysis. Three questions required business eligibility rules that only arm F received. The rest were pure data questions any arm could theoretically answer.
-
-Three repetitions per arm×question to measure consistency, not just accuracy. Temperature 0 throughout.
-
-One thing we changed from the first run: we removed formula hints from the questions. "What was the cancellation rate?" not "cancelled orders divided by all orders times 100." If the semantic layer encodes the definition, the question shouldn't have to.
+25 questions drawn from analyst workflows — order counts, GMV, cancellation rates, delivery comparisons, customer segmentation, correlation analysis. Three questions (Q22–Q24) require business rules that only arm F receives; the other 22 are data questions any arm could in principle answer. Each arm × question × model was run three times to measure consistency, not just accuracy.
 
 ---
 
-## What the climb looks like
+## What the climb looks like (`gpt-4.1`, temperature 0)
 
-| Arm | Mean correct / 25 | ±std |
-|-----|------------------:|-----:|
-| A — source only | 11.7 | 0.6 |
-| B — +intermediate | 15.7 | 0.6 |
-| C — +core | 16.3 | 0.6 |
-| D — +marts | 16.3 | 0.6 |
-| E — +MetricFlow | 17.3 | 1.2 |
-| F — +glossary | **19.0** | **0.0** |
+| Arm | Data correct / 22 | Total correct / 25 | ±std (total) |
+|-----|------------------:|-------------------:|-----:|
+| A — source only | 11.3 | 11.3 | 0.6 |
+| B — +intermediate | 14.0 | 14.0 | 1.0 |
+| C — +core | 16.7 | 16.7 | 1.2 |
+| D — +marts | 16.3 | 16.3 | 0.6 |
+| E — +MetricFlow | 16.7 | 16.7 | 0.6 |
+| F — +glossary | 15.3 | **18.3** | 0.6 |
 
 ---
 
 ## Four things worth pulling out
 
-**1. The intermediate layer is where most of the signal lives.**
-A→B is the largest jump: +4 correct answers per run. Moving from raw source tables to clean intermediate models — proper joins, consistent grain, business logic encoded in SQL — almost immediately closes the gap on questions that require joining across entities. If you're debating where to invest first, this is the answer.
+**1. Reaching the intermediate and core layers matters most.**
+A→B adds 2.7 correct answers per run and B→C adds another 2.7. Part of this is plain access: the customer age-segment labels live in the core dimension, so Q18 fails in A and B and is answerable from C onward. Part is cleaner joins: Q13 (cuisine order counts) fails in A, B, and C in every repetition for `gpt-4.1`.
 
-**2. Marts didn't move the needle.**
-C and D are statistically tied. Pre-aggregated mart tables didn't help the agent answer questions more accurately than core fact/dimension models. The agent was already joining correctly. Aggregation without semantic definition is just a shortcut the model didn't need.
+**2. Marts and MetricFlow did not move the data score.**
+C, D, and E sit at 16.7, 16.3, and 16.7. The 0.3-point differences are smaller than the standard deviation across repetitions (0.6–1.2), so the data cannot rank them. Optional semantic access is not a measurable gain here.
 
-**3. The semantic layer adds accuracy but also variance.**
-E outperforms D on data questions (17.3 vs 16.3), but its standard deviation is twice as high (±1.2 vs ±0.6). MetricFlow queries timed out on a small number of attempts, and the agent fell back to SQL with mixed results. The semantic layer is the right tool — but only when it's stable.
+**3. The glossary turns policy questions from impossible to trivial.**
+Arms A–E answered the three business-context questions (Q22–Q24) without the rules, and none of those answers matched the reference. Arm F, which received the `rating_count >= 100` eligibility, restaurant-city geography, and repeat-customer rules, got all three right in every repetition. That is a definition-access problem, not a data-access problem. F's data score (15.3 of 22) is slightly below C–E because Q12, Q15, and Q19 fail in F in every repetition, so the glossary neither helped nor reliably hurt on data questions.
 
-**4. The glossary turns policy questions from impossible to trivial.**
-Arms A–E all answered the three business-context questions (Q22–Q24) with plausible but wrong numbers — they had no way to know the `rating_count >= 100` eligibility rule. Arm F, which received the rule, got all three right in every rep. This wasn't a data access problem. It was a definition access problem. F also achieved zero variance (19/25, ±0) — the most consistent arm in the study.
-
----
-
-## What grounding can't fix
-
-Two questions failed across all six arms, all three reps. Both required the model to compute percentages or decompositions precisely from query results. It consistently got close but not close enough.
-
-This isn't a grounding problem. Better data access can't make a model more arithmetically precise. The fix is instructing the agent to push calculations back into SQL — not to compute in its head.
-
----
-
-## The uncomfortable finding
-
-We almost missed the B signal entirely. In an earlier run, the questions included formula hints ("report a single annual total, not a daily series"). That gave arm A enough scaffolding to answer correctly, masking the gap. Removing the hints made the test harder — and more honest. The jump from A to B only appeared clearly once we stopped helping the weakest arm.
-
-The implication: if you're evaluating an AI analytics agent and the questions spell out the computation, you're testing instruction-following, not grounding.
+**4. Some failures are arithmetic, not grounding.**
+Q07, Q14, and Q20 fail in 18, 18, and 17 of 18 `gpt-4.1` attempts respectively. The model does the percentage or decomposition by hand in its final answer — for example, 33.732% instead of 33.7684% for Q07 — instead of pushing it into SQL. Q12 shows the same weakness: the model listed ten GMV values that sum to 3,552,103 and then wrote 3,552,107.
 
 ---
 
 ## What happens when you swap the model
 
-We ran the same benchmark a second time — same 25 questions, same six arms, same three repetitions — but replaced gpt-4.1 with gpt-6-luna at reasoning_effort=high.
+Same 25 questions, same six arms, same three repetitions, with `gpt-6-luna` at reasoning effort high instead of `gpt-4.1`.
 
 | Arm | gpt-4.1 mean / 25 | gpt-6-luna mean / 25 | Delta |
 |-----|------------------:|---------------------:|------:|
-| A — source only | 11.7 | 19.3 | +7.7 |
-| B — +intermediate | 15.7 | 21.0 | +5.3 |
-| C — +core | 16.3 | 21.7 | +5.3 |
+| A — source only | 11.3 | 19.3 | +8.0 |
+| B — +intermediate | 14.0 | 21.0 | +7.0 |
+| C — +core | 16.7 | 21.7 | +5.0 |
 | D — +marts | 16.3 | 21.7 | +5.3 |
-| E — +MetricFlow | 17.3 | 22.0 | +4.7 |
-| F — +glossary | **19.0** | **25.0** | +6.0 |
+| E — +MetricFlow | 16.7 | 22.0 | +5.3 |
+| F — +glossary | 18.3 | **25.0** | +6.7 |
 
-The overall gain is +34 correct answers per run (+36%). The shape of the curve is the same — grounding still matters, and in the same order — but the floor moved up sharply.
+Overall, Luna scores 130.7 of 150 against 93.3 (+37.3 correct answers, +40%). The shape of the curve is similar, but the floor moved up sharply.
 
-**Three questions that were broken are now fixed.** Q07 (percentage change in order count), Q14 (veg/non-veg unit share with the correct three-group denominator), and Q20 (GMV decomposition to ±INR 0.05 per component) failed across every arm and every rep with gpt-4.1. Luna gets all three right, consistently. These weren't grounding failures. They were precision failures: the model was computing in its head instead of pushing arithmetic into SQL. A stronger reasoner pushes it into SQL.
+**Precision failures mostly disappear.** Q07, Q14, and Q20 fail almost everywhere for `gpt-4.1` but are answered correctly by Luna in nearly every arm (Q07 is the exception in a few arm-A and arm-C repetitions).
 
-**Arm F is now perfect.** 25/25 in every repetition, zero variance across all three runs. This closes the loop: once the model can reason precisely enough and the data layer encodes every definition, the questions become answerable.
+**Luna's remaining misses are about definitions.** In arm A it sometimes asks which amount defines GMV (SUBTOTAL or SALES_AMOUNT), once answered with SUBTOTAL, and fails Q18 in A and B because the age-segment labels are not visible there. Q22–Q24 fail in A–E because the rules are absent. The question text does not define GMV, so part of this variance reflects an ambiguity in the benchmark itself.
 
-**Variance nearly disappeared.** gpt-4.1's arm E had ±1.2 (MetricFlow timeouts causing fallbacks). Luna's worst arm is ±0.47, and that variance lives entirely in arm A, where the staging layer has two candidate GMV fields and the model sometimes asks for clarification rather than guessing. That's not a failure — it's the right behavior under ambiguity.
+**Arm F is perfect.** 25 of 25 in all three repetitions. Read this as "once the model can compute precisely and the glossary supplies the rules, this benchmark is solved", not as proof that the benchmark is hard: the reference answers, the questions, and the glossary rules come from the same author and snapshot.
 
-The residual failures in luna (arms A–E, Q22–Q24) are definitional: the business eligibility rule isn't in the data. No model can answer those without it.
+**Variance nearly disappears.** Luna's total standard deviation across repetitions is 0.6, with no variation at all in arms B, E, and F.
 
 ---
 
 ## Two experiments, one finding
 
-The data layer determines the ceiling. The model determines how close you get to it.
+The data layer and the glossary set what is answerable; the model decides how close you get. `gpt-4.1` leaves about a quarter of the benchmark unanswered even with every layer, largely through arithmetic. Luna closes that gap. Neither model can answer the policy questions without the glossary. They are independent axes, and you need both.
 
-gpt-4.1 at arm F hits 76%. Luna at arm F hits 100%. The ceiling for arm F is 100%; gpt-4.1 leaves 24 percentage points on the table due to arithmetic precision. Luna closes that gap entirely.
+## Limits
 
-But neither model can answer the business-context questions without the glossary. The semantic layer and the model capability are independent axes. You need both.
+One dataset, two models, three repetitions per cell. Differences below about one point are within the repetition noise. The benchmark was authored together with its reference answers, and the scoring script checks that required values are present and correct, not that every sentence of an answer is sound.

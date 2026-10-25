@@ -3,85 +3,85 @@
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "A-Q02": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "A-Q03": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "A-Q04": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "A-Q05": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "A-Q06": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "A-Q07": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "A-Q08": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "A-Q09": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "A-Q10": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "A-Q11": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "A-Q12": {
-    "rep1": 1,
+    "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.3333
+    "mean": 0
   },
   "A-Q13": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "A-Q14": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "A-Q15": {
     "rep1": 0,
@@ -93,145 +93,145 @@
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "A-Q17": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "A-Q18": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "A-Q19": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "A-Q20": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "A-Q21": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "A-Q22": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "A-Q23": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "A-Q24": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "A-Q25": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "B-Q01": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "B-Q02": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "B-Q03": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "B-Q04": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "B-Q05": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "B-Q06": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "B-Q07": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "B-Q08": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "B-Q09": {
     "rep1": 1,
-    "rep2": 1,
+    "rep2": 0,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 0.6667
   },
   "B-Q10": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "B-Q11": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "B-Q12": {
-    "rep1": 1,
-    "rep2": 1,
-    "rep3": 1,
-    "mean": 1.0
+    "rep1": 0,
+    "rep2": 0,
+    "rep3": 0,
+    "mean": 0
   },
   "B-Q13": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "B-Q14": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "B-Q15": {
     "rep1": 0,
@@ -243,109 +243,109 @@
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "B-Q17": {
     "rep1": 1,
-    "rep2": 1,
+    "rep2": 0,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 0.6667
   },
   "B-Q18": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "B-Q19": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "B-Q20": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "B-Q21": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "B-Q22": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "B-Q23": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "B-Q24": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "B-Q25": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "C-Q01": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "C-Q02": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "C-Q03": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "C-Q04": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "C-Q05": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "C-Q06": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "C-Q07": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "C-Q08": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "C-Q09": {
     "rep1": 0,
@@ -357,61 +357,61 @@
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "C-Q11": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "C-Q12": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "C-Q13": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "C-Q14": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "C-Q15": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "C-Q16": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "C-Q17": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "C-Q18": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "C-Q19": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "C-Q20": {
     "rep1": 0,
@@ -429,145 +429,145 @@
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "C-Q23": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "C-Q24": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "C-Q25": {
     "rep1": 1,
     "rep2": 1,
-    "rep3": 0,
-    "mean": 0.6667
+    "rep3": 1,
+    "mean": 1
   },
   "D-Q01": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "D-Q02": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "D-Q03": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "D-Q04": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "D-Q05": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "D-Q06": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "D-Q07": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "D-Q08": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "D-Q09": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "D-Q10": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "D-Q11": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "D-Q12": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "D-Q13": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "D-Q14": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "D-Q15": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "D-Q16": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "D-Q17": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "D-Q18": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "D-Q19": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "D-Q20": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "D-Q21": {
     "rep1": 0,
@@ -579,49 +579,49 @@
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "D-Q23": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "D-Q24": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "D-Q25": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "E-Q01": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "E-Q02": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "E-Q03": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "E-Q04": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "E-Q05": {
     "rep1": 1,
@@ -633,19 +633,19 @@
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "E-Q07": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "E-Q08": {
     "rep1": 1,
-    "rep2": 1,
+    "rep2": 0,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 0.6667
   },
   "E-Q09": {
     "rep1": 1,
@@ -657,246 +657,246 @@
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "E-Q11": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "E-Q12": {
-    "rep1": 1,
+    "rep1": 0,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 0.6667
   },
   "E-Q13": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "E-Q14": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "E-Q15": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "E-Q16": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "E-Q17": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "E-Q18": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "E-Q19": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "E-Q20": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "E-Q21": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "E-Q22": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "E-Q23": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "E-Q24": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "E-Q25": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "F-Q01": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "F-Q02": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "F-Q03": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "F-Q04": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "F-Q05": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "F-Q06": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "F-Q07": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "F-Q08": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "F-Q09": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "F-Q10": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "F-Q11": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "F-Q12": {
-    "rep1": 1,
-    "rep2": 1,
-    "rep3": 1,
-    "mean": 1.0
+    "rep1": 0,
+    "rep2": 0,
+    "rep3": 0,
+    "mean": 0
   },
   "F-Q13": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "F-Q14": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "F-Q15": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "F-Q16": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "F-Q17": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "F-Q18": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "F-Q19": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "F-Q20": {
     "rep1": 0,
     "rep2": 0,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0
   },
   "F-Q21": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "F-Q22": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "F-Q23": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "F-Q24": {
     "rep1": 1,
     "rep2": 1,
     "rep3": 1,
-    "mean": 1.0
+    "mean": 1
   },
   "F-Q25": {
     "rep1": 0,
-    "rep2": 0,
+    "rep2": 1,
     "rep3": 0,
-    "mean": 0.0
+    "mean": 0.3333
   }
 }
