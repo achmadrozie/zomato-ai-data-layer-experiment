@@ -8,7 +8,7 @@ The comparison contains **900 attempts**: 25 questions × 6 arms × 3 repetition
 
 | File | Role |
 | --- | --- |
-| `questions_25.json`, `questions_25.md` | The frozen questions. `stratum` is evaluator metadata. |
+| `questions_25.json` | The frozen questions. `stratum` is evaluator metadata. |
 | `answers_25.md` | Author reference answers and scoring rules. Evaluator-only. |
 | `gold_25.local.sql` | Executable gold SQL (ignored by git). |
 | `gold_25_results.json` | Output of the gold SQL run on 25 October 2026; identical to `answers_25.md`. Input of the grader. |
