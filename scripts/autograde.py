@@ -188,7 +188,7 @@ def main():
                 entry = {f"{prefix}rep{r}": s for r, s in zip((1, 2, 3), scores)}
                 if prefix:
                     entry[f"{prefix}mean"] = round(statistics.mean(scores), 6)
-                    entry[f"{prefix}std"] = round(statistics.pstdev(scores), 6)
+                    entry[f"{prefix}std"] = round(statistics.stdev(scores), 6)
                 else:
                     entry["mean"] = round(statistics.mean(scores), 4)
                 out[key] = entry

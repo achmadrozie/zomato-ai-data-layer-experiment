@@ -29,7 +29,7 @@
         "prompt_tokens": 3451,
         "completion_tokens": 43
       },
-      "tool_error": "TimeoutExpired: Command '['/Users/achmadrozie/Workstation/zomata-pipeline-for-ai-analytics/.venv/bin/mf', 'query', '--metrics', 'cancellation_rate', '--start-time', '2025-01-01', '--end-time', '2025-12-31', '--csv', '/var/folders/8m/9xvh3xg93pd94nz75236q1200000gn/T/tmpc5zujqb_.csv', '--quiet']' timed out after 180 seconds"
+      "tool_error": "TimeoutExpired: Command '['<repo>/.venv/bin/mf', 'query', '--metrics', 'cancellation_rate', '--start-time', '2025-01-01', '--end-time', '2025-12-31', '--csv', '/var/folders/8m/9xvh3xg93pd94nz75236q1200000gn/T/tmpc5zujqb_.csv', '--quiet']' timed out after 180 seconds"
     },
     {
       "action": {

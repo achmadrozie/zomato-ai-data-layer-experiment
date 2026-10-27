@@ -11,7 +11,7 @@
     "luna_rep2": 0,
     "luna_rep3": 1,
     "luna_mean": 0.333333,
-    "luna_std": 0.471405
+    "luna_std": 0.57735
   },
   "A-Q03": {
     "luna_rep1": 1,
@@ -46,14 +46,14 @@
     "luna_rep2": 0,
     "luna_rep3": 1,
     "luna_mean": 0.666667,
-    "luna_std": 0.471405
+    "luna_std": 0.57735
   },
   "A-Q08": {
     "luna_rep1": 1,
     "luna_rep2": 1,
     "luna_rep3": 0,
     "luna_mean": 0.666667,
-    "luna_std": 0.471405
+    "luna_std": 0.57735
   },
   "A-Q09": {
     "luna_rep1": 1,
@@ -81,7 +81,7 @@
     "luna_rep2": 1,
     "luna_rep3": 1,
     "luna_mean": 0.666667,
-    "luna_std": 0.471405
+    "luna_std": 0.57735
   },
   "A-Q13": {
     "luna_rep1": 1,
@@ -396,7 +396,7 @@
     "luna_rep2": 1,
     "luna_rep3": 1,
     "luna_mean": 0.666667,
-    "luna_std": 0.471405
+    "luna_std": 0.57735
   },
   "C-Q08": {
     "luna_rep1": 1,
@@ -697,7 +697,7 @@
     "luna_rep2": 1,
     "luna_rep3": 0,
     "luna_mean": 0.666667,
-    "luna_std": 0.471405
+    "luna_std": 0.57735
   },
   "E-Q01": {
     "luna_rep1": 1,
