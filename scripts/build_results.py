@@ -1,10 +1,10 @@
-"""Build docs/RESULTS.md, the single reference write-up of the experiment, from raw attempts.
+"""Build experiments/RESULTS.md, the single reference write-up of the experiment, from raw attempts.
 
 Every number is computed from experiments/run.local attempts and grade files; nothing is typed
 in by hand. Run from the repository root:
 
-    python3 scripts/build_results.py            # rewrite docs/RESULTS.md
-    python3 scripts/build_results.py --check    # fail if docs/RESULTS.md is out of date
+    python3 scripts/build_results.py            # rewrite experiments/RESULTS.md
+    python3 scripts/build_results.py --check    # fail if experiments/RESULTS.md is out of date
 """
 
 import argparse
@@ -17,7 +17,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 RUN = ROOT / "experiments" / "run.local"
-OUT = ROOT / "docs" / "RESULTS.md"
+OUT = ROOT / "experiments" / "RESULTS.md"
 ARMS = "ABCDEF"
 POLICY = {"Q22", "Q23", "Q24"}
 QIDS = [f"Q{i:02d}" for i in range(1, 26)]
@@ -395,8 +395,8 @@ def main():
     text = build(load())
     if args.check:
         if not OUT.exists() or OUT.read_text() != text:
-            raise SystemExit("docs/RESULTS.md is out of date; run scripts/build_results.py")
-        print("docs/RESULTS.md is up to date")
+            raise SystemExit("experiments/RESULTS.md is out of date; run scripts/build_results.py")
+        print("experiments/RESULTS.md is up to date")
         return
     OUT.write_text(text)
     print(f"wrote {OUT.relative_to(ROOT)} ({len(text.splitlines())} lines)")

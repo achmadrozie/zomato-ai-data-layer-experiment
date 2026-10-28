@@ -6,4 +6,4 @@ Only that Markdown file is supplied to arm F. Its [`manifest`](v1/manifest.yml) 
 
 CTX-01–03 are experiment policies using existing data fields and were accepted for the first trial. They are not assertions about Zomato's real policies. The unavailable Bolt partner-market flag is an example, not an implemented filter.
 
-The [`experiment design`](../docs/experiment_design.md) separates policy-required questions from data-answerable questions and allows justified clarification in arms lacking a policy. Context remains candidate until the policies and design are reviewed. Updating a candidate requires a new payload hash; changing a frozen payload requires a new version.
+The [`experiment design`](../experiments/experiment_design.md) separates policy-required questions from data-answerable questions and allows justified clarification in arms lacking a policy. Context remains candidate until the policies and design are reviewed. Updating a candidate requires a new payload hash; changing a frozen payload requires a new version.
