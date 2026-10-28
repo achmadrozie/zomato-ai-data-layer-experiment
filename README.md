@@ -29,10 +29,18 @@ Mean correct answers out of 25 (3 repetitions each):
 
 [![Experiment setup](assets/table1_experiment_setup.png)](assets/table1_experiment_setup.png)
 
-- 25 business questions, 6 access arms (A–F), 2 models, 3 repetitions = 900 attempts.
-- Each attempt may run up to 3 read-only queries. The model never sees reference answers.
+- 25 business questions, 6 access arms (A–F), 2 models, 3 repetitions = 900 attempts. `gpt-4.1` runs at temperature 0, `gpt-6-luna` at high reasoning effort; job order is shuffled with seed `20261021`.
+- The model never sees reference answers.
 - Grading is deterministic ([`scripts/autograde.py`](scripts/autograde.py)) against [reference answers](experiments/answers_25.md).
 - Details: [`docs/experiment_design.md`](docs/experiment_design.md). Scoring and reproduction: [`experiments/README.md`](experiments/README.md).
+
+### How an attempt runs
+
+1. The runner gives the model its arm's catalog (plus metric definitions in E and F, and the glossary in F) and one question.
+2. The model chooses an action: `sql`, `metricflow` (E/F only), `answer` or `clarify`.
+3. The runner validates SQL and executes it. Errors are returned to the model.
+4. The model has up to 3 queries to answer or request a missing rule.
+5. Every action, result, answer, token count and timing is stored; `autograde.py` scores the final answer against the frozen reference.
 
 ## What the models got wrong
 
@@ -67,7 +75,15 @@ The profile and run guard require `ZOMATO_DLR`, so this project cannot write to 
 
 ## Tech stack
 
-AWS S3 · Snowflake · dbt Core · MetricFlow · OpenAI (GPT-4.1, GPT-6 Luna) · Python
+| Stage | Tools | Role in the experiment |
+|---|---|---|
+| Storage and warehouse | AWS S3 (IAM role), Snowflake | Source tables cloned into `ZOMATO_DLR`; `USERS` copied without `PASSWORD` |
+| Transformation | dbt Core (dbt-snowflake) | Staging, intermediate, core and mart models, each with docs and tests |
+| Semantic layer | MetricFlow | 6 semantic models, 19 metrics |
+| Context layer | Versioned Markdown glossary (`context/v1`) | Business rules CTX-01–03 given to arm F only |
+| Evaluated models | OpenAI GPT-4.1, GPT-6 Luna | Answer 25 questions using only their arm's catalog |
+| Safety | Runner-side validation (`sqlglot`): single SELECT, table allowlist, blocked sensitive columns, row limit | Models have no credentials or filesystem tools; the warehouse connection still uses the dbt role, not a dedicated read-only identity |
+| Evaluation | Python scripts (`run_experiment`, `autograde`, `build_results`) | 900 attempts, deterministic grading, generated `RESULTS.md` |
 
 ## Limits
 
