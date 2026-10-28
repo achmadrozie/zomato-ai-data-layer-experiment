@@ -29,7 +29,7 @@ Mean correct answers out of 25 (3 repetitions each):
 
 [![Experiment setup](assets/table1_experiment_setup.png)](assets/table1_experiment_setup.png)
 
-- 25 business questions, 6 access arms (A–F), 2 models, 3 repetitions = 900 attempts. `gpt-4.1` runs at temperature 0, `gpt-6-luna` at high reasoning effort; job order is shuffled with seed `20261021`.
+- 25 business questions, 6 access arms (A–F), 2 AI models, 3 repetitions = 900 attempts. `gpt-4.1` runs at temperature 0, `gpt-6-luna` at high reasoning effort; job order is shuffled with seed `20261021`.
 - The model never sees reference answers.
 - Grading is deterministic ([`scripts/autograde.py`](scripts/autograde.py)) against [reference answers](experiments/answers_25.md).
 - Details: [`experiments/experiment_design.md`](experiments/experiment_design.md). Scoring and reproduction: [`experiments/README.md`](experiments/README.md).
@@ -86,8 +86,8 @@ The profile and run guard require `ZOMATO_DLR`, so this project cannot write to 
 
 ## Limits
 
-- One dataset, one domain, two models, 3 repetitions: directional evidence, not a general claim.
-- Glossary policy rules are written for this snapshot, not real Zomato policy.
-- Cost figures are estimates from token usage.
+- **Narrow scope.** One dataset, one domain, two AI models and 3 repetitions per setup. Read the results as directional evidence, not a general claim about data modelling.
+- **Arm F is partly built in.** The glossary rules (CTX-01–03) were written for this snapshot, not taken from real Zomato policy. The jump in arm F mostly reflects that Q22–Q24 cannot be answered without them, so it does not predict the gain from a real glossary.
+- **Costs are estimates.** They are calculated from token usage and the stated per-token prices. Snowflake charges, discounts and cached-token rates are not included.
 
 **Achmad Rozie** · [GitHub](https://github.com/achmadrozie)
