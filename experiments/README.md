@@ -19,19 +19,9 @@ The comparison contains **900 attempts**: 25 questions × 6 arms × 3 repetition
 
 Official scores come from `python3 scripts/autograde.py`. It checks each final answer against `gold_25_results.json` with the tolerances in `answers_25.md`, applies the same rules to every attempt, and ignores the arm and model. A clarification or failed attempt scores 0, and Q22–Q24 score 0 in arms A–E. Run it without `--write` to confirm that the stored grades still match; add `--refresh-gold` (needs Snowflake credentials) to regenerate `gold_25_results.json` from `gold_25.local.sql`.
 
-The first grading pass was manual. The script agreed with it on 887 of 900 attempts, all 450 `gpt-6-luna` attempts included. The 13 `gpt-4.1` differences were read individually and the script's score was adopted:
+Per-arm scores are in [`RESULTS.md`](RESULTS.md). Tolerances are applied literally: for example, on Q12 (top-ten GMV of about 3.55 million) a 4 INR difference scores 0 against the INR 0.01 tolerance. Accepting it would raise the `gpt-4.1` total by 2.7 points.
 
-| Attempt (arm-question, repetition) | Manual | Official | Reason |
-| --- | :---: | :---: | --- |
-| A-Q12 r1; B-Q12 r1, r2, r3; E-Q12 r1; F-Q12 r1, r2, r3 | 1 | 0 | Top-ten GMV reported as 3,552,107; reference 3,552,103 (the model's own ten values sum to 3,552,103) |
-| B-Q09 r2 | 1 | 0 | Gap versus the overall rate was not computed |
-| B-Q17 r2 | 1 | 0 | Queries failed; the model asked for clarification |
-| E-Q08 r2 | 1 | 0 | AOVs off by about 0.2 INR (for example 529.63 vs 529.43) |
-| F-Q25 r2; C-Q25 r3 | 0 | 1 | Rates and delay gap are within the stated tolerance |
-
-The Q12 decision applies the INR 0.01 tolerance literally. If you would accept a 4 INR difference on a 3.5 million GMV, those eight attempts become correct and the `gpt-4.1` total rises by 2.7 points.
-
-The script checks that every required value is present and correct and that required statements appear; it cannot detect a correct number used for the wrong population. The author wrote the questions, the reference answers, and the grader's requirements, so no scoring here is independent of the author. The question text does not define GMV; the reference uses `SALES_AMOUNT`, and one `gpt-6-luna` attempt (A-Q02 r2) chose `SUBTOTAL` and scored 0.
+Limits of the grader: it checks that every required value is present and correct and that required statements appear, but cannot detect a correct number used for the wrong population. The author wrote the questions, the reference answers, and the grader's requirements, so scoring is not independent of the author. The question text does not define GMV; the reference uses `SALES_AMOUNT`, and one `gpt-6-luna` attempt (A-Q02 r2) chose `SUBTOTAL` and scored 0.
 
 ## Summary
 
